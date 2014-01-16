@@ -8,7 +8,7 @@ def polygon(t, n, l):
 	angle=360./n
 	for i in range(n):
 		fd(t, l)
-		lt(t, angle)
+		rt(t, angle)
 
 r=100
 input=raw_input('How many sides do you want?\n')
