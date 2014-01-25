@@ -95,7 +95,7 @@ class sphere(object):
 
 print "\n"
 cube_length=float(raw_input("Choose cube size\n"))
-first_cube=cube(cube_length)
+first_cube=cube(cube_length) # first_cube is an instance of the class cube
 print "Area is",first_cube.area(),". Volume is",first_cube.volume(),"."
 
 print "\n"
