@@ -44,7 +44,7 @@ if __name__ == '__main__':
         to_sort.append(random.randint(0,10))
 
     count=None
-    print to_sort, "\n"
+    print "Random list of length",length,":",to_sort, "\n"
     
     while (count!=0):
         count=0
@@ -53,4 +53,4 @@ if __name__ == '__main__':
                 swap(to_sort,n)
                 count+=1
 
-    print to_sort
+    print "Sorted list :",to_sort
