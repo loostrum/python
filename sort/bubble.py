@@ -17,16 +17,15 @@ def swap(l,a):
 
 def need_swap(l,a):
     '''
-    True if l[a] < l[a+1]
+    True if l[a] > l[a+1]
     
     >>> need_swap([1, 2, 3, 4],1)
     False
-    
     >>> need_swap([1, 3, 2, 4],1)
     True
     '''
     
-    if (l[a]<l[a+1]):
+    if (l[a]>l[a+1]):
         return True
     else:
         return False
@@ -37,11 +36,21 @@ if __name__ == '__main__':
     import doctest
     doctest.testmod()
     
-    print swap([1,2,3,4],1)
     
-    length=10
+    length=int(raw_input("Give length of list\n"))
     to_sort=[]
 
     for i in range(length):
         to_sort.append(random.randint(0,10))
 
+    count=None
+    print to_sort, "\n"
+    
+    while (count!=0):
+        count=0
+        for n in range(length-1):
+            if need_swap(to_sort,n):
+                swap(to_sort,n)
+                count+=1
+
+    print to_sort
