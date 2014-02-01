@@ -31,7 +31,7 @@ print np.linspace(1,20,20) #last one is number of points in between
 print np.logspace(0,2,10)
 print '\n'
 
-y = lambda x: x**2 #fast way of creating a function instead of using def
+y = lambda x: x**2 + x**-3 #fast way of creating a function instead of using def
 def y(x):
     return x**2
 
@@ -52,12 +52,12 @@ from pylab import *
 
 t=arange(0.0, 2.0, 0.01)
 s=sin(2*pi*t)
-xlabel('XLABEL')
-ylabel('YLABEL')
-title('TITLE')
-grid(True)
+#xlabel('XLABEL')
+#ylabel('YLABEL')
+#title('TITLE')
+#grid(True)
 #savefig('test.png')
-plot(t,s)
+#plot(t,s)
 #show()
 
 #gnuplot can be imported in python
@@ -65,8 +65,23 @@ plot(t,s)
 #scipy contains various scientific functions like fft, interpolation, numerical integration, signal processing, ...
 from scipy.integrate import quad #most basic integration method. (1/2 (a+b)*n)
 
-y= lambda x: x**2
-print quad(y,0,4) #is answer,precision
+z= lambda x: x**2
+print quad(z,0,4) #is answer,precision
 
-#romberg integration:
-from scipy.integrate import romb
+#simps(datax,datay) integrates datafiles using simpson method
+
+#interpolation
+#spline is useful for a large file. Finds smooth function between each set of points
+from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
+x=np.linspace(0,10,10)
+y=np.cos(x**2/8.0)
+f=interp1d(x,y)
+f2=interp1d(x,y,kind='cubic')
+xnew=np.linspace(0,10,40)
+
+print f(5.5)
+
+plt.plot(x,y,'o',xnew,f(xnew),'-',xnew,f2(xnew),'--')
+plt.legend(['data','linear','cubic'],loc='best')
+plt.show()
