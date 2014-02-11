@@ -1,4 +1,0 @@
-python
-======
-
-UvA Python workshop
