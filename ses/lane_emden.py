@@ -1,9 +1,3 @@
-#Use Runge-Kutta integrator to 4th order
-#3 levels:
-#1: driver (starts/stops the integration)
-#2: stepper (oversees incrementation of variable and calls algorithm) and output (container in which the stepper writes its output)
-#3: algorithm (implements formulas)
-
 #DthetaDxi=phi/xi**2
 #DphiDxi=-xi**2*theta**n
 
@@ -16,6 +10,7 @@
 from scipy.integrate import odeint
 import numpy as np
 from pylab import *
+import math
 
 def analyt(xi):
 	if n==0:
@@ -30,15 +25,75 @@ def analyt(xi):
 def deriv(z,xi):
 	return np.array([1,z[2]/z[0]**2,-z[0]**2*z[1]**n])  #z[0]=xi, z[1]=theta, z[2]=phi
 
-n=1
-xirange=np.linspace(0.0,10.0,1000)
-zinit=np.array([1E-10,1.,0.])
-z=odeint(deriv,zinit,xirange)
-	
-x=np.linspace(0.0001,10.,500)
-plot(x,analyt(x), color='red')
+n=1 #value of polytrope index
+steps=10000 #number of points at which the ODE is solved
+xirange=np.linspace(0.0,10.0,steps) #discrete value for which de ode will be solved
+zinit=np.array([1E-10,1.,0.]) # initial conditions. First one should be zero, but dividing by zero goes horribly wrong, so an extremely small value is chosen.
+z=odeint(deriv,zinit,xirange) #acutally solve the ode for the given xi values. z is an array with xi, theta and phi. Phi isn't needed in the end, only for solving
 
-plot(xirange,z[:,1],color='blue')
+real=analyt(xirange) #calculate analytical theta for given xi
+diff=real-z[:,1] #absolute difference between analytical and numeric values
+reldiff=diff/xirange #relative difference between analytical and numeric values
+
+#figure(1)
+#plot(xirange,analyt(xirange), color='red') #plots analytical solution for given values of xi
+#plot(xirange,z[:,1],color='blue') #plots numeric solution for given values of xi
+#plot(xirange,reldiff, color='red') #plots relative diff between analytical and numeric solutions
+#xlabel('xi')
+#ylabel('theta(analytical)/theta(numeric)')
+#show()
+
+#we see that the solutions differ for small xi, tot about 10^-4. Change the yrange to see the diff.
+#figure(1)
+#plot(xirange,reldiff, color='red') #plots relative diff between analytical and numeric solutions
+#xlabel('xi')
+#ylabel('theta(analytical)/theta(numeric)')
+#ylim(-1E-7,1E-7)
+#show()
+#to get physical values, we use r=a xi and rho=rho_c theta**n
+nlist=[0,1,3/2,2,3,4]
+sols=[]
+rho=[] # will be rho/rho_c = theta**n
+for i in nlist:
+	n=i
+	item=odeint(deriv,zinit,xirange)
+	sols.append(item[:,1])
+	rho.append(item[:,1]**n)
+
+#we now have the numerical solution for 6 different n in the array sols.
+#subplot(111) #row,col,figure
+#produce files for theta vs xi and rho/rho_c (=theta**n) vs xi
+for i in range(len(nlist)):
+	plot(xirange,sols[i]) #theta vs xi
+	xlim(0,10)
+	ylim(0,1)
+	xlabel('xi')
+	ylabel('theta')
+	savefig('theta_xi_'+str(i+1), bbox_inches='tight')
+	clf() #clears the figure
+	plot(xirange,rho[i])
+	xlim(0,10)
+	ylim(0,1)
+	xlabel('xi')
+	ylabel('rho/rho_c')
+	savefig('rho_xi_'+str(i+1), bbox_inches='tight')
+	clf()
+	
+#we see the density sometimes becomes negative, which is of course nonsense. The first the rho reaches zero is the outside of the star.
+
+#NS are modelled by n=1. Numerical solution for n=1 is sols[1] or rho[1]
+#show this one for clarity
+clf()
+plot(xirange,rho[1]) 
 xlabel('xi')
-ylabel('theta')
+ylabel('rho/rho_c')
+xlim(0,4)
+ylim(0,1)
 show()
+
+#find where rho goes to zero
+temp=min(enumerate(rho[1][:.4*steps]), key=lambda x: abs(x[1])) #gives index, value. 4000 is chosen because the zero point lies before that and there are more zero points
+minimum=[xirange[temp[0]],temp[1]] #replaces index by xi value of that index
+print minimum
+#the value for xi is remarkably close to pi
+#this is correct, as the analytical solution is sin(xi)/xi, which is zero at xi=pi
