@@ -12,18 +12,29 @@ import numpy as np
 from pylab import *
 import math
 
-def analyt(xi):
+def analyt(n,xi):
 	if n==0:
 		return 1-(xi**2)/6.
 	elif n==1:
-		return np.sin(xi)/xi
+		if xi==0:
+			return 1.
+		else:
+			return np.sin(xi)/xi
 	elif n==5:
 		return (1+(xi**2)/3.)**-.5
 	else:
 		return 0
-
+		
 def deriv(z,xi):
 	return np.array([1,z[2]/z[0]**2,-z[0]**2*z[1]**n])  #z[0]=xi, z[1]=theta, z[2]=phi
+
+#define vectorized versions of funcs (essentially for-loop to apply the function to the elements of an array)
+vanalyt=np.vectorize(analyt) #n is just a number an should be input as a single value
+vderiv=np.vectorize(deriv, excluded=['z']) #z should be input as an array
+
+print vanalyt(1,[0,1])
+
+exit(2)
 
 n=1 #value of polytrope index
 steps=10000 #number of points at which the ODE is solved
