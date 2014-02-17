@@ -1,4 +1,7 @@
+# python temp file
 *.py[cod]
+
+# images created by python
 .png
 
 # C extensions
