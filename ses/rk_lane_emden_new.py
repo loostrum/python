@@ -33,7 +33,10 @@ def control(n,derivy, derivz, tol, y0, z0, t0, t_max, h, v=True):
     t_curr, y_curr, z_curr, count, ncount = t0, y0, z0, 0, 0 # Setup counters and trackers
 
     while t_curr < t_max:
-        t_next, y_next, z_next, h, h1 = stepper(n,derivy, derivz, t_curr, y_curr, z_curr, h, tol)
+        y_next, hy = stepper(n, derivy, t_curr, y_curr, z_curr, h, tol)
+        z_next, hz = stepper(n, derivz, t_curr, y_curr, z_curr, h, tol)
+        h1=min(hy,hz)
+        t_next=t_curr+h
         if y_curr <0:
             if v==True: print "Theta<=0 reached at xi= {}, theta={}".format(t_curr,y_curr)
             break
@@ -54,7 +57,7 @@ def control(n,derivy, derivz, tol, y0, z0, t0, t_max, h, v=True):
 
     return y, z, t
 
-def stepper(n,derivy, derivz, t, y, z, h, tol):
+def stepper(n,deriv, t, y, z, h, tol):
    '''
    This function is called by the control function to take
    a single step forward. The inputs are the derivative function,
@@ -62,55 +65,36 @@ def stepper(n,derivy, derivz, t, y, z, h, tol):
    and the tolerance for error between 5th order Runge-Kutta and 4th
    order Runge-Kutta.
    '''
-   # watch out! derivy has z as argument and vice versa
-   k1 = h*derivy(t,z)
-   k2 = h*derivy(t+a2*h,z+b21*k1)
-   k3 = h*derivy(t+a3*h,z+b31*k1+b32*k2)
-   k4 = h*derivy(t+a4*h,z+b41*k1+b42*k2+b43*k3)
-   k5 = h*derivy(t+a5*h,z+b51*k1+b52*k2+b53*k3+b54*k4)
-   k6 = h*derivy(t+a6*h,z+b61*k1+b62*k2+b63*k3+b64*k4+b65*k5)
+   # watch out! deriv = deriv of y and has z as argument
+   k1 = h*deriv(n,t,z)
+   k2 = h*deriv(n,t+a2*h,z+b21*k1)
+   k3 = h*deriv(n,t+a3*h,z+b31*k1+b32*k2)
+   k4 = h*deriv(n,t+a4*h,z+b41*k1+b42*k2+b43*k3)
+   k5 = h*deriv(n,t+a5*h,z+b51*k1+b52*k2+b53*k3+b54*k4)
+   k6 = h*deriv(n,t+a6*h,z+b61*k1+b62*k2+b63*k3+b64*k4+b65*k5)
    y_n_plus_1      = y +     c1*k1 +     c2*k2 +     c3*k3 +     c4*k4 +     c5*k5 +     c6*k6
    y_n_plus_1_star = y + c1star*k1 + c2star*k2 + c3star*k3 + c4star*k4 + c5star*k5 + c6star*k6
-   DELTAy           = y_n_plus_1 - y_n_plus_1_star
+   DELTA           = y_n_plus_1 - y_n_plus_1_star
    
    try:
-       hy = h*abs(tol/DELTAy)**0.2    # Finds step size required to meet given tolerance
+       h1 = h*abs(tol/DELTA)**0.2    # Finds step size required to meet given tolerance
    except ZeroDivisionError:
-       hy = h                        # When you are very close to ideal step, DELTA can be zero
+       h1 = h                        # When you are very close to ideal step, DELTA can be zero
        
-   k1 = h*derivz(n,t,y)
-   k2 = h*derivz(n,t+a2*h,y+b21*k1)
-   k3 = h*derivz(n,t+a3*h,y+b31*k1+b32*k2)
-   k4 = h*derivz(n,t+a4*h,y+b41*k1+b42*k2+b43*k3)
-   k5 = h*derivz(n,t+a5*h,y+b51*k1+b52*k2+b53*k3+b54*k4)
-   k6 = h*derivz(n,t+a6*h,y+b61*k1+b62*k2+b63*k3+b64*k4+b65*k5)
-   z_n_plus_1      = z +     c1*k1 +     c2*k2 +     c3*k3 +     c4*k4 +     c5*k5 +     c6*k6
-   z_n_plus_1_star = z + c1star*k1 + c2star*k2 + c3star*k3 + c4star*k4 + c5star*k5 + c6star*k6
-   DELTAz           = z_n_plus_1 - z_n_plus_1_star
-       
-   try:
-       hz = h*abs(tol/DELTAz)**0.2
-   except ZeroDivisionError:
-       hz = h
-       
-   h1 = min([hy,hz])
-       
-   return t+h, y_n_plus_1, z_n_plus_1, h, h1
+     
+   return  y_n_plus_1, h1
 
 
 # define the lane emden equation as 2 ODEs
 
-def dthetadxi(xi, phi):
+def dthetadxi(n, xi, phi): #doesn't do anything with n, but makes use of stepper easier.
     try:
         return phi/xi**2
     except ZeroDivisionError:
         return 1.   #when xi=0, phi=0 and the b.c. states dtheta/dxi = 1.
         
 def dphidxi(n, xi, theta):
-    try:
-        return -xi**2*theta**n
-    except ValueError: #happens when theta < 0 && n!=integer. Then the surface of the star is reached (theta=0), so we can stop anyway
-        return 0. 
+    return -xi**2*theta**n
 
 def analyt(n,xi):
     if n==0:
@@ -125,38 +109,23 @@ def analyt(n,xi):
     else:
         raise ValueError('This value of n has no analytical solution: '+str(n))
 
-def plotter(n,exact,x,y,save=False):
+def plotter(n,x,y,save=False):
     plt.clf()
     plt.plot(x,y, color='red', label='Numerical')
-    if n in exact: 
+    if n in [0,1,5]: 
         plt.plot(x, analyt(n,x),color='blue', label='Analytical')
-    plt.xlim(0,x[-1]) #x[-1] is last element = highest xi
+    plt.xlim(0,x[-1])
     plt.ylim(0,1)
     plt.xlabel(r'$\xi$')
     plt.ylabel(r'$\theta (\xi) $')
 #    plt.title('n ='+str(n))
     plt.legend()
     if save:
-        if n==3/2.:
+        if n==3/2:
             nr='3_2'
         else:
             nr=str(n)
-        plt.savefig('theta_xi_{}'.format(nr), bbox_inches='tight')
-    else:
-        plt.show()
-        
-def plotall(nlist,x,y,save=False):
-    plt.clf()
-    for i in range(len(nlist)):
-        plt.plot(x[i],y[i],label='n = {}'.format(nlist[i]))
-    plt.xlim(0,5)
-    plt.ylim(0,1)
-    plt.title('All numerical solutions')
-    plt.xlabel(r'$\xi$')
-    plt.ylabel(r'$\theta (\xi)$')
-    plt.legend()
-    if save:
-        plt.savefig('theta_xi_all', bbox_inches='tight')
+        plt.savefig('theta_xi_'+nr, bbox_inches='tight')
     else:
         plt.show()
     
@@ -167,21 +136,11 @@ def main():
     ximax=100 #should not be reached in most cases, as theta will be 0 before this.
     h=.001
     tol=1E-15
-    nlist=[0,1,3/2.,2,5] #n for which code is run
-    exactlist=[0,1,5] #n for which an exact solution exists, as given by the function analyt
+    nlist=[0,1,3./2,2,5]
     
-    a=[]
-    b=[]
-    c=[]
     for n in nlist:
-        x,y,z = control(n,dthetadxi,dphidxi,tol,theta0,phi0,xi0,ximax,h) # control returns theta,phi,xi
-        a.append(x)
-        b.append(y)
-        c.append(z)
-        plotter(n,exactlist,c[-1],a[-1],save=True)
-
-    plotall(nlist,c,a,save=True)
+        a,b,c = control(n,dthetadxi,dphidxi,tol,theta0,phi0,xi0,ximax,h) # control returns theta,phi,xi
+        plotter(n,c,a,save=False)
     
-   
 if __name__=='__main__':
     main()
