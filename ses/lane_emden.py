@@ -28,15 +28,16 @@ def analyt(xi):
 	return ans
 		
 def deriv(z,xi):
-	return np.array([1,z[2]/z[0]**2,-z[0]**2*z[1]**n])  #z[0]=xi, z[1]=theta, z[2]=phi
+    try:
+        th=z[2]/z[0]**2
+    except ZeroDivisionError:
+        th=0.
+	return np.array([1,th,-z[0]**2*z[1]**n])  #z[0]=xi, z[1]=theta, z[2]=phi
 
 #define vectorized versions of funcs (essentially for-loop to apply the function to the elements of an array)
 vanalyt=np.vectorize(analyt) #n is just a number an should be input as a single value
 #vderiv=np.vectorize(deriv, excluded=['z']) #z should be input as an array
 n=1 #value of polytrope index
-
-print analyt([1,0])
-exit(2)
 
 steps=10000 #number of points at which the ODE is solved
 xirange=np.linspace(0.0,10.0,steps) #discrete value for which de ode will be solved
@@ -47,6 +48,8 @@ real=analyt(xirange) #calculate analytical theta for given xi
 diff=real-z[:,1] #absolute difference between analytical and numeric values
 reldiff=diff/xirange #relative difference between analytical and numeric values
 
+
+print z[1:100]
 #figure(1)
 #plot(xirange,analyt(xirange), color='red') #plots analytical solution for given values of xi
 #plot(xirange,z[:,1],color='blue') #plots numeric solution for given values of xi
@@ -63,7 +66,7 @@ reldiff=diff/xirange #relative difference between analytical and numeric values
 #ylim(-1E-7,1E-7)
 #show()
 #to get physical values, we use r=a xi and rho=rho_c theta**n
-nlist=[0,1,3/2,2,3,4]
+nlist=[0,1,3/2.,2,3,4]
 sols=[]
 rho=[] # will be rho/rho_c = theta**n
 for i in nlist:

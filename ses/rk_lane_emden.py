@@ -1,13 +1,10 @@
 from matplotlib import pyplot as plt
-from matplotlib import rc #to be able to print greek letters
+from matplotlib import rc
 import numpy as np
 
-rc('text', usetex=True) #use latex for greek letters
-plt.close('all') #close previous plots if the exist
+rc('text', usetex=True) #use latex for greek letters with a nicer font
 
-
-### Cash-Karp Parameters - From literature
-
+# define Cash-Karp parameters
 a2,   a3,  a4,  a5,  a6      =        1/5.,    3/10.,       3/5.,            1.,        7/8.
 b21, b31, b32, b41, b42, b43 =        1/5.,    3/40.,      9/40.,         3/10.,      -9/10., 6/5.
 b51, b52, b53, b54           =     -11/54.,     5/2.,    -70/27.,        35/27.
@@ -15,46 +12,7 @@ b61, b62, b63, b64, b65      = 1631/55296., 175/512., 575/13824., 44275/110592.,
 c1,   c2,  c3,  c4,  c5, c6  =     37/378.,       0.,   250/621.,      125/594.,          0.,  512/1771.
 c1star, c2star, c3star, c4star, c5star, c6star = 2825/27648., 0.,  18575/48384.,13525/55296., 277/14336., 1/4.
 
-def control(n,derivy, derivz, tol, y0, z0, t0, t_max, h, v=True):
-    '''
-    This function takes in a python function that returns the derivative,
-    a tolerance for error between RK5 and RK4, initial conditions on y and z (dependant) 
-    and t (independant) as well as an initial step size.
-    
-    Keyword arguments:
-    v - Verbose
-    '''
-    if v==True: print "Solving with initial condition ({:0.2f}, {:0.2f}), step size of {:0.4e}".format(y0, t0, h)
-
-    y = np.array([y0])      # Set up the initial conditions on y
-    z = np.array([z0])
-    t = np.array([t0])      # and t while creating the output lists
-   
-    t_curr, y_curr, z_curr, count, ncount = t0, y0, z0, 0, 0 # Setup counters and trackers
-
-    while t_curr < t_max:
-        t_next, y_next, z_next, h, h1 = stepper(n,derivy, derivz, t_curr, y_curr, z_curr, h, tol)
-        if y_curr <0:
-            if v==True: print "Theta<=0 reached at xi= {}, theta={}".format(t_curr,y_curr)
-            break
-        if h1 < 0.9*h: 
-            if v==True: print "Reduced step size from {:0.4e} to {:0.4e} at t = {:0.2f}".format(h, h1, t_curr)
-            h = h1
-        elif h1 > 1.1*h:
-            if v==True: print "Increased step size from {:0.4e} to {:0.4e} at t = {:0.2f}".format(h, h1, t_curr)
-            h = h1
-        else:
-            y=np.append(y,y_next)
-            z=np.append(z,z_next)
-            t=np.append(t,t_next)
-            y_curr, z_curr, t_curr = y_next, z_next, t_next
-            ncount += 1
-        count += 1
-    if v==True: print "Done. {} iterations, {} points".format(count, ncount )
-
-    return y, z, t
-
-def stepper(n,derivy, derivz, t, y, z, h, tol):
+def stepper(derivx, n, t, x, y, h, tol): # we have functions where x' is not a function of x, but of y and t so we have y'(x,t) and x'(y,t)
    '''
    This function is called by the control function to take
    a single step forward. The inputs are the derivative function,
@@ -62,56 +20,67 @@ def stepper(n,derivy, derivz, t, y, z, h, tol):
    and the tolerance for error between 5th order Runge-Kutta and 4th
    order Runge-Kutta.
    '''
-   # watch out! derivy has z as argument and vice versa
-   k1 = h*derivy(t,z)
-   k2 = h*derivy(t+a2*h,z+b21*k1)
-   k3 = h*derivy(t+a3*h,z+b31*k1+b32*k2)
-   k4 = h*derivy(t+a4*h,z+b41*k1+b42*k2+b43*k3)
-   k5 = h*derivy(t+a5*h,z+b51*k1+b52*k2+b53*k3+b54*k4)
-   k6 = h*derivy(t+a6*h,z+b61*k1+b62*k2+b63*k3+b64*k4+b65*k5)
-   y_n_plus_1      = y +     c1*k1 +     c2*k2 +     c3*k3 +     c4*k4 +     c5*k5 +     c6*k6
-   y_n_plus_1_star = y + c1star*k1 + c2star*k2 + c3star*k3 + c4star*k4 + c5star*k5 + c6star*k6
-   DELTAy           = y_n_plus_1 - y_n_plus_1_star
-   
+
+   k1 = h*derivx(n,t,y)
+   k2 = h*derivx(n,t+a2*h,y+b21*k1)
+   k3 = h*derivx(n,t+a3*h,y+b31*k1+b32*k2)
+   k4 = h*derivx(n,t+a4*h,y+b41*k1+b42*k2+b43*k3)
+   k5 = h*derivx(n,t+a5*h,y+b51*k1+b52*k2+b53*k3+b54*k4)
+   k6 = h*derivx(n,t+a6*h,y+b61*k1+b62*k2+b63*k3+b64*k4+b65*k5)
+   x_n_plus_1      = x +     c1*k1 +     c2*k2 +     c3*k3 +     c4*k4 +     c5*k5 +     c6*k6
+   x_n_plus_1_star = x + c1star*k1 + c2star*k2 + c3star*k3 + c4star*k4 + c5star*k5 + c6star*k6
+   DELTA           = x_n_plus_1 - x_n_plus_1_star
    try:
-       hy = h*abs(tol/DELTAy)**0.2    # Finds step size required to meet given tolerance
+       h1 = h*abs(tol/DELTA)**0.2    # Finds step size required to meet given tolerance
    except ZeroDivisionError:
-       hy = h                        # When you are very close to ideal step, DELTA can be zero
-       
-   k1 = h*derivz(n,t,y)
-   k2 = h*derivz(n,t+a2*h,y+b21*k1)
-   k3 = h*derivz(n,t+a3*h,y+b31*k1+b32*k2)
-   k4 = h*derivz(n,t+a4*h,y+b41*k1+b42*k2+b43*k3)
-   k5 = h*derivz(n,t+a5*h,y+b51*k1+b52*k2+b53*k3+b54*k4)
-   k6 = h*derivz(n,t+a6*h,y+b61*k1+b62*k2+b63*k3+b64*k4+b65*k5)
-   z_n_plus_1      = z +     c1*k1 +     c2*k2 +     c3*k3 +     c4*k4 +     c5*k5 +     c6*k6
-   z_n_plus_1_star = z + c1star*k1 + c2star*k2 + c3star*k3 + c4star*k4 + c5star*k5 + c6star*k6
-   DELTAz           = z_n_plus_1 - z_n_plus_1_star
-       
-   try:
-       hz = h*abs(tol/DELTAz)**0.2
-   except ZeroDivisionError:
-       hz = h
-       
-   h1 = min([hy,hz])
-       
-   return t+h, y_n_plus_1, z_n_plus_1, h, h1
+       h1 = h                        # When you are very close to ideal step, DELTA can be zero
+   return x_n_plus_1, h1
 
 
-# define the lane emden equation as 2 ODEs
+def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
 
-def dthetadxi(xi, phi):
-    try:
+        #set initial solutions lists
+        t = np.array(t0)
+        x = np.array(x0)
+        y = np.array(y0)
+       
+        t_curr,x_curr,y_curr = t0,x0,y0
+
+        while x_curr >= 0:
+            if t_curr > t_max:  #failsafe if theta doesn't go to zero
+                break
+            x_next,hx = stepper(derivx,n,t_curr,x_curr,y_curr,h,tol)
+            y_next,hy = stepper(derivy,n,t_curr,y_curr,x_curr,h,tol)
+            h1 = min(hx,hy)
+            t_next=t_curr+h
+            
+            if h1 < 0.9*h: 
+                h = h1
+            elif h1 > 1.1*h:
+                h = h1
+            else:            
+                t = np.append(t,t_next)
+                x = np.append(x,x_next)
+                y = np.append(y,y_next)
+                t_curr,x_curr,y_curr = t_next,x_next,y_next
+            
+        return t,x,y
+
+
+def dthetadxi(n,xi,phi):
+    try: 
         return phi/xi**2
     except ZeroDivisionError:
-        return 1.   #when xi=0, phi=0 and the b.c. states dtheta/dxi = 1.
+        # the boundary conditions state theta'(0)=0
+        return 0.
         
-def dphidxi(n, xi, theta):
+def dphidxi(n,xi,theta):
     try:
         return -xi**2*theta**n
-    except ValueError: #happens when theta < 0 && n!=integer. Then the surface of the star is reached (theta=0), so we can stop anyway
-        return 0. 
-
+    except ValueError:
+        # fails when theta<0 and n!=int. Then the surface of the star is reached anyway, so we can safely return zero
+        return 0.
+        
 def analyt(n,xi):
     if n==0:
         return 1-(xi**2)/6.
@@ -123,65 +92,65 @@ def analyt(n,xi):
     elif n==5:
         return (1+(xi**2)/3.)**-.5
     else:
-        raise ValueError('This value of n has no analytical solution: '+str(n))
+        raise ValueError('This value of n has no analytical solution: '+str(n))        
 
-def plotter(n,exact,x,y,save=False):
+def plotter(n,x,y,ylabel):
     plt.clf()
-    plt.plot(x,y, color='red', label='Numerical')
-    if n in exact: 
-        plt.plot(x, analyt(n,x),color='blue', label='Analytical')
-    plt.xlim(0,x[-1]) #x[-1] is last element = highest xi
-    plt.ylim(0,1)
+    plt.plot(x,y,color='blue',label='Numerical')
+    plt.title('n = %0.2f' %(n))
     plt.xlabel(r'$\xi$')
-    plt.ylabel(r'$\theta (\xi) $')
-#    plt.title('n ='+str(n))
+    plt.ylabel(ylabel)
+    plt.xlim(0,x[-1])
+    plt.ylim(0,1)
     plt.legend()
-    if save:
-        if n==3/2.:
-            nr='3_2'
-        else:
-            nr=str(n)
-        plt.savefig('theta_xi_{}'.format(nr), bbox_inches='tight')
-    else:
-        plt.show()
-        
-def plotall(nlist,x,y,save=False):
+    plt.show()
+
+def plotall(nlist,x,y,ylabel,xlim):
     plt.clf()
     for i in range(len(nlist)):
-        plt.plot(x[i],y[i],label='n = {}'.format(nlist[i]))
-    plt.xlim(0,5)
+        plt.plot(x[i],y[i],label='n = '+str(nlist[i]))
+    plt.xlim(0,xlim)
     plt.ylim(0,1)
     plt.title('All numerical solutions')
     plt.xlabel(r'$\xi$')
-    plt.ylabel(r'$\theta (\xi)$')
+    plt.ylabel(ylabel)
     plt.legend()
-    if save:
-        plt.savefig('theta_xi_all', bbox_inches='tight')
-    else:
-        plt.show()
-    
-def main():
-    xi0=1E-10 #have to watch out for divide by zero
+    plt.show()
+        
+def solver():
+    nlist=[0,1,1.5,2,3,4]
+    xi0=0.
+    ximax=20
     phi0=0.
     theta0=1.
-    ximax=100 #should not be reached in most cases, as theta will be 0 before this.
-    h=.001
-    tol=1E-15
-    nlist=[0,1,3/2.,2,5] #n for which code is run
-    exactlist=[0,1,5] #n for which an exact solution exists, as given by the function analyt
+    h=1E-4
+    tol=1E-10
     
-    a=[]
-    b=[]
-    c=[]
+    xi,theta,phi,rho = [],[],[],[]
+    
     for n in nlist:
-        x,y,z = control(n,dthetadxi,dphidxi,tol,theta0,phi0,xi0,ximax,h) # control returns theta,phi,xi
-        a.append(x)
-        b.append(y)
-        c.append(z)
-        plotter(n,exactlist,c[-1],a[-1],save=True)
+        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol)
+        xi.append(x)
+        theta.append(y)
+        phi.append(z)
+        rho.append(y**n)
+        
+    return nlist,xi,theta,phi,rho
 
-    plotall(nlist,c,a,save=True)
+def main():
     
-   
+    #solve numerical
+    nlist,xi,theta,phi,rho = solver()
+    
+    #plot individual solutions for theta
+    #for i in range(len(nlist)):
+    #    plotter(nlist[i],xi[i],theta[i],r'$\theta$')
+        
+    #plot all solutions for theta
+    #plotall(nlist,xi,theta,r'$\theta$',16)
+    
+    #plot all solutions for rho/rho_c
+    #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
+    
 if __name__=='__main__':
     main()
