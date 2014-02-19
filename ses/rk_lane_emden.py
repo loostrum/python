@@ -1,6 +1,9 @@
 from matplotlib import pyplot as plt
 from matplotlib import rc
 import numpy as np
+from astropy import constants as const
+from astropy import units as u
+from math import pi
 
 rc('text', usetex=True) #use latex for greek letters with a nicer font
 
@@ -133,7 +136,11 @@ def solver():
         xi.append(x)
         theta.append(y)
         phi.append(z)
+        if n == 3/2.: #exception because negative number ** non-int is imaginary. Last value is removed and 0 added to keep same length
+            y = np.delete(y,-1)
+            y = np.append(y,0.)
         rho.append(y**n)
+        
         
     return nlist,xi,theta,phi,rho
 
@@ -151,6 +158,9 @@ def main():
     
     #plot all solutions for rho/rho_c
     #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
+    
+    K = const.hbar*const.c*(3*pi**2/(4**4*const.m_p**4))**.3333333333333333 #.333... is used instead of 1/3. to fix unit
+        
     
 if __name__=='__main__':
     main()
