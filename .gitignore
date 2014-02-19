@@ -2,7 +2,7 @@
 *.py[cod]
 
 # images created by python
-.png
+*.png
 
 # C extensions
 *.so
