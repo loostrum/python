@@ -1,9 +1,12 @@
 from matplotlib import pyplot as plt
 from matplotlib import rc
 import numpy as np
-from astropy import constants as const
-from astropy import units as u
+#no astropy @ masterroom
+#from astropy import constants as const
+#from astropy import units as u
 from math import pi
+from scipy.interpolate import UnivariateSpline #interpolation
+from scipy.optimize import brentq #rootfinding 
 
 rc('text', usetex=True) #use latex for greek letters with a nicer font
 
@@ -16,13 +19,6 @@ c1,   c2,  c3,  c4,  c5, c6  =     37/378.,       0.,   250/621.,      125/594.,
 c1star, c2star, c3star, c4star, c5star, c6star = 2825/27648., 0.,  18575/48384.,13525/55296., 277/14336., 1/4.
 
 def stepper(derivx, n, t, x, y, h, tol): # we have functions where x' is not a function of x, but of y and t so we have y'(x,t) and x'(y,t)
-   '''
-   This function is called by the control function to take
-   a single step forward. The inputs are the derivative function,
-   the previous time and function value, the step size in time (h),
-   and the tolerance for error between 5th order Runge-Kutta and 4th
-   order Runge-Kutta.
-   '''
 
    k1 = h*derivx(n,t,y)
    k2 = h*derivx(n,t+a2*h,y+b21*k1)
@@ -49,7 +45,7 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
        
         t_curr,x_curr,y_curr = t0,x0,y0
 
-        while x_curr >= 0:
+        while x_curr >= -.1: #to -1 to be able to interpolate the zero
             if t_curr > t_max:  #failsafe if theta doesn't go to zero
                 break
             x_next,hx = stepper(derivx,n,t_curr,x_curr,y_curr,h,tol)
@@ -103,7 +99,6 @@ def plotter(n,x,y,ylabel):
     plt.title('n = %0.2f' %(n))
     plt.xlabel(r'$\xi$')
     plt.ylabel(ylabel)
-    plt.xlim(0,x[-1])
     plt.ylim(0,1)
     plt.legend()
     plt.show()
@@ -120,8 +115,7 @@ def plotall(nlist,x,y,ylabel,xlim):
     plt.legend()
     plt.show()
         
-def solver():
-    nlist=[0,1,1.5,2,3,4]
+def solver(nlist):
     xi0=0.
     ximax=20
     phi0=0.
@@ -136,18 +130,41 @@ def solver():
         xi.append(x)
         theta.append(y)
         phi.append(z)
-        if n == 3/2.: #exception because negative number ** non-int is imaginary. Last value is removed and 0 added to keep same length
+        if n == 3/2.: #exception because negative number ** non-int is imaginary. Last value is removed and 0 added to keep same length.
             y = np.delete(y,-1)
             y = np.append(y,0.)
         rho.append(y**n)
         
         
-    return nlist,xi,theta,phi,rho
+    return xi,theta,phi,rho
 
-def main():
+def find_zeros(x,y,z):
+    zeros = np.array([])
+    phi = np.array([])
+    for i in range(len(x)):
+        intpy = UnivariateSpline(x[i],y[i]) #interpolation of theta values to find where theta=0
+        intpz = UnivariateSpline(x[i],z[i]) #interpolation of phi value to evaluate phi(xi=xi_0)
+        zero = brentq(intpy,x[i][0],x[i][-1]) #calculate where theta=0
+        zeros = np.append(zeros,zero)
+        z_value = intpz(zero) #calculate phi at xi_0
+        phi = np.append(phi,z_value)
+        
+    return zeros,phi
+    
+# equation for rho_c as given in eq. 8.28
+def D_n(xi_0,phi_0):
+    return 1/(-3*dthetadxi(n,xi_0,phi_0)/xi_0)
+
+def rho_core(n,xi_0,phi_0,M,R):
+    average=3*M/(4*pi*R**3)
+    central=average*D_n(xi_0,phi_0)
+    return central
+
+if __name__=='__main__':
     
     #solve numerical
-    nlist,xi,theta,phi,rho = solver()
+    nlist=[0,1,2,3,4]
+    xi,theta,phi,rho = solver(nlist)
     
     #plot individual solutions for theta
     #for i in range(len(nlist)):
@@ -159,8 +176,28 @@ def main():
     #plot all solutions for rho/rho_c
     #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
     
-    K = const.hbar*const.c*(3*pi**2/(4**4*const.m_p**4))**.3333333333333333 #.333... is used instead of 1/3. to fix unit
-        
+    #K = const.hbar*const.c*(3*pi**2/(4**4*const.m_p**4))**.3333333333333333 #.333... is used instead of 1/3. to fix unit
     
-if __name__=='__main__':
-    main()
+    zeros,phi_at_zero = find_zeros(xi,theta,phi) #where theta=0 and corresponding phi(=xi**2*dthetadxi) values
+    
+    #solve neutron star central density
+    mass = 1.4*1.988435E33 #gram
+    radius = 1E6 #centimeter
+    rho_nuc = 4E14 #gram/cm3
+    n = 1
+    xi_0=zeros[1]
+    phi_0 = phi_at_zero[1]
+    rho = rho_core(n,xi_0,phi_0,mass,radius)
+    #print '%0.2f' % (rho/rho_nuc)
+
+    #solve high-rho WD mass
+    n = 3
+    xi_0 = zeros[3]
+    phi_0 = phi_at_zero[3]
+    
+    #mass-radius relation for n=3 gives GM/m_3 = 16K**3/pi*G where m_3 = -xi_0**2 dthetadxi = - phi_at_zero
+    K=4.88735E14 #cgs
+    G=6.67384E-8 #cgs
+    M=-phi_0*(16*K**3/(pi*G**3))**.5
+    solarmass=1.988435E33
+    #print M/solarmass

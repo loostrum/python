@@ -1,5 +1,5 @@
 # python temp file
-*.py[cod]
+*.py[cod~]
 
 # images created by python
 *.png
