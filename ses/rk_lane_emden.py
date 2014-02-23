@@ -36,7 +36,7 @@ def stepper(derivx, n, t, x, y, h, tol): # we have functions where x' is not a f
    return x_n_plus_1, h1
 
 
-def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
+def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol,hmax):
 
         #set initial solutions lists
         t = np.array(t0)
@@ -44,8 +44,9 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
         y = np.array(y0)
        
         t_curr,x_curr,y_curr = t0,x0,y0
-
-        while x_curr >= -.1: #to -1 to be able to interpolate the zero
+        count_iter,count_total = 0,0
+        
+        while x_curr >= -.1: #to -.1 to be able to interpolate the zero
             if t_curr > t_max:  #failsafe if theta doesn't go to zero
                 break
             x_next,hx = stepper(derivx,n,t_curr,x_curr,y_curr,h,tol)
@@ -53,16 +54,34 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
             h1 = min(hx,hy)
             t_next=t_curr+h
             
-            if h1 < 0.9*h: 
+            if h1 < 0.9*h:
+                print 'Changed stepsize from %0.2e to %0.2e' % (h,h1) 
                 h = h1
             elif h1 > 1.1*h:
-                h = h1
+                if h1 > hmax:
+                    print 'Stepsize is now hmax'
+                    h = hmax
+                    
+                    #still need to continue to prevent endless loop
+                    t = np.append(t,t_next)
+                    x = np.append(x,x_next)
+                    y = np.append(y,y_next)
+                    t_curr,x_curr,y_curr = t_next,x_next,y_next
+                    count_iter += 1
+                    
+                else:
+                    print 'Changed stepsize from %0.2e to %0.2e' % (h,h1)
+                    h = h1
             else:            
                 t = np.append(t,t_next)
                 x = np.append(x,x_next)
                 y = np.append(y,y_next)
                 t_curr,x_curr,y_curr = t_next,x_next,y_next
-            
+                count_iter += 1
+                
+            count_total += 1
+        
+        print 'Calculation completed with %0.1f iterations in %0.1f steps' % (count_iter,count_total)
         return t,x,y
 
 
@@ -103,12 +122,12 @@ def plotter(n,x,y,ylabel):
     plt.legend()
     plt.show()
 
-def plotall(nlist,x,y,ylabel,xlim):
+def plotall(nlist,x,y,ylabel,xlim,ymin=0,ymax=1):
     plt.clf()
     for i in range(len(nlist)):
         plt.plot(x[i],y[i],label='n = '+str(nlist[i]))
     plt.xlim(0,xlim)
-    plt.ylim(0,1)
+    plt.ylim(ymin,ymax)
     plt.title('All numerical solutions')
     plt.xlabel(r'$\xi$')
     plt.ylabel(ylabel)
@@ -120,13 +139,14 @@ def solver(nlist):
     ximax=20
     phi0=0.
     theta0=1.
-    h=1E-4
-    tol=1E-10
+    h=1E-5
+    hmax=5E-4
+    tol=1E-11
     
     xi,theta,phi,rho = [],[],[],[]
     
     for n in nlist:
-        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol)
+        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol,hmax)
         xi.append(x)
         theta.append(y)
         phi.append(z)
@@ -176,9 +196,16 @@ if __name__=='__main__':
     #plot all solutions for rho/rho_c
     #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
     
+    #plot all solutions for phi
+    #plotall(nlist,xi,phi,r'$\phi$',16,-10,0)
+    
     #K = const.hbar*const.c*(3*pi**2/(4**4*const.m_p**4))**.3333333333333333 #.333... is used instead of 1/3. to fix unit
     
     zeros,phi_at_zero = find_zeros(xi,theta,phi) #where theta=0 and corresponding phi(=xi**2*dthetadxi) values
+    
+    print 'n    xi1    phi'
+    for i in range(len(nlist)):
+        print '%0.2f %0.2f %0.2f ' % (nlist[i],zeros[i],phi_at_zero[i])
     
     #solve neutron star central density
     mass = 1.4*1.988435E33 #gram
@@ -188,16 +215,18 @@ if __name__=='__main__':
     xi_0=zeros[1]
     phi_0 = phi_at_zero[1]
     rho = rho_core(n,xi_0,phi_0,mass,radius)
-    #print '%0.2f' % (rho/rho_nuc)
+    #print 'rho_ns/rho_nuc: %0.2f' % (rho/rho_nuc)
 
     #solve high-rho WD mass
     n = 3
-    xi_0 = zeros[3]
-    phi_0 = phi_at_zero[3]
+    xi_0 = zeros[nlist.index(n)]
+    phi_0 = phi_at_zero[nlist.index(n)]
+    #print 'xi_0: %0.2e' % xi_0
+    #print 'phi_0: %0.2e' % phi_0
     
     #mass-radius relation for n=3 gives GM/m_3 = 16K**3/pi*G where m_3 = -xi_0**2 dthetadxi = - phi_at_zero
     K=4.88735E14 #cgs
     G=6.67384E-8 #cgs
     M=-phi_0*(16*K**3/(pi*G**3))**.5
     solarmass=1.988435E33
-    #print M/solarmass
+    print '\nM_WD/M_sun: %0.2f' % (M/solarmass)
