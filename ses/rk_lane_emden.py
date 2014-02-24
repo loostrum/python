@@ -5,8 +5,6 @@ import numpy as np
 #from astropy import constants as const
 #from astropy import units as u
 from math import pi
-from scipy.interpolate import UnivariateSpline #interpolation
-from scipy.optimize import brentq #rootfinding 
 
 rc('text', usetex=True) #use latex for greek letters with a nicer font
 
@@ -36,7 +34,7 @@ def stepper(derivx, n, t, x, y, h, tol): # we have functions where x' is not a f
    return x_n_plus_1, h1
 
 
-def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol,hmax):
+def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
 
         #set initial solutions lists
         t = np.array(t0)
@@ -46,7 +44,10 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol,hmax):
         t_curr,x_curr,y_curr = t0,x0,y0
         count_iter,count_total = 0,0
         
-        while x_curr >= -.1: #to -.1 to be able to interpolate the zero
+        adaptive = True #enables change in stepsize if the ideal h changes by more than 10%
+     
+    
+        while x_curr > 1E-15: # stop if theta is close enough to zero
             if t_curr > t_max:  #failsafe if theta doesn't go to zero
                 break
             x_next,hx = stepper(derivx,n,t_curr,x_curr,y_curr,h,tol)
@@ -54,30 +55,23 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol,hmax):
             h1 = min(hx,hy)
             t_next=t_curr+h
             
-            if h1 < 0.9*h:
-                print 'Changed stepsize from %0.2e to %0.2e' % (h,h1) 
+            if h1 < 0.9*h and adaptive:
+                print 'Decreased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr) 
                 h = h1
-            elif h1 > 1.1*h:
-                if h1 > hmax:
-                    print 'Stepsize is now hmax'
-                    h = hmax
-                    
-                    #still need to continue to prevent endless loop
-                    t = np.append(t,t_next)
-                    x = np.append(x,x_next)
-                    y = np.append(y,y_next)
-                    t_curr,x_curr,y_curr = t_next,x_next,y_next
-                    count_iter += 1
-                    
-                else:
-                    print 'Changed stepsize from %0.2e to %0.2e' % (h,h1)
-                    h = h1
+            elif h1 > 1.1*h and adaptive:
+                print 'Increased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr)
+                h = h1
+            elif x_next < 0:    # if h is ok for precision, check if it doesn't get theta below zero
+                print 'Theta is getting below zero, adapting stepsize. Theta: %0.4e' % x_curr
+                h=.01*h
+                adaptive=False #disables optimal h check in next step
             else:            
                 t = np.append(t,t_next)
                 x = np.append(x,x_next)
                 y = np.append(y,y_next)
                 t_curr,x_curr,y_curr = t_next,x_next,y_next
                 count_iter += 1
+            
                 
             count_total += 1
         
@@ -87,28 +81,30 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol,hmax):
 
 def dthetadxi(n,xi,phi):
     try: 
-        return phi/xi**2
+        #print 'dtheta:',phi/xi**2.
+        return phi/xi**2.
     except ZeroDivisionError:
         # the boundary conditions state theta'(0)=0
         return 0.
         
 def dphidxi(n,xi,theta):
     try:
-        return -xi**2*theta**n
+        #print 'dphi:',-xi**2.*theta**n
+        return -xi**2.*theta**n
     except ValueError:
         # fails when theta<0 and n!=int. Then the surface of the star is reached anyway, so we can safely return zero
         return 0.
         
 def analyt(n,xi):
     if n==0:
-        return 1-(xi**2)/6.
+        return 1.-(xi**2.)/6.
     elif n==1:
         try:    # xi can be zero
             return np.sin(xi)/xi
         except ZeroDivisionError:
             return 1.
     elif n==5:
-        return (1+(xi**2)/3.)**-.5
+        return (1.+(xi**2.)/3.)**-.5
     else:
         raise ValueError('This value of n has no analytical solution: '+str(n))        
 
@@ -128,7 +124,7 @@ def plotall(nlist,x,y,ylabel,xlim,ymin=0,ymax=1):
         plt.plot(x[i],y[i],label='n = '+str(nlist[i]))
     plt.xlim(0,xlim)
     plt.ylim(ymin,ymax)
-    plt.title('All numerical solutions')
+    plt.title('All numerical solutions for '+ylabel)
     plt.xlabel(r'$\xi$')
     plt.ylabel(ylabel)
     plt.legend()
@@ -136,55 +132,103 @@ def plotall(nlist,x,y,ylabel,xlim,ymin=0,ymax=1):
         
 def solver(nlist):
     xi0=0.
-    ximax=20
+    ximax=20.
     phi0=0.
     theta0=1.
-    h=1E-5
-    hmax=5E-4
-    tol=1E-11
+    h=1E-4
+    tol=1E-15
     
     xi,theta,phi,rho = [],[],[],[]
     
     for n in nlist:
-        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol,hmax)
+        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol)
         xi.append(x)
         theta.append(y)
         phi.append(z)
-        if n == 3/2.: #exception because negative number ** non-int is imaginary. Last value is removed and 0 added to keep same length.
-            y = np.delete(y,-1)
-            y = np.append(y,0.)
         rho.append(y**n)
         
         
     return xi,theta,phi,rho
 
-def find_zeros(x,y,z):
-    zeros = np.array([])
-    phi = np.array([])
-    for i in range(len(x)):
-        intpy = UnivariateSpline(x[i],y[i]) #interpolation of theta values to find where theta=0
-        intpz = UnivariateSpline(x[i],z[i]) #interpolation of phi value to evaluate phi(xi=xi_0)
-        zero = brentq(intpy,x[i][0],x[i][-1]) #calculate where theta=0
-        zeros = np.append(zeros,zero)
-        z_value = intpz(zero) #calculate phi at xi_0
-        phi = np.append(phi,z_value)
-        
-    return zeros,phi
-    
 # equation for rho_c as given in eq. 8.28
-def D_n(xi_0,phi_0):
+def D_n(n,xi_0,phi_0):
     return 1/(-3*dthetadxi(n,xi_0,phi_0)/xi_0)
 
 def rho_core(n,xi_0,phi_0,M,R):
     average=3*M/(4*pi*R**3)
-    central=average*D_n(xi_0,phi_0)
+    central=average*D_n(n,xi_0,phi_0)
     return central
+
+# solve neutron star rho_c
+def solve_ns(nlist,zeros,phi_at_zero):    
+    mass = 1.4*1.988435E33 #gram
+    radius = 1E6 #centimeter
+    rho_nuc = 4E14 #gram/cm3
+    n = 1
+    xi_0=zeros[nlist.index(n)]
+    phi_0 = phi_at_zero[nlist.index(n)]
+    rho = rho_core(n,xi_0,phi_0,mass,radius)
+    return rho/rho_nuc
+    
+# solve high rho WD mass  
+def solve_wd(nlist,zeros,phi_at_zero):
+    n = 3
+    xi_0 = zeros[nlist.index(n)]
+    phi_0 = phi_at_zero[nlist.index(n)]
+    
+    #mass-radius relation for n=3 gives GM/m_3 = 16K**3/pi*G where m_3 = -xi_0**2 dthetadxi = - phi_at_zero
+    K=4.88735E14 #cgs
+    G=6.67384E-8 #cgs
+    solarmass=1.988435E33
+    M=-phi_0*(16*K**3/(pi*G**3))**.5
+    return M/solarmass
+    
+def print_table(nlist,zeros,phi_at_zero):
+    print '\nn      xi          |phi|'
+    for i in range(len(nlist)):
+        if nlist[i]==4:
+            print '%0.1f    %0.6f   %0.6f' % (nlist[i],zeros[i],-phi_at_zero[i])
+        else:
+            print '%0.1f    %0.6f    %0.6f' % (nlist[i],zeros[i],-phi_at_zero[i])
+
+
 
 if __name__=='__main__':
     
-    #solve numerical
-    nlist=[0,1,2,3,4]
-    xi,theta,phi,rho = solver(nlist)
+    #nlist = [0,1,1.5,2,3,4] #n for which to solve the l-e equation
+    nlist=[0,1]
+    xi,theta,phi,rho = solver(nlist) #solutions for n in nlist
+    
+    #useful to have lists with the values for phi and xi at theta=0:    
+    zeros=[]
+    phi_at_zero=[]
+    for i in range(len(nlist)):
+        zeros.append(xi[i][-1])
+        phi_at_zero.append(phi[i][-1])
+        
+    #print a table with calculated values    
+    print_table(nlist,zeros,phi_at_zero)
+
+    #solve neutron star central density
+    #ns = solve_ns(nlist,zeros,phi_at_zero)
+    #print '\nrho_ns/rho_nuc: %0.2f' % (ns)
+
+    #solve high-rho WD mass
+    #wd = solve_wd(nlist,zeros,phi_at_zero)
+    #print '\nM_WD/M_sun: %0.2f' % (wd)
+    
+    reldiff,diff = [],[]
+    for i in range(len(xi[1])):
+        minus=(theta[1][i]-analyt(1,xi[1][i]))
+        diff.append(minus)
+        reldiff.append(minus/theta[1][i])
+    plt.clf()
+    plt.scatter(xi[1][-500:],diff[-500:],label='diff',color='blue')
+    plt.scatter(xi[1][-500:],reldiff[-500:],label='reldiff',color='red')
+    plt.legend()
+    plt.show()
+    
+    
     
     #plot individual solutions for theta
     #for i in range(len(nlist)):
@@ -197,36 +241,6 @@ if __name__=='__main__':
     #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
     
     #plot all solutions for phi
-    #plotall(nlist,xi,phi,r'$\phi$',16,-10,0)
+    #plotall(nlist,xi,phi,r'$\phi$',.16,-1,0)
     
     #K = const.hbar*const.c*(3*pi**2/(4**4*const.m_p**4))**.3333333333333333 #.333... is used instead of 1/3. to fix unit
-    
-    zeros,phi_at_zero = find_zeros(xi,theta,phi) #where theta=0 and corresponding phi(=xi**2*dthetadxi) values
-    
-    print 'n    xi1    phi'
-    for i in range(len(nlist)):
-        print '%0.2f %0.2f %0.2f ' % (nlist[i],zeros[i],phi_at_zero[i])
-    
-    #solve neutron star central density
-    mass = 1.4*1.988435E33 #gram
-    radius = 1E6 #centimeter
-    rho_nuc = 4E14 #gram/cm3
-    n = 1
-    xi_0=zeros[1]
-    phi_0 = phi_at_zero[1]
-    rho = rho_core(n,xi_0,phi_0,mass,radius)
-    #print 'rho_ns/rho_nuc: %0.2f' % (rho/rho_nuc)
-
-    #solve high-rho WD mass
-    n = 3
-    xi_0 = zeros[nlist.index(n)]
-    phi_0 = phi_at_zero[nlist.index(n)]
-    #print 'xi_0: %0.2e' % xi_0
-    #print 'phi_0: %0.2e' % phi_0
-    
-    #mass-radius relation for n=3 gives GM/m_3 = 16K**3/pi*G where m_3 = -xi_0**2 dthetadxi = - phi_at_zero
-    K=4.88735E14 #cgs
-    G=6.67384E-8 #cgs
-    M=-phi_0*(16*K**3/(pi*G**3))**.5
-    solarmass=1.988435E33
-    print '\nM_WD/M_sun: %0.2f' % (M/solarmass)
