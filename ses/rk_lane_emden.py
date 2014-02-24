@@ -16,22 +16,38 @@ b61, b62, b63, b64, b65      = 1631/55296., 175/512., 575/13824., 44275/110592.,
 c1,   c2,  c3,  c4,  c5, c6  =     37/378.,       0.,   250/621.,      125/594.,          0.,  512/1771.
 c1star, c2star, c3star, c4star, c5star, c6star = 2825/27648., 0.,  18575/48384.,13525/55296., 277/14336., 1/4.
 
-def stepper(derivx, n, t, x, y, h, tol): # we have functions where x' is not a function of x, but of y and t so we have y'(x,t) and x'(y,t)
+def stepper(derivx,derivy, n, t, x, y, h, tol): # we have functions where x' is not a function of x, but of y and t so we have y'(x,t) and x'(y,t)
 
-   k1 = h*derivx(n,t,y)
-   k2 = h*derivx(n,t+a2*h,y+b21*k1)
-   k3 = h*derivx(n,t+a3*h,y+b31*k1+b32*k2)
-   k4 = h*derivx(n,t+a4*h,y+b41*k1+b42*k2+b43*k3)
-   k5 = h*derivx(n,t+a5*h,y+b51*k1+b52*k2+b53*k3+b54*k4)
-   k6 = h*derivx(n,t+a6*h,y+b61*k1+b62*k2+b63*k3+b64*k4+b65*k5)
-   x_n_plus_1      = x +     c1*k1 +     c2*k2 +     c3*k3 +     c4*k4 +     c5*k5 +     c6*k6
-   x_n_plus_1_star = x + c1star*k1 + c2star*k2 + c3star*k3 + c4star*k4 + c5star*k5 + c6star*k6
-   DELTA           = x_n_plus_1 - x_n_plus_1_star
+   k1x = h*derivx(n,t,y)
+   k1y = h*derivy(n,t,x)
+   k2x = h*derivx(n,t+a2*h,y+b21*k1y)
+   k2y = h*derivy(n,t+a2*h,x+b21*k1x)
+   k3x = h*derivx(n,t+a3*h,y+b31*k1y+b32*k2y)
+   k3y = h*derivy(n,t+a3*h,x+b31*k1x+b32*k2x)
+   k4x = h*derivx(n,t+a4*h,y+b41*k1y+b42*k2y+b43*k3y)
+   k4y = h*derivy(n,t+a4*h,x+b41*k1x+b42*k2x+b43*k3x)
+   k5x = h*derivx(n,t+a5*h,y+b51*k1y+b52*k2y+b53*k3y+b54*k4y)
+   k5y = h*derivy(n,t+a5*h,x+b51*k1x+b52*k2x+b53*k3x+b54*k4x)
+   k6x = h*derivx(n,t+a6*h,y+b61*k1y+b62*k2y+b63*k3y+b64*k4y+b65*k5y)
+   k6y = h*derivy(n,t+a6*h,x+b61*k1x+b62*k2x+b63*k3x+b64*k4x+b65*k5x)
+   x_n_plus_1      = x +     c1*k1x +     c2*k2x +     c3*k3x +     c4*k4x +     c5*k5x +     c6*k6x
+   y_n_plus_1      = y +     c1*k1y +     c2*k2y +     c3*k3y +     c4*k4y +     c5*k5y +     c6*k6y
+   x_n_plus_1_star = x + c1star*k1x + c2star*k2x + c3star*k3x + c4star*k4x + c5star*k5x + c6star*k6x
+   y_n_plus_1_star = y + c1star*k1y + c2star*k2y + c3star*k3y + c4star*k4y + c5star*k5y + c6star*k6y
+   DELTAx          = x_n_plus_1 - x_n_plus_1_star
+   DELTAy          = y_n_plus_1 - y_n_plus_1_star           
    try:
-       h1 = h*abs(tol/DELTA)**0.2    # Finds step size required to meet given tolerance
+       hx = h*abs(tol/DELTAx)**0.2    # Finds step size required to meet given tolerance
    except ZeroDivisionError:
-       h1 = h                        # When you are very close to ideal step, DELTA can be zero
-   return x_n_plus_1, h1
+       hx = h                        # When you are very close to ideal step, DELTA can be zero
+       
+   try:
+       hy = h*abs(tol/DELTAy)**0.2
+   except ZeroDivisionError:
+       hy = h
+   
+   h1 = min(hx,hy)
+   return x_n_plus_1,y_n_plus_1, h1
 
 
 def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
@@ -50,9 +66,7 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
         while x_curr > 1E-15: # stop if theta is close enough to zero
             if t_curr > t_max:  #failsafe if theta doesn't go to zero
                 break
-            x_next,hx = stepper(derivx,n,t_curr,x_curr,y_curr,h,tol)
-            y_next,hy = stepper(derivy,n,t_curr,y_curr,x_curr,h,tol)
-            h1 = min(hx,hy)
+            x_next,y_next,h1 = stepper(derivx,derivy,n,t_curr,x_curr,y_curr,h,tol)
             t_next=t_curr+h
             
             if h1 < 0.9*h and adaptive:
@@ -184,19 +198,18 @@ def solve_wd(nlist,zeros,phi_at_zero):
     return M/solarmass
     
 def print_table(nlist,zeros,phi_at_zero):
-    print '\nn      xi          |phi|'
+    print '\nn      xi            |phi|'
     for i in range(len(nlist)):
         if nlist[i]==4:
-            print '%0.1f    %0.6f   %0.6f' % (nlist[i],zeros[i],-phi_at_zero[i])
+            print '%0.1f    %0.8f   %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
         else:
-            print '%0.1f    %0.6f    %0.6f' % (nlist[i],zeros[i],-phi_at_zero[i])
+            print '%0.1f    %0.8f    %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
 
 
 
 if __name__=='__main__':
     
-    #nlist = [0,1,1.5,2,3,4] #n for which to solve the l-e equation
-    nlist=[0,1]
+    nlist = [0,1,1.5,2,3,4] #n for which to solve the l-e equation
     xi,theta,phi,rho = solver(nlist) #solutions for n in nlist
     
     #useful to have lists with the values for phi and xi at theta=0:    
@@ -210,12 +223,12 @@ if __name__=='__main__':
     print_table(nlist,zeros,phi_at_zero)
 
     #solve neutron star central density
-    #ns = solve_ns(nlist,zeros,phi_at_zero)
-    #print '\nrho_ns/rho_nuc: %0.2f' % (ns)
+    ns = solve_ns(nlist,zeros,phi_at_zero)
+    print '\nrho_ns/rho_nuc: %0.4f' % (ns)
 
     #solve high-rho WD mass
-    #wd = solve_wd(nlist,zeros,phi_at_zero)
-    #print '\nM_WD/M_sun: %0.2f' % (wd)
+    wd = solve_wd(nlist,zeros,phi_at_zero)
+    print '\nM_WD/M_sun: %0.4f' % (wd)
     
     reldiff,diff = [],[]
     for i in range(len(xi[1])):
@@ -235,7 +248,7 @@ if __name__=='__main__':
     #    plotter(nlist[i],xi[i],theta[i],r'$\theta$')
         
     #plot all solutions for theta
-    #plotall(nlist,xi,theta,r'$\theta$',16)
+    plotall(nlist,xi,theta,r'$\theta$',16)
     
     #plot all solutions for rho/rho_c
     #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
