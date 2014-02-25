@@ -1,10 +1,13 @@
 from matplotlib import pyplot as plt
 from matplotlib import rc
 import numpy as np
-#no astropy @ masterroom
-#from astropy import constants as const
-#from astropy import units as u
 from math import pi
+import argparse
+
+argparser=argparse.ArgumentParser(description='Solves the Lane-Emden equation')
+argparser.add_argument('-s','--save', dest='save',action='store_true', help='Save figures instead of displaying them')
+argparser.add_argument('-v','--verbose', dest='v',action='store_true', help='Switch on verbosity')
+args=argparser.parse_args()
 
 rc('text', usetex=True) #use latex for greek letters with a nicer font
 
@@ -70,15 +73,15 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
             t_next=t_curr+h
             
             if h1 < 0.9*h and adaptive:
-                print 'Decreased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr) 
+                if args.v: print 'Decreased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr) 
                 h = h1
             elif h1 > 1.1*h and adaptive:
-                print 'Increased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr)
+                if args.v: print 'Increased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr)
                 h = h1
             elif x_next < 0:    # if h is ok for precision, check if it doesn't get theta below zero
-                print 'Theta is getting below zero, adapting stepsize. Theta: %0.4e' % x_curr
+                if args.v: print 'Theta is getting below zero, adapting stepsize. Theta: %0.4e' % x_curr
                 h=.01*h
-                adaptive=False #disables optimal h check in next step
+                adaptive=False #disables optimal h check as this could cause an endless loop
             else:            
                 t = np.append(t,t_next)
                 x = np.append(x,x_next)
@@ -89,13 +92,12 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
                 
             count_total += 1
         
-        print 'Calculation completed with %0.1f iterations in %0.1f steps' % (count_iter,count_total)
+        if args.v: print 'Calculation completed with %0.1f iterations in %0.1f steps for n= %0.2f' % (count_iter,count_total,n)
         return t,x,y
 
 
 def dthetadxi(n,xi,phi):
     try: 
-        #print 'dtheta:',phi/xi**2.
         return phi/xi**2.
     except ZeroDivisionError:
         # the boundary conditions state theta'(0)=0
@@ -103,24 +105,26 @@ def dthetadxi(n,xi,phi):
         
 def dphidxi(n,xi,theta):
     try:
-        #print 'dphi:',-xi**2.*theta**n
         return -xi**2.*theta**n
     except ValueError:
-        # fails when theta<0 and n!=int. Then the surface of the star is reached anyway, so we can safely return zero
+        # fails when theta<0 and n!=int. Then the surface of the star is reached anyway, so we can safely return zero. This should not be reached as the integration stops at positive theta
         return 0.
         
 def analyt(n,xi):
     if n==0:
         return 1.-(xi**2.)/6.
     elif n==1:
-        try:    # xi can be zero
-            return np.sin(xi)/xi
-        except ZeroDivisionError:
+        if xi==0.:
             return 1.
+        else:    
+            return np.sin(xi)/xi
+        
     elif n==5:
         return (1.+(xi**2.)/3.)**-.5
     else:
-        raise ValueError('This value of n has no analytical solution: '+str(n))        
+        raise ValueError('This value of n has no analytical solution: '+str(n))    
+        
+vanalyt=np.vectorize(analyt) #vectorize so an numpy array can be used as input. The if statement in n=1 doesn't work in an array.
 
 def plotter(n,x,y,ylabel):
     plt.clf()
@@ -231,17 +235,19 @@ if __name__=='__main__':
     print '\nM_WD/M_sun: %0.4f' % (wd)
     
     reldiff,diff = [],[]
-    for i in range(len(xi[1])):
-        minus=(theta[1][i]-analyt(1,xi[1][i]))
-        diff.append(minus)
-        reldiff.append(minus/theta[1][i])
-    plt.clf()
-    plt.scatter(xi[1][-500:],diff[-500:],label='diff',color='blue')
-    plt.scatter(xi[1][-500:],reldiff[-500:],label='reldiff',color='red')
-    plt.legend()
-    plt.show()
-    
-    
+    for nn in [1]:
+        n=nlist.index(nn)
+        for i in range(len(xi[n])):
+            minus=(theta[n][i]-vanalyt(n,xi[n][i]))
+            diff.append(minus)
+            reldiff.append(minus/theta[n][i])
+        plt.clf()
+        plt.plot(xi[n],diff,label='Absolute difference',color='blue')
+        plt.plot(xi[n],reldiff,label='Relative difference',color='red')
+        plt.ylim(-1E-13,1E-13)
+        plt.legend()
+        plt.show()
+
     
     #plot individual solutions for theta
     #for i in range(len(nlist)):
