@@ -3,6 +3,7 @@ from matplotlib import rc
 import numpy as np
 from math import pi
 import argparse
+from astropy.table import table
 
 argparser=argparse.ArgumentParser(description='Solves the Lane-Emden equation')
 argparser.add_argument('-s','--save', dest='save',action='store_true', help='Save figures instead of displaying them')
@@ -19,7 +20,7 @@ b61, b62, b63, b64, b65      = 1631/55296., 175/512., 575/13824., 44275/110592.,
 c1,   c2,  c3,  c4,  c5, c6  =     37/378.,       0.,   250/621.,      125/594.,          0.,  512/1771.
 c1star, c2star, c3star, c4star, c5star, c6star = 2825/27648., 0.,  18575/48384.,13525/55296., 277/14336., 1/4.
 
-def stepper(derivx,derivy, n, t, x, y, h, tol): # we have functions where x' is not a function of x, but of y and t so we have y'(x,t) and x'(y,t)
+def stepper(derivx,derivy, n, t, x, y, h, tol): 
 
    k1x = h*derivx(n,t,y)
    k1y = h*derivy(n,t,x)
@@ -66,7 +67,7 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
         adaptive = True #enables change in stepsize if the ideal h changes by more than 10%
      
     
-        while x_curr > 1E-15: # stop if theta is close enough to zero
+        while x_curr > 1E-17: # stop if theta is close enough to zero
             if t_curr > t_max:  #failsafe if theta doesn't go to zero
                 break
             x_next,y_next,h1 = stepper(derivx,derivy,n,t_curr,x_curr,y_curr,h,tol)
@@ -80,7 +81,7 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
                 h = h1
             elif x_next < 0:    # if h is ok for precision, check if it doesn't get theta below zero
                 if args.v: print 'Theta is getting below zero, adapting stepsize. Theta: %0.4e' % x_curr
-                h=.01*h
+                h=.5*h
                 adaptive=False #disables optimal h check as this could cause an endless loop
             else:            
                 t = np.append(t,t_next)
@@ -95,6 +96,25 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
         if args.v: print 'Calculation completed with %0.1f iterations in %0.1f steps for n= %0.2f' % (count_iter,count_total,n)
         return t,x,y
 
+def solver(nlist):
+    xi0=0.
+    ximax=20.
+    phi0=0.
+    theta0=1.
+    h=1E-4
+    tol=1E-15
+    
+    xi,theta,phi,rho = [],[],[],[]
+    
+    for n in nlist:
+        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol)
+        xi.append(x)
+        theta.append(y)
+        phi.append(z)
+        rho.append(y**n)
+        
+        
+    return xi,theta,phi,rho
 
 def dthetadxi(n,xi,phi):
     try: 
@@ -126,48 +146,24 @@ def analyt(n,xi):
         
 vanalyt=np.vectorize(analyt) #vectorize so an numpy array can be used as input. The if statement in n=1 doesn't work in an array.
 
-def plotter(n,x,y,ylabel):
-    plt.clf()
-    plt.plot(x,y,color='blue',label='Numerical')
-    plt.title('n = %0.2f' %(n))
-    plt.xlabel(r'$\xi$')
-    plt.ylabel(ylabel)
-    plt.ylim(0,1)
-    plt.legend()
-    plt.show()
-
-def plotall(nlist,x,y,ylabel,xlim,ymin=0,ymax=1):
+def plotall(nlist,x,y,ylabel,title,xlim):
     plt.clf()
     for i in range(len(nlist)):
         plt.plot(x[i],y[i],label='n = '+str(nlist[i]))
     plt.xlim(0,xlim)
-    plt.ylim(ymin,ymax)
+    if title == 'rho':
+        plt.ylim(0,1.1)
+    else:
+        plt.ylim(0,1)
     plt.title('All numerical solutions for '+ylabel)
     plt.xlabel(r'$\xi$')
     plt.ylabel(ylabel)
     plt.legend()
-    plt.show()
+    if args.save:
+        plt.savefig(title+'_all')
+    else:
+        plt.show()
         
-def solver(nlist):
-    xi0=0.
-    ximax=20.
-    phi0=0.
-    theta0=1.
-    h=1E-4
-    tol=1E-15
-    
-    xi,theta,phi,rho = [],[],[],[]
-    
-    for n in nlist:
-        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol)
-        xi.append(x)
-        theta.append(y)
-        phi.append(z)
-        rho.append(y**n)
-        
-        
-    return xi,theta,phi,rho
-
 # equation for rho_c as given in eq. 8.28
 def D_n(n,xi_0,phi_0):
     return 1/(-3*dthetadxi(n,xi_0,phi_0)/xi_0)
@@ -202,42 +198,42 @@ def solve_wd(nlist,zeros,phi_at_zero):
     return M/solarmass
     
 def print_table(nlist,zeros,phi_at_zero):
-    print '\nn      xi            |phi|'
+    print '\nn      xi            -phi'
     for i in range(len(nlist)):
         if nlist[i]==4:
             print '%0.1f    %0.8f   %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
         else:
             print '%0.1f    %0.8f    %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
+    # save as tex
+    ar = [np.asarray(nlist),np.asarray(zeros),np.asarray(phi_at_zero)]
+    data = table.Table(ar,names=('n','xi','-phi'))
+    data.write("table.tex",format='latex')
             
-def find_diffs(nlist,xi,theta):
+def find_diffs(n,xi,theta):
     reldiff,diff = [],[]
-    for nn in [1]:
-        n=nlist.index(nn)
-        for i in range(len(xi[n])):
-            minus=(theta[n][i]-vanalyt(n,xi[n][i]))
-            diff.append(minus)
-            reldiff.append(minus/vanalyt(n,xi[n][i]))
-        plt.clf()
-        plt.plot(xi[n],diff,label='Absolute difference',color='blue')
+    diff = theta-vanalyt(n,xi)
+    reldiff = diff/vanalyt(n,xi)
+    plt.clf()
+    plt.plot(xi,diff,label=r'$y = \theta_{num}-\theta_{an}$',color='blue')
+    plt.plot(xi,reldiff,label=r'$y = (\theta_{num}-\theta_{an})/\theta_{an}$',color='red')
+    if n == 0:
+        plt.ylim(-5E-15,5E-15)
+    elif n == 1:
         plt.ylim(-5E-14,5E-14)
-        plt.xlabel(r'$\xi$')
-        plt.ylabel(r'$\theta_{num}-\theta_{an}$')
-        plt.legend()
-        plt.show()
-        
-               
-        plt.clf()
-        plt.plot(xi[n],reldiff,label='Relative difference',color='red')
-        plt.ylim(-5E-13,5E-13)
-        plt.xlabel(r'$\xi$')
-        plt.ylabel(r'$(\theta_{num}-\theta_{an})/\theta_{an}$')
-        plt.legend()
+    plt.title('n = '+str(n))
+    plt.xlabel(r'$\xi$')
+    plt.ylabel('y')
+    plt.legend(loc=2)
+    if args.save:
+        plt.savefig('diffs_'+str(n))
+    else:
         plt.show()
 
 if __name__=='__main__':
     
     nlist = [0,1,1.5,2,3,4] #n for which to solve the l-e equation
     xi,theta,phi,rho = solver(nlist) #solutions for n in nlist
+    xi5,theta5,phi5,rho5 = solver([5]) #solver([0,1,1.5,2,3,4,5]) #only used to compare with analytical solution
     
     #useful to have lists with the values for phi and xi at theta=0:    
     zeros=[]
@@ -257,20 +253,15 @@ if __name__=='__main__':
     wd = solve_wd(nlist,zeros,phi_at_zero)
     print '\nM_WD/M_sun: %0.4f' % (wd)
     
-    find_diffs(nlist,xi,theta)
-
-    
-    #plot individual solutions for theta
-    #for i in range(len(nlist)):
-    #    plotter(nlist[i],xi[i],theta[i],r'$\theta$')
-        
+    #calculate diffs
+    for i in [0,1]:
+        j=nlist.index(0)
+        find_diffs(0,xi[j],theta[j])
+    find_diffs(5,xi5[0],theta5[0])
+      
+              
     #plot all solutions for theta
-    #plotall(nlist,xi,theta,r'$\theta$',16)
+    plotall(nlist,xi,theta,r'$\theta$','theta',16)
     
     #plot all solutions for rho/rho_c
-    #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
-    
-    #plot all solutions for phi
-    #plotall(nlist,xi,phi,r'$\phi$',.16,-1,0)
-    
-    #K = const.hbar*const.c*(3*pi**2/(4**4*const.m_p**4))**.3333333333333333 #.333... is used instead of 1/3. to fix unit
+    plotall(nlist,xi,rho,r'$\rho/\rho_c$','rho',6)
