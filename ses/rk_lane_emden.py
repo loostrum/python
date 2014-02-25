@@ -208,8 +208,31 @@ def print_table(nlist,zeros,phi_at_zero):
             print '%0.1f    %0.8f   %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
         else:
             print '%0.1f    %0.8f    %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
-
-
+            
+def find_diffs(nlist,xi,theta):
+    reldiff,diff = [],[]
+    for nn in [1]:
+        n=nlist.index(nn)
+        for i in range(len(xi[n])):
+            minus=(theta[n][i]-vanalyt(n,xi[n][i]))
+            diff.append(minus)
+            reldiff.append(minus/vanalyt(n,xi[n][i]))
+        plt.clf()
+        plt.plot(xi[n],diff,label='Absolute difference',color='blue')
+        plt.ylim(-5E-14,5E-14)
+        plt.xlabel(r'$\xi$')
+        plt.ylabel(r'$\theta_{num}-\theta_{an}$')
+        plt.legend()
+        plt.show()
+        
+               
+        plt.clf()
+        plt.plot(xi[n],reldiff,label='Relative difference',color='red')
+        plt.ylim(-5E-13,5E-13)
+        plt.xlabel(r'$\xi$')
+        plt.ylabel(r'$(\theta_{num}-\theta_{an})/\theta_{an}$')
+        plt.legend()
+        plt.show()
 
 if __name__=='__main__':
     
@@ -234,19 +257,7 @@ if __name__=='__main__':
     wd = solve_wd(nlist,zeros,phi_at_zero)
     print '\nM_WD/M_sun: %0.4f' % (wd)
     
-    reldiff,diff = [],[]
-    for nn in [1]:
-        n=nlist.index(nn)
-        for i in range(len(xi[n])):
-            minus=(theta[n][i]-vanalyt(n,xi[n][i]))
-            diff.append(minus)
-            reldiff.append(minus/theta[n][i])
-        plt.clf()
-        plt.plot(xi[n],diff,label='Absolute difference',color='blue')
-        plt.plot(xi[n],reldiff,label='Relative difference',color='red')
-        plt.ylim(-1E-13,1E-13)
-        plt.legend()
-        plt.show()
+    find_diffs(nlist,xi,theta)
 
     
     #plot individual solutions for theta
@@ -254,7 +265,7 @@ if __name__=='__main__':
     #    plotter(nlist[i],xi[i],theta[i],r'$\theta$')
         
     #plot all solutions for theta
-    plotall(nlist,xi,theta,r'$\theta$',16)
+    #plotall(nlist,xi,theta,r'$\theta$',16)
     
     #plot all solutions for rho/rho_c
     #plotall(nlist,xi,rho,r'$\rho/\rho_c$',6)
