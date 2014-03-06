@@ -5,12 +5,13 @@ from math import pi
 import argparse
 from astropy.table import table
 
+# arguments that can be given to the program
 argparser=argparse.ArgumentParser(description='Solves the Lane-Emden equation')
 argparser.add_argument('-s','--save', dest='save',action='store_true', help='Save figures instead of displaying them')
 argparser.add_argument('-v','--verbose', dest='v',action='store_true', help='Switch on verbosity')
 args=argparser.parse_args()
 
-rc('text', usetex=True) #use latex for greek letters with a nicer font
+rc('text', usetex=True) # use latex for greek letters with a nicer font
 
 # define Cash-Karp parameters
 a2,   a3,  a4,  a5,  a6      =        1/5.,    3/10.,       3/5.,            1.,        7/8.
@@ -20,6 +21,7 @@ b61, b62, b63, b64, b65      = 1631/55296., 175/512., 575/13824., 44275/110592.,
 c1,   c2,  c3,  c4,  c5, c6  =     37/378.,       0.,   250/621.,      125/594.,          0.,  512/1771.
 c1star, c2star, c3star, c4star, c5star, c6star = 2825/27648., 0.,  18575/48384.,13525/55296., 277/14336., 1/4.
 
+# performs one step of integration and calculates minimum h to meet given tolerance
 def stepper(derivx,derivy, n, t, x, y, h, tol): 
 
    k1x = h*derivx(n,t,y)
@@ -53,38 +55,39 @@ def stepper(derivx,derivy, n, t, x, y, h, tol):
    h1 = min(hx,hy)
    return x_n_plus_1,y_n_plus_1, h1
 
-
+# performs loop over stepper and controls stepsize
 def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
 
-        #set initial solutions lists
+        # set initial solutions lists
         t = np.array(t0)
         x = np.array(x0)
         y = np.array(y0)
        
+        # set current values to initial values
         t_curr,x_curr,y_curr = t0,x0,y0
         count_iter,count_total = 0,0
         
+        
         adaptive = True #enables change in stepsize if the ideal h changes by more than 10%
-     
-    
+         
         while x_curr > 1E-17: # stop if theta is close enough to zero
             if t_curr > t_max:  #failsafe if theta doesn't go to zero
                 break
-            x_next,y_next,h1 = stepper(derivx,derivy,n,t_curr,x_curr,y_curr,h,tol)
-            t_next=t_curr+h
+            x_next,y_next,h1 = stepper(derivx,derivy,n,t_curr,x_curr,y_curr,h,tol) # next values are calculated by stepper
+            t_next=t_curr+h #next step in xi
             
-            if h1 < 0.9*h and adaptive:
+            if h1 < 0.9*h and adaptive: #decreases stepsize if necessary
                 if args.v: print 'Decreased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr) 
                 h = h1
-            elif h1 > 1.1*h and adaptive:
+            elif h1 > 1.1*h and adaptive: #increases stepsize if necessary
                 if args.v: print 'Increased stepsize from %0.2e to %0.2e at theta = %0.5f' % (h,h1,x_curr)
                 h = h1
             elif x_next < 0:    # if h is ok for precision, check if it doesn't get theta below zero
-                if args.v: print 'Theta is getting below zero, adapting stepsize. Theta: %0.4e' % x_curr
                 h=.5*h
-                adaptive=False #disables optimal h check as this could cause an endless loop
-            else:            
-                t = np.append(t,t_next)
+                adaptive=False #disables optimal h check as this could cause an endless loop. Just keep decreasing h until theta remains positive
+                if args.v: print 'Theta is getting below zero, decreased stepsize to %0.2e at theta: %0.5e' % (h,x_curr)
+            else:   # if the stepsize is ok, add calculated values to the solution list.
+                t = np.append(t,t_next) 
                 x = np.append(x,x_next)
                 y = np.append(y,y_next)
                 t_curr,x_curr,y_curr = t_next,x_next,y_next
@@ -96,6 +99,7 @@ def control(derivx,derivy,n,t0,x0,y0,t_max,h,tol):
         if args.v: print 'Calculation completed with %0.1f iterations in %0.1f steps for n= %0.2f' % (count_iter,count_total,n)
         return t,x,y
 
+# calls the stepper using the given initial values.
 def solver(nlist):
     xi0=0.
     ximax=20.
@@ -106,8 +110,8 @@ def solver(nlist):
     
     xi,theta,phi,rho = [],[],[],[]
     
-    for n in nlist:
-        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol)
+    for n in nlist: #calculate solutions for different n
+        x,y,z = control(dthetadxi,dphidxi,n,xi0,theta0,phi0,ximax,h,tol) 
         xi.append(x)
         theta.append(y)
         phi.append(z)
@@ -116,6 +120,7 @@ def solver(nlist):
         
     return xi,theta,phi,rho
 
+# derivative of theta
 def dthetadxi(n,xi,phi):
     try: 
         return phi/xi**2.
@@ -123,6 +128,7 @@ def dthetadxi(n,xi,phi):
         # the boundary conditions state theta'(0)=0
         return 0.
         
+# derivative of phi
 def dphidxi(n,xi,theta):
     try:
         return -xi**2.*theta**n
@@ -130,6 +136,7 @@ def dphidxi(n,xi,theta):
         # fails when theta<0 and n!=int. Then the surface of the star is reached anyway, so we can safely return zero. This should not be reached as the integration stops at positive theta
         return 0.
         
+# function which returns the analytical solution
 def analyt(n,xi):
     if n==0:
         return 1.-(xi**2.)/6.
@@ -146,6 +153,7 @@ def analyt(n,xi):
         
 vanalyt=np.vectorize(analyt) #vectorize so an numpy array can be used as input. The if statement in n=1 doesn't work in an array.
 
+# function that plots all solutions
 def plotall(nlist,x,y,ylabel,title,xlim):
     plt.clf()
     for i in range(len(nlist)):
@@ -164,7 +172,7 @@ def plotall(nlist,x,y,ylabel,title,xlim):
     else:
         plt.show()
         
-# equation for rho_c as given in eq. 8.28
+# equation for rho_c
 def D_n(n,xi_0,phi_0):
     return 1/(-3*dthetadxi(n,xi_0,phi_0)/xi_0)
 
@@ -182,7 +190,7 @@ def solve_ns(nlist,zeros,phi_at_zero):
     xi_0=zeros[nlist.index(n)]
     phi_0 = phi_at_zero[nlist.index(n)]
     rho = rho_core(n,xi_0,phi_0,mass,radius)
-    return rho/rho_nuc
+    return rho,rho/rho_nuc
     
 # solve high rho WD mass  
 def solve_wd(nlist,zeros,phi_at_zero):
@@ -196,19 +204,21 @@ def solve_wd(nlist,zeros,phi_at_zero):
     solarmass=1.988435E33
     M=-phi_0*(16*K**3/(pi*G**3))**.5
     return M/solarmass
-    
+
+# prints table with results
 def print_table(nlist,zeros,phi_at_zero):
-    print '\nn      xi            -phi'
+    print '\nn      xi            phi'
     for i in range(len(nlist)):
         if nlist[i]==4:
-            print '%0.1f    %0.8f   %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
+            print '%0.1f    %0.8f   %0.8f' % (nlist[i],zeros[i],phi_at_zero[i])
         else:
-            print '%0.1f    %0.8f    %0.8f' % (nlist[i],zeros[i],-phi_at_zero[i])
-    # save as tex
+            print '%0.1f    %0.8f    %0.8f' % (nlist[i],zeros[i],phi_at_zero[i])
+    # save as latex table
     ar = [np.asarray(nlist),np.asarray(zeros),np.asarray(phi_at_zero)]
-    data = table.Table(ar,names=('n','xi','-phi'))
+    data = table.Table(ar,names=(r'$n$',r'$\xi$',r'$-\phi$'))
     data.write("table.tex",format='latex')
-            
+    
+# makes figures of absolute and relative differences
 def find_diffs(n,xi,theta):
     reldiff,diff = [],[]
     diff = theta-vanalyt(n,xi)
@@ -223,7 +233,10 @@ def find_diffs(n,xi,theta):
     plt.title('n = '+str(n))
     plt.xlabel(r'$\xi$')
     plt.ylabel('y')
-    plt.legend(loc=2)
+    if n in [0,1]:
+        plt.legend(loc=2)
+    elif n == 5:
+        plt.legend(loc=4)
     if args.save:
         plt.savefig('diffs_'+str(n))
     else:
@@ -246,8 +259,9 @@ if __name__=='__main__':
     print_table(nlist,zeros,phi_at_zero)
 
     #solve neutron star central density
-    ns = solve_ns(nlist,zeros,phi_at_zero)
-    print '\nrho_ns/rho_nuc: %0.4f' % (ns)
+    r,ns = solve_ns(nlist,zeros,phi_at_zero)
+    print '\nrho_ns: %0.6e' % (r)
+    print 'rho_ns/rho_nuc: %0.6f' % (ns)
 
     #solve high-rho WD mass
     wd = solve_wd(nlist,zeros,phi_at_zero)
@@ -255,8 +269,8 @@ if __name__=='__main__':
     
     #calculate diffs
     for i in [0,1]:
-        j=nlist.index(0)
-        find_diffs(0,xi[j],theta[j])
+        j=nlist.index(i)
+        find_diffs(i,xi[j],theta[j])
     find_diffs(5,xi5[0],theta5[0])
       
               
