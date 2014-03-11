@@ -5,15 +5,13 @@ from random import random
 # function to calculate acceleration 
 def a(r):
     G = 1E-4
-    epsilon = 1E-4
+    epsilon = 1E-6
     acc = np.zeros((3,3))
     
     for i in range(3):
-        for j in range (3):
-            if i == j: 
-                continue
-            else:
-                acc[i] += G*(r[j]-r[i])/(np.linalg.norm(r[j]-r[i])+epsilon)**3
+        for j in range (i+1,3):
+            acc[i] += G*(r[j]-r[i])/(np.linalg.norm(r[j]-r[i])+epsilon)**3
+            acc[j] -= acc[i]
     return acc
 
 h=.01 #stepsize
@@ -24,7 +22,7 @@ vcurr= np.zeros((3,3)) #array with starting velocities (3 objects, 3 dimensions)
 
 for i in range(2):
     for j in range(3):
-        vcurr[i][j] = random()*1E-4
+        vcurr[i][j] = random()*1E-5
         vcurr[2][j] -= vcurr[i][j]
 
 tcurr=0
@@ -41,7 +39,7 @@ tlist[0]=tcurr
 
 n=1
 
-while tcurr < tmax:
+while np.amax(rcurr) < 2:
     
     rnext = rcurr + vcurr*h + .5*acurr*h**2
     
@@ -56,9 +54,10 @@ while tcurr < tmax:
     
     rcurr,vcurr,acurr,tcurr = rnext,vnext,anext,tnext
     
-    n=n+1
+    n += 1
     
     if n % 1000/h == 0: print 'finished t = %0.f' % tcurr
+    
     
 plt.clf()
 for i in range(3):
