@@ -15,8 +15,8 @@ def a(r):
     return acc
 
 h=.01 #stepsize
-tmax=1000 #max steps
-steps=int(tmax/h)+2
+tmax=1000 #max time to prevent infinite loop if particles don't exit box
+#steps=int(tmax/h)+2
 rcurr= np.array([[1.500,1.00,1.00],[.750,1.133,1.001],[.751,.567,.799]])-1 #array with starting positions
 vcurr= np.zeros((3,3)) #array with starting velocities (3 objects, 3 dimensions)
 
@@ -27,17 +27,22 @@ vcurr= np.zeros((3,3)) #array with starting velocities (3 objects, 3 dimensions)
 #        vcurr[2][j] -= vcurr[i][j]
 
 tcurr=0
-
 acurr = a(rcurr)
 
-#need to remove the 'steps'
-rlist=np.zeros((3,steps,3))
-vlist=np.zeros((3,steps,3))
-tlist=np.zeros(steps)
-rlist[:,0]=rcurr
-vlist[:,0]=vcurr
-tlist[0]=tcurr
+rlist=np.array([])
+vlist=np.array([])
+tlist=np.array([tcurr])
 
+rlist=np.append(rlist,rcurr,1)
+print rlist
+vlist=vcurr
+tlist=np.append(tlist,tcurr)
+
+vnext=np.zeros((3,3))+1
+
+print vlist,'\n\n',vnext
+
+exit(0)
 
 n=1
 
