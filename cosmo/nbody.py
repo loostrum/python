@@ -5,7 +5,7 @@ from random import random
 # function to calculate acceleration 
 def a(r):
     G = 1E-4
-    epsilon = 1E-6
+    epsilon = 1E-3
     acc = np.zeros((3,3))
     
     for i in range(3):
@@ -15,20 +15,22 @@ def a(r):
     return acc
 
 h=.01 #stepsize
-tmax=500 #max steps
+tmax=1000 #max steps
 steps=int(tmax/h)+2
-rcurr= np.array([[1.500,1.00,1.00],[.750,1.133,1.001],[.751,.567,.799]]) #array with starting positions
+rcurr= np.array([[1.500,1.00,1.00],[.750,1.133,1.001],[.751,.567,.799]])-1 #array with starting positions
 vcurr= np.zeros((3,3)) #array with starting velocities (3 objects, 3 dimensions)
 
-for i in range(2):
-    for j in range(3):
-        vcurr[i][j] = random()*1E-5
-        vcurr[2][j] -= vcurr[i][j]
+#for now no random velocities for reproducability
+#for i in range(2):
+#    for j in range(3):
+#        vcurr[i][j] = random()*1E-5
+#        vcurr[2][j] -= vcurr[i][j]
 
 tcurr=0
 
 acurr = a(rcurr)
 
+#need to remove the 'steps'
 rlist=np.zeros((3,steps,3))
 vlist=np.zeros((3,steps,3))
 tlist=np.zeros(steps)
@@ -39,7 +41,7 @@ tlist[0]=tcurr
 
 n=1
 
-while np.amax(rcurr) < 2:
+while np.amax(abs(rcurr)) < 1 and tcurr < tmax:
     
     rnext = rcurr + vcurr*h + .5*acurr*h**2
     
@@ -62,7 +64,7 @@ while np.amax(rcurr) < 2:
 plt.clf()
 for i in range(3):
     plt.plot(rlist[i].T[0],rlist[i].T[1])
-plt.xlim(-2,2)
-plt.ylim(-2,2)
+plt.xlim(-1,1)
+plt.ylim(-1,1)
 plt.axes().set_aspect('equal')
 plt.show()
