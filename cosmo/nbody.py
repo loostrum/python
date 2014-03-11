@@ -5,7 +5,7 @@ from random import random
 # function to calculate acceleration 
 def a(r):
     G = 1E-4
-    epsilon = 1E-3
+    epsilon = 6E-4
     acc = np.zeros((3,3))
     
     for i in range(3):
@@ -14,37 +14,28 @@ def a(r):
             acc[j] -= acc[i]
     return acc
 
-h=.01 #stepsize
-tmax=1000 #max time to prevent infinite loop if particles don't exit box
-#steps=int(tmax/h)+2
+h=.005 #stepsize
+tmax=750 #max time to prevent infinite loop if particles don't exit box
+steps=int(tmax/h)+2
 rcurr= np.array([[1.500,1.00,1.00],[.750,1.133,1.001],[.751,.567,.799]])-1 #array with starting positions
 vcurr= np.zeros((3,3)) #array with starting velocities (3 objects, 3 dimensions)
 
 #for now no random velocities for reproducability
-#for i in range(2):
-#    for j in range(3):
-#        vcurr[i][j] = random()*1E-5
-#        vcurr[2][j] -= vcurr[i][j]
+for i in range(2):
+    for j in range(3):
+        vcurr[i][j] = random()*1E-4
+        vcurr[2][j] -= vcurr[i][j]
 
 tcurr=0
 acurr = a(rcurr)
 
-rlist=np.array([])
-vlist=np.array([])
-tlist=np.array([tcurr])
+rlist=np.zeros((3,steps,3))
+rlist[:,0]=rcurr
+vlist=np.zeros((3,steps,3))
+vlist[:,0]=vcurr
+tlist=[tcurr]
 
-rlist=np.append(rlist,rcurr,1)
-print rlist
-vlist=vcurr
-tlist=np.append(tlist,tcurr)
-
-vnext=np.zeros((3,3))+1
-
-print vlist,'\n\n',vnext
-
-exit(0)
-
-n=1
+n=0
 
 while np.amax(abs(rcurr)) < 1 and tcurr < tmax:
     
@@ -54,21 +45,21 @@ while np.amax(abs(rcurr)) < 1 and tcurr < tmax:
     vnext = vcurr + .5*(acurr+anext)*h
     tnext = tcurr + h
     
-       
-    rlist[:,n]=rnext
-    vlist[:,n]=vnext
-    tlist[n]=tnext
-    
     rcurr,vcurr,acurr,tcurr = rnext,vnext,anext,tnext
     
     n += 1
     
-    if n % 1000/h == 0: print 'finished t = %0.f' % tcurr
+    rlist[:,n]=rnext
+    vlist[:,n]=vnext
+    tlist.append(tnext)
     
-    
+    if n % 1000/h == 0: 
+        print 'finished t = %0.f' % tcurr
+        
+            
 plt.clf()
 for i in range(3):
-    plt.plot(rlist[i].T[0],rlist[i].T[1])
+    plt.plot(rlist[i].T[0][:n],rlist[i].T[1][:n])
 plt.xlim(-1,1)
 plt.ylim(-1,1)
 plt.axes().set_aspect('equal')
