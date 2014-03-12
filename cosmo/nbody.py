@@ -1,11 +1,12 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from random import random
+from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 # function to calculate acceleration 
 def a(r):
     G = 1E-4
-    epsilon = 6E-4
+    epsilon = 1E-3
     acc = np.zeros((3,3))
     
     for i in range(3):
@@ -14,17 +15,17 @@ def a(r):
             acc[j] -= acc[i]
     return acc
 
-h=.005 #stepsize
-tmax=750 #max time to prevent infinite loop if particles don't exit box
-steps=int(tmax/h)+2
+h=.001 #stepsize
+tmax=1000 #max time to prevent infinite loop if particles don't exit box
+steps=int(tmax/h)+1
 rcurr= np.array([[1.500,1.00,1.00],[.750,1.133,1.001],[.751,.567,.799]])-1 #array with starting positions
 vcurr= np.zeros((3,3)) #array with starting velocities (3 objects, 3 dimensions)
 
 #for now no random velocities for reproducability
-for i in range(2):
-    for j in range(3):
-        vcurr[i][j] = random()*1E-4
-        vcurr[2][j] -= vcurr[i][j]
+#for i in range(2):
+#    for j in range(3):
+#        vcurr[i][j] = (random()-.5)*1E-4
+#        vcurr[2][j] -= vcurr[i][j]
 
 tcurr=0
 acurr = a(rcurr)
@@ -33,11 +34,12 @@ rlist=np.zeros((3,steps,3))
 rlist[:,0]=rcurr
 vlist=np.zeros((3,steps,3))
 vlist[:,0]=vcurr
-tlist=[tcurr]
+tlist=np.zeros(steps)
+tlist[0]=tcurr
+
 
 n=0
-
-while np.amax(abs(rcurr)) < 1 and tcurr < tmax:
+while np.max(abs(rcurr)) < 1 and tcurr < tmax:
     
     rnext = rcurr + vcurr*h + .5*acurr*h**2
     
@@ -51,16 +53,44 @@ while np.amax(abs(rcurr)) < 1 and tcurr < tmax:
     
     rlist[:,n]=rnext
     vlist[:,n]=vnext
-    tlist.append(tnext)
+    tlist[n]=tnext
     
-    if n % 1000/h == 0: 
+    if n % 1E3 == 0: 
         print 'finished t = %0.f' % tcurr
         
-            
-plt.clf()
+#xy plot
+fig = plt.figure(1)
+ax = fig.add_subplot(111)
 for i in range(3):
-    plt.plot(rlist[i].T[0][:n],rlist[i].T[1][:n])
-plt.xlim(-1,1)
-plt.ylim(-1,1)
-plt.axes().set_aspect('equal')
+    ax.plot(rlist[i].T[0][:n],rlist[i].T[1][:n])
+ax.set_xlim(-1,1)
+ax.set_ylim(-1,1)
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_title('XY plane')
+ax.set_aspect('equal')
 plt.show()
+
+##xz plot
+#fig = plt.figure(2)
+#ax = fig.add_subplot(111)
+#for i in range(3):
+    #ax.plot(rlist[i].T[0][:n],rlist[i].T[2][:n])
+#ax.set_xlim(-1,1)
+#ax.set_ylim(-1,1)
+#ax.set_xlabel('x')
+#ax.set_ylabel('z')
+#ax.set_title('XZ plane')
+#ax.set_aspect('equal')
+#plt.show()
+
+##3d plot
+#fig = plt.figure(3)
+#ax = fig.add_subplot(111,projection='3d')
+#for i in range(3):
+    #ax.plot(rlist[i].T[0][:n],rlist[i].T[1][:n],rlist[i].T[2][:n])
+#ax.set_xlim(-1,1)
+#ax.set_ylim(-1,1)
+#ax.set_zlim(-1,1)
+#ax.set_aspect('equal')
+#plt.show()
