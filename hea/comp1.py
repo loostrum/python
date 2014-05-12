@@ -1,6 +1,30 @@
 import math
 import numpy as np
 from random import random
+from matplotlib import pyplot as plt
+from scipy.stats import itemfreq
+
+def frange(limit1, limit2 = None, increment = 1.):
+  """
+  Range function that accepts floats (and integers).
+
+  Usage:
+  frange(-2, 2, 0.1)
+  frange(10)
+  frange(10, increment = 0.5)
+
+  The returned value is an iterator.  Use list(frange) for a list.
+  """
+
+  if limit2 is None:
+    limit2, limit1 = limit1, 0.
+  else:
+    limit1 = float(limit1)
+
+  count = int(math.ceil(limit2 - limit1)/increment)
+  return (limit1 + n*increment for n in range(count))
+
+
 
 #generate random angle in lab frame
 def rand_mu():
@@ -26,32 +50,46 @@ def main():
     E=1.6E-6
     gamma=E/(m*c**2)
     beta=math.sqrt(1-gamma**-2)
-    niter=100
+    niter=int(1E4)
     
-   
-    #create scattered angle list
-    thlist=np.arange(0,2*math.pi,1E-3)
-    #creat temp list to save scattered energies
-    tmp=np.zeros(len(thlist))
+    #create list with possible scatter angles
+    thlist=np.arange(0,2*math.pi,1E-1)
     
     #make empty list for final scattered energies
     e1_list=[]
-    
     for i in range(niter):
         #generate random photon direction
         mu_l=rand_mu()
         #calc incident energy in e frame
         e_e=e_el(mu_l,beta,gamma)
-        #generate possible scatter energies for different theta
-        for j in range(len(thlist)):
-            tmp[j]=e1_l(thlist[j],e_e,beta,gamma)
-        e1_list.append(tmp)
-    #flatten e1_list
-    e1_list=[item for sublist in e1_list for item in sublist]
-    print len(e1_list)
-   
+        for th in thlist:
+            #calc scattered energy in lab frame, assuming no recoil (e_e=e_1 in electron frame)
+            e_1=e1_l(th,e_e,beta,gamma)
+            #discard if impossible 
+            if e_1 > (1+beta)/(1-beta):
+                print 'discarded:',e_1
+                continue
+            else:
+                e1_list.append(e_1)
+            
+    ebins=list(frange(0,12,.25))
     
+    finallist=[]
+    for i in range(len(ebins)):
+        finallist.append([])
     
+    for item in e1_list:
+        for i in range(len(ebins)):
+            if item > ebins[i]:
+                continue
+            else:
+                finallist[i].append(item)
+                break
+                
     
+    ylist=[ len(elem) for elem in finallist ]
+    plt.plot(ebins,ylist)
+    plt.show()
+
 if __name__=="__main__":
     main()
