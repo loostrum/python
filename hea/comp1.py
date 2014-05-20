@@ -16,6 +16,7 @@ def frange(limit1, limit2 = None, increment = 1.):
   The returned value is an iterator.  Use list(frange) for a list.
   """
 
+
   if limit2 is None:
     limit2, limit1 = limit1, 0.
   else:
@@ -30,17 +31,21 @@ def frange(limit1, limit2 = None, increment = 1.):
 def rand_mu():
     return math.cos(2*math.pi*random())
 
-#angle aberration for cos(theta)
+#angle aberration for cos(theta) (to electron frame)
 def mu_el(mu_l,beta):
     return (mu_l-beta)/(1-beta*mu_l)
+
+#angle aberration for cos(theta) (to lab frame)
+def mu_la(mu_e,beta):
+    return (mu_e+beta)/(1+beta*mu_e)
     
 #lorentz transformation for energy (relative to e_l)
 def e_el(mu_l,beta,gamma):
     return gamma*(1-beta*mu_l)
 
 #generate scattered photon energy in lab frame for given theta1_e (=scatter angle in e frame), relative to e_l
-def e1_l(theta1_e,e_e,beta,gamma):
-    return e_e*gamma*(1+beta*math.cos(theta1_e))
+def e1_l(mu1_e,e_e,beta,gamma):
+    return e_e*gamma*(1+beta*mu1_e)
 
 
 def main():
@@ -50,11 +55,9 @@ def main():
     E=1.6E-6
     gamma=E/(m*c**2)
     beta=math.sqrt(1-gamma**-2)
-    niter=int(1E4)
+    niter=int(1E6)
     
-    #create list with possible scatter angles
-    thlist=np.arange(0,2*math.pi,1E-1)
-    
+
     #make empty list for final scattered energies
     e1_list=[]
     for i in range(niter):
@@ -62,18 +65,23 @@ def main():
         mu_l=rand_mu()
         #calc incident energy in e frame
         e_e=e_el(mu_l,beta,gamma)
-        for th in thlist:
-            #calc scattered energy in lab frame, assuming no recoil (e_e=e_1 in electron frame)
-            e_1=e1_l(th,e_e,beta,gamma)
-            #discard if impossible 
-            if e_1 > (1+beta)/(1-beta):
-                print 'discarded:',e_1
-                continue
-            else:
-                e1_list.append(e_1)
-            
-    ebins=list(frange(0,12,.25))
+        #calc scattered energy in lab frame, assuming no recoil (e_e=e_1 in electron frame)
+        #scattered angle is random in electron rest frame. 
+        mu1_e=math.cos(2*math.pi*random())
+        e_1=e1_l(mu1_e,e_e,beta,gamma)
+        #discard if impossible 
+        if e_1 < (1-beta)/(1+beta) or e_1 > (1+beta)/(1-beta):
+            print 'discarded:',e_1
+            continue
+        else:
+            #print 'approved'
+            e1_list.append(e_1)
     
+    ebins=list(frange(0,10,.25))
+    #ebins=list(frange(-3,1,.1))
+    #ebins = [ 10**item for item in ebins ]
+
+
     finallist=[]
     for i in range(len(ebins)):
         finallist.append([])
@@ -86,8 +94,10 @@ def main():
                 finallist[i].append(item)
                 break
                 
+       
     
-    ylist=[ len(elem) for elem in finallist ]
+    ylist=[ float(len(elem))/niter for elem in finallist ]
+    #plt.loglog(ebins,ylist)
     plt.plot(ebins,ylist)
     plt.show()
 
