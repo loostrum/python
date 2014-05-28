@@ -34,13 +34,6 @@ vlist[:,0]=vcurr
 tlist=np.zeros(steps)
 tlist[0]=tcurr
 
-#for now no random velocities for reproducability
-#for i in range(2):
-#    for j in range(3):
-#        vcurr[i][j] = (random()-.5)*1E-4
-#        vcurr[2][j] -= vcurr[i][j]
-
-
 def epot(rcurr):
     epot=0
     G=1E-4
@@ -60,8 +53,6 @@ def ekin(vcurr):
     
 def etot(rcurr,vcurr):
     return epot(rcurr)+ekin(vcurr)
-
-
 print 'kinetic energy in system: %0.2e \npotential energy in system: %0.2e\ntotal energy in system %0.2e' % (ekin(vcurr),epot(rcurr),etot(rcurr,vcurr))
 
 n=1
