@@ -36,16 +36,16 @@ for a in [giant, dwarf, moon]:
 
 def pstep( giant, dwarf ): 
   dist = dwarf.pos - giant.pos
-  force = G * giant.mass * dwarf.mass * dist / ((mag(dist)+1E-3)*(mag(dist)+1E-3)**2)
+  force = G * giant.mass * dwarf.mass * dist / ((mag(dist))*(mag(dist)+1E-3)**2)
   giant.p = giant.p + force*dt
   dwarf.p = dwarf.p - force*dt
   dist = dwarf.pos - giant.pos
 
-dt = 0.01
+dt = 0.005
 G = 1E-4
 while 1:
   ## set the picture update rate (100 times per second)
-  rate(1000)
+  rate(10000)
 
   pstep( giant, dwarf )
   pstep( giant, moon )

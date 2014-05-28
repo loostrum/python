@@ -64,11 +64,11 @@ def main():
     #constants (CGS)
     m=1E-27
     c=3E10
-    #E=1.6E-6
-    #gamma=E/(m*c**2)
+    E=1.6E-6
+    gamma=E/(m*c**2)
     #take energy from synchrotron distribution
     
-    gamma=10
+    #gamma=10
     beta=math.sqrt(1-gamma**-2)
 
 
@@ -83,6 +83,7 @@ def main():
     tstart=time()
     #make empty list for final scattered energies
     e1_list=[]
+    
     for i in range(niter):
         #generate uniform photon direction
         mu_l=rand_mu()
@@ -112,9 +113,9 @@ def main():
     #ebins=list(frange(-3,1,.1))
     #ebins = [ 10**item for item in ebins ]
     
-    dbin=.1
+    #dbin=.1
 
-    e1_list=sorted([ dbin*round(item/dbin) for item in e1_list ])
+    #e1_list=sorted([ dbin*round(item/dbin) for item in e1_list ])
 
  
     tstart=time()
@@ -127,11 +128,12 @@ def main():
     for item in e1_list:
         for i in range(len(ebins)):
             if item > ebins[i]:
-                continue
+               continue
             else:
                 finallist[i].append(item)
                 break
-                
+     
+    
 
     
                      
@@ -148,6 +150,6 @@ def main():
     plt.xlabel('e1/e0')
     plt.ylabel('dn/de')
     plt.show()
-
+    
 if __name__=="__main__":
     main()

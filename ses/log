@@ -1,0 +1,1025 @@
+Increased stepsize from 1.00e-04 to 1.55e-04 at theta = 1.00000
+Increased stepsize from 1.55e-04 to 2.41e-04 at theta = 1.00000
+Increased stepsize from 2.41e-04 to 3.74e-04 at theta = 1.00000
+Increased stepsize from 3.74e-04 to 5.80e-04 at theta = 1.00000
+Increased stepsize from 5.80e-04 to 9.01e-04 at theta = 1.00000
+Increased stepsize from 9.01e-04 to 1.40e-03 at theta = 1.00000
+Increased stepsize from 1.40e-03 to 2.17e-03 at theta = 0.99996
+Increased stepsize from 2.17e-03 to 3.37e-03 at theta = 0.99995
+Increased stepsize from 3.37e-03 to 4.55e-03 at theta = 0.99995
+Increased stepsize from 4.55e-03 to 7.06e-03 at theta = 0.99992
+Increased stepsize from 7.06e-03 to 1.10e-02 at theta = 0.99969
+Increased stepsize from 1.10e-02 to 1.70e-02 at theta = 0.99930
+Increased stepsize from 1.70e-02 to 2.64e-02 at theta = 0.99888
+Increased stepsize from 2.64e-02 to 4.10e-02 at theta = 0.99698
+Increased stepsize from 4.10e-02 to 5.54e-02 at theta = 0.99698
+Increased stepsize from 5.54e-02 to 8.60e-02 at theta = 0.99698
+Increased stepsize from 8.60e-02 to 1.33e-01 at theta = 0.90963
+Increased stepsize from 1.33e-01 to 2.07e-01 at theta = 0.90963
+Increased stepsize from 2.07e-01 to 2.80e-01 at theta = 0.77939
+Increased stepsize from 2.80e-01 to 3.29e-01 at theta = 0.34009
+Theta is getting below zero, decreased stepsize to 1.65e-01 at theta: 1.03747e-01
+Theta is getting below zero, decreased stepsize to 8.23e-02 at theta: 1.03747e-01
+Theta is getting below zero, decreased stepsize to 4.11e-02 at theta: 3.90216e-02
+Theta is getting below zero, decreased stepsize to 2.06e-02 at theta: 5.81271e-03
+Theta is getting below zero, decreased stepsize to 1.03e-02 at theta: 5.81271e-03
+Theta is getting below zero, decreased stepsize to 5.14e-03 at theta: 5.81271e-03
+Theta is getting below zero, decreased stepsize to 2.57e-03 at theta: 1.62193e-03
+Theta is getting below zero, decreased stepsize to 1.29e-03 at theta: 1.62193e-03
+Theta is getting below zero, decreased stepsize to 6.43e-04 at theta: 5.72860e-04
+Theta is getting below zero, decreased stepsize to 3.21e-04 at theta: 4.81181e-05
+Theta is getting below zero, decreased stepsize to 1.61e-04 at theta: 4.81181e-05
+Theta is getting below zero, decreased stepsize to 8.03e-05 at theta: 4.81181e-05
+Theta is getting below zero, decreased stepsize to 4.02e-05 at theta: 4.81181e-05
+Theta is getting below zero, decreased stepsize to 2.01e-05 at theta: 1.53171e-05
+Theta is getting below zero, decreased stepsize to 1.00e-05 at theta: 1.53171e-05
+Theta is getting below zero, decreased stepsize to 5.02e-06 at theta: 7.11678e-06
+Theta is getting below zero, decreased stepsize to 2.51e-06 at theta: 3.01660e-06
+Theta is getting below zero, decreased stepsize to 1.26e-06 at theta: 9.66511e-07
+Theta is getting below zero, decreased stepsize to 6.28e-07 at theta: 9.66511e-07
+Theta is getting below zero, decreased stepsize to 3.14e-07 at theta: 4.53988e-07
+Theta is getting below zero, decreased stepsize to 1.57e-07 at theta: 1.97726e-07
+Theta is getting below zero, decreased stepsize to 7.85e-08 at theta: 6.95955e-08
+Theta is getting below zero, decreased stepsize to 3.92e-08 at theta: 5.53007e-09
+Theta is getting below zero, decreased stepsize to 1.96e-08 at theta: 5.53007e-09
+Theta is getting below zero, decreased stepsize to 9.81e-09 at theta: 5.53007e-09
+Theta is getting below zero, decreased stepsize to 4.90e-09 at theta: 5.53007e-09
+Theta is getting below zero, decreased stepsize to 2.45e-09 at theta: 1.52599e-09
+Theta is getting below zero, decreased stepsize to 1.23e-09 at theta: 1.52599e-09
+Theta is getting below zero, decreased stepsize to 6.13e-10 at theta: 5.24964e-10
+Theta is getting below zero, decreased stepsize to 3.06e-10 at theta: 2.44528e-11
+Theta is getting below zero, decreased stepsize to 1.53e-10 at theta: 2.44528e-11
+Theta is getting below zero, decreased stepsize to 7.66e-11 at theta: 2.44528e-11
+Theta is getting below zero, decreased stepsize to 3.83e-11 at theta: 2.44528e-11
+Theta is getting below zero, decreased stepsize to 1.92e-11 at theta: 2.44528e-11
+Theta is getting below zero, decreased stepsize to 9.58e-12 at theta: 8.81187e-12
+Theta is getting below zero, decreased stepsize to 4.79e-12 at theta: 9.91389e-13
+Theta is getting below zero, decreased stepsize to 2.39e-12 at theta: 9.91389e-13
+Theta is getting below zero, decreased stepsize to 1.20e-12 at theta: 9.91389e-13
+Theta is getting below zero, decreased stepsize to 5.99e-13 at theta: 1.38290e-14
+Theta is getting below zero, decreased stepsize to 2.99e-13 at theta: 1.38290e-14
+Theta is getting below zero, decreased stepsize to 1.50e-13 at theta: 1.38290e-14
+Theta is getting below zero, decreased stepsize to 7.48e-14 at theta: 1.38290e-14
+Theta is getting below zero, decreased stepsize to 3.74e-14 at theta: 1.38290e-14
+Theta is getting below zero, decreased stepsize to 1.87e-14 at theta: 1.38290e-14
+Theta is getting below zero, decreased stepsize to 9.35e-15 at theta: 1.38290e-14
+Theta is getting below zero, decreased stepsize to 4.68e-15 at theta: 6.19185e-15
+Theta is getting below zero, decreased stepsize to 2.34e-15 at theta: 2.37325e-15
+Theta is getting below zero, decreased stepsize to 1.17e-15 at theta: 4.63956e-16
+Theta is getting below zero, decreased stepsize to 5.85e-16 at theta: 4.63956e-16
+Theta is getting below zero, decreased stepsize to 2.92e-16 at theta: 4.63956e-16
+Theta is getting below zero, decreased stepsize to 1.46e-16 at theta: 2.25294e-16
+Theta is getting below zero, decreased stepsize to 7.31e-17 at theta: 1.05963e-16
+Theta is getting below zero, decreased stepsize to 3.65e-17 at theta: 4.62970e-17
+Theta is getting below zero, decreased stepsize to 1.83e-17 at theta: 1.64643e-17
+Calculation completed with 65.0 iterations in 139.0 steps for n= 0.00
+Increased stepsize from 1.00e-04 to 1.55e-04 at theta = 1.00000
+Increased stepsize from 1.55e-04 to 2.41e-04 at theta = 1.00000
+Increased stepsize from 2.41e-04 to 3.25e-04 at theta = 1.00000
+Increased stepsize from 3.25e-04 to 5.05e-04 at theta = 1.00000
+Increased stepsize from 5.05e-04 to 7.84e-04 at theta = 1.00000
+Increased stepsize from 7.84e-04 to 1.06e-03 at theta = 1.00000
+Increased stepsize from 1.06e-03 to 1.64e-03 at theta = 1.00000
+Increased stepsize from 1.64e-03 to 1.85e-03 at theta = 1.00000
+Increased stepsize from 1.85e-03 to 2.08e-03 at theta = 0.99999
+Increased stepsize from 2.08e-03 to 2.34e-03 at theta = 0.99996
+Increased stepsize from 2.34e-03 to 2.63e-03 at theta = 0.99981
+Increased stepsize from 2.63e-03 to 2.96e-03 at theta = 0.99929
+Increased stepsize from 2.96e-03 to 3.33e-03 at theta = 0.99788
+Increased stepsize from 3.33e-03 to 3.75e-03 at theta = 0.99464
+Increased stepsize from 3.75e-03 to 4.14e-03 at theta = 0.81327
+Increased stepsize from 4.14e-03 to 4.65e-03 at theta = 0.66005
+Increased stepsize from 4.65e-03 to 5.47e-03 at theta = 0.53263
+Decreased stepsize from 5.47e-03 to 4.88e-03 at theta = 0.52559
+Increased stepsize from 4.88e-03 to 5.74e-03 at theta = 0.49826
+Decreased stepsize from 5.74e-03 to 5.12e-03 at theta = 0.49578
+Increased stepsize from 5.12e-03 to 6.02e-03 at theta = 0.47360
+Increased stepsize from 6.02e-03 to 6.64e-03 at theta = 0.41329
+Decreased stepsize from 6.64e-03 to 5.92e-03 at theta = 0.33532
+Decreased stepsize from 5.92e-03 to 5.28e-03 at theta = 0.32766
+Increased stepsize from 5.28e-03 to 6.21e-03 at theta = 0.32766
+Decreased stepsize from 6.21e-03 to 5.54e-03 at theta = 0.32766
+Increased stepsize from 5.54e-03 to 6.36e-03 at theta = 0.31337
+Decreased stepsize from 6.36e-03 to 5.42e-03 at theta = 0.31337
+Increased stepsize from 5.42e-03 to 6.38e-03 at theta = 0.31337
+Decreased stepsize from 6.38e-03 to 5.44e-03 at theta = 0.31063
+Decreased stepsize from 5.44e-03 to 4.85e-03 at theta = 0.27586
+Increased stepsize from 4.85e-03 to 5.70e-03 at theta = 0.26970
+Decreased stepsize from 5.70e-03 to 5.08e-03 at theta = 0.26730
+Increased stepsize from 5.08e-03 to 5.98e-03 at theta = 0.25021
+Decreased stepsize from 5.98e-03 to 4.91e-03 at theta = 0.25021
+Increased stepsize from 4.91e-03 to 5.78e-03 at theta = 0.25021
+Decreased stepsize from 5.78e-03 to 5.15e-03 at theta = 0.25021
+Increased stepsize from 5.15e-03 to 6.06e-03 at theta = 0.25021
+Decreased stepsize from 6.06e-03 to 5.40e-03 at theta = 0.25021
+Decreased stepsize from 5.40e-03 to 4.82e-03 at theta = 0.25021
+Increased stepsize from 4.82e-03 to 5.67e-03 at theta = 0.23215
+Decreased stepsize from 5.67e-03 to 4.83e-03 at theta = 0.23215
+Increased stepsize from 4.83e-03 to 5.68e-03 at theta = 0.23015
+Decreased stepsize from 5.68e-03 to 4.84e-03 at theta = 0.23015
+Increased stepsize from 4.84e-03 to 5.70e-03 at theta = 0.20427
+Decreased stepsize from 5.70e-03 to 4.86e-03 at theta = 0.20427
+Increased stepsize from 4.86e-03 to 5.71e-03 at theta = 0.20032
+Decreased stepsize from 5.71e-03 to 4.55e-03 at theta = 0.20032
+Increased stepsize from 4.55e-03 to 5.36e-03 at theta = 0.20032
+Decreased stepsize from 5.36e-03 to 4.57e-03 at theta = 0.20032
+Increased stepsize from 4.57e-03 to 5.37e-03 at theta = 0.19847
+Decreased stepsize from 5.37e-03 to 4.42e-03 at theta = 0.19847
+Decreased stepsize from 4.42e-03 to 3.94e-03 at theta = 0.19667
+Increased stepsize from 3.94e-03 to 4.63e-03 at theta = 0.19508
+Increased stepsize from 4.63e-03 to 5.45e-03 at theta = 0.19321
+Decreased stepsize from 5.45e-03 to 4.86e-03 at theta = 0.19321
+Increased stepsize from 4.86e-03 to 5.71e-03 at theta = 0.19321
+Decreased stepsize from 5.71e-03 to 4.69e-03 at theta = 0.19321
+Increased stepsize from 4.69e-03 to 5.52e-03 at theta = 0.17248
+Decreased stepsize from 5.52e-03 to 4.71e-03 at theta = 0.17248
+Decreased stepsize from 4.71e-03 to 4.20e-03 at theta = 0.16501
+Increased stepsize from 4.20e-03 to 4.94e-03 at theta = 0.16501
+Decreased stepsize from 4.94e-03 to 4.40e-03 at theta = 0.16111
+Increased stepsize from 4.40e-03 to 5.18e-03 at theta = 0.15419
+Decreased stepsize from 5.18e-03 to 4.41e-03 at theta = 0.15419
+Decreased stepsize from 4.41e-03 to 3.93e-03 at theta = 0.15246
+Increased stepsize from 3.93e-03 to 4.63e-03 at theta = 0.15092
+Decreased stepsize from 4.63e-03 to 4.12e-03 at theta = 0.13833
+Increased stepsize from 4.12e-03 to 4.85e-03 at theta = 0.13356
+Decreased stepsize from 4.85e-03 to 4.14e-03 at theta = 0.12983
+Increased stepsize from 4.14e-03 to 4.87e-03 at theta = 0.12983
+Decreased stepsize from 4.87e-03 to 4.34e-03 at theta = 0.12983
+Increased stepsize from 4.34e-03 to 5.10e-03 at theta = 0.12983
+Decreased stepsize from 5.10e-03 to 4.35e-03 at theta = 0.12983
+Increased stepsize from 4.35e-03 to 5.12e-03 at theta = 0.11988
+Decreased stepsize from 5.12e-03 to 4.36e-03 at theta = 0.11988
+Increased stepsize from 4.36e-03 to 5.13e-03 at theta = 0.11658
+Decreased stepsize from 5.13e-03 to 4.22e-03 at theta = 0.11658
+Increased stepsize from 4.22e-03 to 4.96e-03 at theta = 0.11022
+Decreased stepsize from 4.96e-03 to 4.08e-03 at theta = 0.11022
+Increased stepsize from 4.08e-03 to 4.80e-03 at theta = 0.10717
+Decreased stepsize from 4.80e-03 to 4.09e-03 at theta = 0.10717
+Increased stepsize from 4.09e-03 to 4.81e-03 at theta = 0.10717
+Decreased stepsize from 4.81e-03 to 3.95e-03 at theta = 0.10717
+Increased stepsize from 3.95e-03 to 4.65e-03 at theta = 0.10717
+Decreased stepsize from 4.65e-03 to 4.15e-03 at theta = 0.10543
+Increased stepsize from 4.15e-03 to 4.88e-03 at theta = 0.10543
+Decreased stepsize from 4.88e-03 to 4.16e-03 at theta = 0.10361
+Increased stepsize from 4.16e-03 to 4.89e-03 at theta = 0.09590
+Decreased stepsize from 4.89e-03 to 4.17e-03 at theta = 0.09590
+Decreased stepsize from 4.17e-03 to 3.72e-03 at theta = 0.08671
+Increased stepsize from 3.72e-03 to 4.37e-03 at theta = 0.08400
+Decreased stepsize from 4.37e-03 to 3.73e-03 at theta = 0.07451
+Increased stepsize from 3.73e-03 to 4.38e-03 at theta = 0.07451
+Decreased stepsize from 4.38e-03 to 3.91e-03 at theta = 0.06667
+Increased stepsize from 3.91e-03 to 4.60e-03 at theta = 0.06251
+Decreased stepsize from 4.60e-03 to 4.10e-03 at theta = 0.06251
+Increased stepsize from 4.10e-03 to 4.82e-03 at theta = 0.06107
+Decreased stepsize from 4.82e-03 to 3.96e-03 at theta = 0.06107
+Increased stepsize from 3.96e-03 to 4.66e-03 at theta = 0.05135
+Decreased stepsize from 4.66e-03 to 3.97e-03 at theta = 0.05135
+Increased stepsize from 3.97e-03 to 4.67e-03 at theta = 0.04721
+Decreased stepsize from 4.67e-03 to 3.98e-03 at theta = 0.04721
+Increased stepsize from 3.98e-03 to 4.69e-03 at theta = 0.04172
+Decreased stepsize from 4.69e-03 to 3.85e-03 at theta = 0.04172
+Increased stepsize from 3.85e-03 to 4.53e-03 at theta = 0.03515
+Decreased stepsize from 4.53e-03 to 4.04e-03 at theta = 0.03515
+Increased stepsize from 4.04e-03 to 4.75e-03 at theta = 0.02970
+Decreased stepsize from 4.75e-03 to 4.24e-03 at theta = 0.02970
+Decreased stepsize from 4.24e-03 to 3.78e-03 at theta = 0.02827
+Increased stepsize from 3.78e-03 to 4.44e-03 at theta = 0.02701
+Decreased stepsize from 4.44e-03 to 3.79e-03 at theta = 0.02552
+Increased stepsize from 3.79e-03 to 4.45e-03 at theta = 0.02552
+Decreased stepsize from 4.45e-03 to 3.80e-03 at theta = 0.02552
+Increased stepsize from 3.80e-03 to 4.47e-03 at theta = 0.02300
+Decreased stepsize from 4.47e-03 to 3.98e-03 at theta = 0.02300
+Increased stepsize from 3.98e-03 to 4.68e-03 at theta = 0.01904
+Decreased stepsize from 4.68e-03 to 3.99e-03 at theta = 0.01904
+Decreased stepsize from 3.99e-03 to 3.56e-03 at theta = 0.00989
+Increased stepsize from 3.56e-03 to 4.19e-03 at theta = 0.00644
+Theta is getting below zero, decreased stepsize to 2.09e-03 at theta: 1.06696e-03
+Theta is getting below zero, decreased stepsize to 1.05e-03 at theta: 3.99566e-04
+Theta is getting below zero, decreased stepsize to 5.23e-04 at theta: 6.62023e-05
+Theta is getting below zero, decreased stepsize to 2.62e-04 at theta: 6.62023e-05
+Theta is getting below zero, decreased stepsize to 1.31e-04 at theta: 6.62023e-05
+Theta is getting below zero, decreased stepsize to 6.54e-05 at theta: 2.45475e-05
+Theta is getting below zero, decreased stepsize to 3.27e-05 at theta: 3.72142e-06
+Theta is getting below zero, decreased stepsize to 1.64e-05 at theta: 3.72142e-06
+Theta is getting below zero, decreased stepsize to 8.18e-06 at theta: 3.72142e-06
+Theta is getting below zero, decreased stepsize to 4.09e-06 at theta: 1.11822e-06
+Theta is getting below zero, decreased stepsize to 2.04e-06 at theta: 1.11822e-06
+Theta is getting below zero, decreased stepsize to 1.02e-06 at theta: 4.67423e-07
+Theta is getting below zero, decreased stepsize to 5.11e-07 at theta: 1.42024e-07
+Theta is getting below zero, decreased stepsize to 2.56e-07 at theta: 1.42024e-07
+Theta is getting below zero, decreased stepsize to 1.28e-07 at theta: 6.06744e-08
+Theta is getting below zero, decreased stepsize to 6.39e-08 at theta: 1.99996e-08
+Theta is getting below zero, decreased stepsize to 3.19e-08 at theta: 1.99996e-08
+Theta is getting below zero, decreased stepsize to 1.60e-08 at theta: 9.83087e-09
+Theta is getting below zero, decreased stepsize to 7.99e-09 at theta: 4.74652e-09
+Theta is getting below zero, decreased stepsize to 3.99e-09 at theta: 2.20434e-09
+Theta is getting below zero, decreased stepsize to 2.00e-09 at theta: 9.33256e-10
+Theta is getting below zero, decreased stepsize to 9.98e-10 at theta: 2.97712e-10
+Theta is getting below zero, decreased stepsize to 4.99e-10 at theta: 2.97712e-10
+Theta is getting below zero, decreased stepsize to 2.50e-10 at theta: 1.38826e-10
+Theta is getting below zero, decreased stepsize to 1.25e-10 at theta: 5.93833e-11
+Theta is getting below zero, decreased stepsize to 6.24e-11 at theta: 1.96618e-11
+Theta is getting below zero, decreased stepsize to 3.12e-11 at theta: 1.96618e-11
+Theta is getting below zero, decreased stepsize to 1.56e-11 at theta: 9.73142e-12
+Theta is getting below zero, decreased stepsize to 7.80e-12 at theta: 4.76624e-12
+Theta is getting below zero, decreased stepsize to 3.90e-12 at theta: 2.28364e-12
+Theta is getting below zero, decreased stepsize to 1.95e-12 at theta: 1.04234e-12
+Theta is getting below zero, decreased stepsize to 9.75e-13 at theta: 4.21696e-13
+Theta is getting below zero, decreased stepsize to 4.87e-13 at theta: 1.11371e-13
+Theta is getting below zero, decreased stepsize to 2.44e-13 at theta: 1.11371e-13
+Theta is getting below zero, decreased stepsize to 1.22e-13 at theta: 3.37903e-14
+Theta is getting below zero, decreased stepsize to 6.09e-14 at theta: 3.37903e-14
+Theta is getting below zero, decreased stepsize to 3.05e-14 at theta: 1.43951e-14
+Theta is getting below zero, decreased stepsize to 1.52e-14 at theta: 4.69742e-15
+Theta is getting below zero, decreased stepsize to 7.62e-15 at theta: 4.69742e-15
+Theta is getting below zero, decreased stepsize to 3.81e-15 at theta: 2.27301e-15
+Theta is getting below zero, decreased stepsize to 1.90e-15 at theta: 1.06081e-15
+Theta is getting below zero, decreased stepsize to 9.52e-16 at theta: 4.54707e-16
+Theta is getting below zero, decreased stepsize to 4.76e-16 at theta: 1.51656e-16
+Calculation completed with 777.0 iterations in 940.0 steps for n= 1.00
+Increased stepsize from 1.00e-04 to 1.55e-04 at theta = 1.00000
+Increased stepsize from 1.55e-04 to 2.41e-04 at theta = 1.00000
+Increased stepsize from 2.41e-04 to 3.74e-04 at theta = 1.00000
+Increased stepsize from 3.74e-04 to 5.80e-04 at theta = 1.00000
+Increased stepsize from 5.80e-04 to 7.84e-04 at theta = 1.00000
+Increased stepsize from 7.84e-04 to 1.22e-03 at theta = 1.00000
+Increased stepsize from 1.22e-03 to 1.52e-03 at theta = 1.00000
+Increased stepsize from 1.52e-03 to 1.71e-03 at theta = 1.00000
+Increased stepsize from 1.71e-03 to 1.92e-03 at theta = 0.99999
+Increased stepsize from 1.92e-03 to 2.16e-03 at theta = 0.99995
+Increased stepsize from 2.16e-03 to 2.43e-03 at theta = 0.99984
+Increased stepsize from 2.43e-03 to 2.73e-03 at theta = 0.99950
+Increased stepsize from 2.73e-03 to 3.07e-03 at theta = 0.99829
+Increased stepsize from 3.07e-03 to 3.46e-03 at theta = 0.99473
+Increased stepsize from 3.46e-03 to 3.82e-03 at theta = 0.88793
+Increased stepsize from 3.82e-03 to 4.29e-03 at theta = 0.76636
+Increased stepsize from 4.29e-03 to 4.83e-03 at theta = 0.66620
+Increased stepsize from 4.83e-03 to 5.68e-03 at theta = 0.59695
+Decreased stepsize from 5.68e-03 to 4.94e-03 at theta = 0.59695
+Increased stepsize from 4.94e-03 to 5.82e-03 at theta = 0.55449
+Decreased stepsize from 5.82e-03 to 5.18e-03 at theta = 0.54579
+Increased stepsize from 5.18e-03 to 6.10e-03 at theta = 0.54190
+Decreased stepsize from 6.10e-03 to 5.44e-03 at theta = 0.54190
+Increased stepsize from 5.44e-03 to 7.35e-03 at theta = 0.50531
+Decreased stepsize from 7.35e-03 to 5.94e-03 at theta = 0.50531
+Increased stepsize from 5.94e-03 to 6.99e-03 at theta = 0.48095
+Decreased stepsize from 6.99e-03 to 6.09e-03 at theta = 0.48095
+Increased stepsize from 6.09e-03 to 7.16e-03 at theta = 0.47643
+Decreased stepsize from 7.16e-03 to 6.38e-03 at theta = 0.47643
+Increased stepsize from 6.38e-03 to 7.51e-03 at theta = 0.45280
+Decreased stepsize from 7.51e-03 to 6.69e-03 at theta = 0.45280
+Increased stepsize from 6.69e-03 to 7.87e-03 at theta = 0.44049
+Increased stepsize from 7.87e-03 to 9.04e-03 at theta = 0.42033
+Decreased stepsize from 9.04e-03 to 8.06e-03 at theta = 0.34918
+Increased stepsize from 8.06e-03 to 8.90e-03 at theta = 0.34074
+Decreased stepsize from 8.90e-03 to 7.93e-03 at theta = 0.34074
+Increased stepsize from 7.93e-03 to 9.33e-03 at theta = 0.32156
+Decreased stepsize from 9.33e-03 to 7.95e-03 at theta = 0.32156
+Decreased stepsize from 7.95e-03 to 7.09e-03 at theta = 0.31883
+Increased stepsize from 7.09e-03 to 8.34e-03 at theta = 0.31641
+Decreased stepsize from 8.34e-03 to 7.43e-03 at theta = 0.31356
+Increased stepsize from 7.43e-03 to 8.75e-03 at theta = 0.30599
+Decreased stepsize from 8.75e-03 to 7.80e-03 at theta = 0.30008
+Increased stepsize from 7.80e-03 to 9.17e-03 at theta = 0.26394
+Decreased stepsize from 9.17e-03 to 8.17e-03 at theta = 0.26394
+Increased stepsize from 8.17e-03 to 9.39e-03 at theta = 0.26394
+Decreased stepsize from 9.39e-03 to 8.37e-03 at theta = 0.26394
+Decreased stepsize from 8.37e-03 to 7.14e-03 at theta = 0.26122
+Increased stepsize from 7.14e-03 to 8.40e-03 at theta = 0.26122
+Increased stepsize from 8.40e-03 to 9.65e-03 at theta = 0.25309
+Decreased stepsize from 9.65e-03 to 8.22e-03 at theta = 0.25309
+Increased stepsize from 8.22e-03 to 9.67e-03 at theta = 0.23736
+Decreased stepsize from 9.67e-03 to 8.62e-03 at theta = 0.23736
+Decreased stepsize from 8.62e-03 to 7.69e-03 at theta = 0.23736
+Increased stepsize from 7.69e-03 to 9.04e-03 at theta = 0.23493
+Increased stepsize from 9.04e-03 to 1.06e-02 at theta = 0.21244
+Decreased stepsize from 1.06e-02 to 9.07e-03 at theta = 0.19313
+Decreased stepsize from 9.07e-03 to 8.08e-03 at theta = 0.17705
+Increased stepsize from 8.08e-03 to 9.51e-03 at theta = 0.17705
+Decreased stepsize from 9.51e-03 to 8.48e-03 at theta = 0.17705
+Decreased stepsize from 8.48e-03 to 7.56e-03 at theta = 0.16966
+Decreased stepsize from 7.56e-03 to 6.73e-03 at theta = 0.16966
+Increased stepsize from 6.73e-03 to 7.92e-03 at theta = 0.16772
+Decreased stepsize from 7.92e-03 to 7.06e-03 at theta = 0.16090
+Decreased stepsize from 7.06e-03 to 6.30e-03 at theta = 0.16090
+Increased stepsize from 6.30e-03 to 7.41e-03 at theta = 0.15911
+Decreased stepsize from 7.41e-03 to 6.60e-03 at theta = 0.15701
+Increased stepsize from 6.60e-03 to 7.76e-03 at theta = 0.15514
+Decreased stepsize from 7.76e-03 to 6.92e-03 at theta = 0.15295
+Decreased stepsize from 6.92e-03 to 6.17e-03 at theta = 0.14713
+Increased stepsize from 6.17e-03 to 7.26e-03 at theta = 0.14713
+Decreased stepsize from 7.26e-03 to 6.19e-03 at theta = 0.14713
+Increased stepsize from 6.19e-03 to 7.28e-03 at theta = 0.13856
+Decreased stepsize from 7.28e-03 to 5.98e-03 at theta = 0.13856
+Decreased stepsize from 5.98e-03 to 5.33e-03 at theta = 0.12877
+Increased stepsize from 5.33e-03 to 6.27e-03 at theta = 0.12733
+Decreased stepsize from 6.27e-03 to 5.59e-03 at theta = 0.12733
+Increased stepsize from 5.59e-03 to 6.58e-03 at theta = 0.12582
+Decreased stepsize from 6.58e-03 to 5.86e-03 at theta = 0.11878
+Decreased stepsize from 5.86e-03 to 5.23e-03 at theta = 0.10040
+Decreased stepsize from 5.23e-03 to 4.66e-03 at theta = 0.07810
+Decreased stepsize from 4.66e-03 to 4.15e-03 at theta = 0.07695
+Increased stepsize from 4.15e-03 to 4.89e-03 at theta = 0.07695
+Decreased stepsize from 4.89e-03 to 4.36e-03 at theta = 0.07219
+Increased stepsize from 4.36e-03 to 5.12e-03 at theta = 0.07114
+Decreased stepsize from 5.12e-03 to 4.57e-03 at theta = 0.06990
+Decreased stepsize from 4.57e-03 to 4.07e-03 at theta = 0.06770
+Increased stepsize from 4.07e-03 to 4.79e-03 at theta = 0.06770
+Decreased stepsize from 4.79e-03 to 4.27e-03 at theta = 0.06086
+Increased stepsize from 4.27e-03 to 5.02e-03 at theta = 0.05985
+Decreased stepsize from 5.02e-03 to 4.28e-03 at theta = 0.05985
+Decreased stepsize from 4.28e-03 to 3.82e-03 at theta = 0.05086
+Increased stepsize from 3.82e-03 to 4.49e-03 at theta = 0.04998
+Decreased stepsize from 4.49e-03 to 3.83e-03 at theta = 0.04894
+Increased stepsize from 3.83e-03 to 4.50e-03 at theta = 0.04894
+Decreased stepsize from 4.50e-03 to 4.01e-03 at theta = 0.04894
+Decreased stepsize from 4.01e-03 to 3.58e-03 at theta = 0.04894
+Increased stepsize from 3.58e-03 to 4.21e-03 at theta = 0.04894
+Decreased stepsize from 4.21e-03 to 3.75e-03 at theta = 0.04701
+Increased stepsize from 3.75e-03 to 4.41e-03 at theta = 0.04615
+Decreased stepsize from 4.41e-03 to 3.93e-03 at theta = 0.04615
+Increased stepsize from 3.93e-03 to 4.63e-03 at theta = 0.04436
+Decreased stepsize from 4.63e-03 to 3.69e-03 at theta = 0.04436
+Increased stepsize from 3.69e-03 to 4.34e-03 at theta = 0.04101
+Decreased stepsize from 4.34e-03 to 3.70e-03 at theta = 0.04101
+Decreased stepsize from 3.70e-03 to 3.30e-03 at theta = 0.04101
+Increased stepsize from 3.30e-03 to 3.88e-03 at theta = 0.03731
+Decreased stepsize from 3.88e-03 to 3.46e-03 at theta = 0.03731
+Decreased stepsize from 3.46e-03 to 3.08e-03 at theta = 0.02965
+Decreased stepsize from 3.08e-03 to 2.75e-03 at theta = 0.02829
+Increased stepsize from 2.75e-03 to 3.23e-03 at theta = 0.02650
+Decreased stepsize from 3.23e-03 to 2.75e-03 at theta = 0.02509
+Increased stepsize from 2.75e-03 to 3.24e-03 at theta = 0.02509
+Decreased stepsize from 3.24e-03 to 2.89e-03 at theta = 0.02439
+Decreased stepsize from 2.89e-03 to 2.58e-03 at theta = 0.02189
+Decreased stepsize from 2.58e-03 to 2.30e-03 at theta = 0.02134
+Increased stepsize from 2.30e-03 to 2.70e-03 at theta = 0.02134
+Increased stepsize from 2.70e-03 to 3.18e-03 at theta = 0.01960
+Decreased stepsize from 3.18e-03 to 2.53e-03 at theta = 0.01960
+Decreased stepsize from 2.53e-03 to 2.26e-03 at theta = 0.01690
+Increased stepsize from 2.26e-03 to 2.65e-03 at theta = 0.01690
+Decreased stepsize from 2.65e-03 to 2.18e-03 at theta = 0.01690
+Increased stepsize from 2.18e-03 to 2.57e-03 at theta = 0.01551
+Decreased stepsize from 2.57e-03 to 2.29e-03 at theta = 0.01497
+Increased stepsize from 2.29e-03 to 2.69e-03 at theta = 0.01497
+Decreased stepsize from 2.69e-03 to 2.21e-03 at theta = 0.01497
+Increased stepsize from 2.21e-03 to 2.60e-03 at theta = 0.01497
+Decreased stepsize from 2.60e-03 to 2.32e-03 at theta = 0.01497
+Increased stepsize from 2.32e-03 to 2.73e-03 at theta = 0.01448
+Decreased stepsize from 2.73e-03 to 2.24e-03 at theta = 0.01448
+Increased stepsize from 2.24e-03 to 2.64e-03 at theta = 0.01400
+Decreased stepsize from 2.64e-03 to 2.25e-03 at theta = 0.01400
+Decreased stepsize from 2.25e-03 to 1.92e-03 at theta = 0.01211
+Increased stepsize from 1.92e-03 to 2.26e-03 at theta = 0.01130
+Decreased stepsize from 2.26e-03 to 2.01e-03 at theta = 0.01130
+Decreased stepsize from 2.01e-03 to 1.79e-03 at theta = 0.00920
+Decreased stepsize from 1.79e-03 to 1.60e-03 at theta = 0.00771
+Decreased stepsize from 1.60e-03 to 1.42e-03 at theta = 0.00738
+Increased stepsize from 1.42e-03 to 1.68e-03 at theta = 0.00738
+Decreased stepsize from 1.68e-03 to 1.49e-03 at theta = 0.00703
+Increased stepsize from 1.49e-03 to 1.76e-03 at theta = 0.00703
+Decreased stepsize from 1.76e-03 to 1.57e-03 at theta = 0.00703
+Decreased stepsize from 1.57e-03 to 1.40e-03 at theta = 0.00541
+Increased stepsize from 1.40e-03 to 1.64e-03 at theta = 0.00513
+Decreased stepsize from 1.64e-03 to 1.35e-03 at theta = 0.00513
+Decreased stepsize from 1.35e-03 to 1.20e-03 at theta = 0.00402
+Decreased stepsize from 1.20e-03 to 1.07e-03 at theta = 0.00352
+Increased stepsize from 1.07e-03 to 1.26e-03 at theta = 0.00352
+Decreased stepsize from 1.26e-03 to 1.08e-03 at theta = 0.00352
+Decreased stepsize from 1.08e-03 to 9.59e-04 at theta = 0.00352
+Increased stepsize from 9.59e-04 to 1.13e-03 at theta = 0.00352
+Increased stepsize from 1.13e-03 to 1.33e-03 at theta = 0.00329
+Decreased stepsize from 1.33e-03 to 1.13e-03 at theta = 0.00329
+Decreased stepsize from 1.13e-03 to 9.64e-04 at theta = 0.00259
+Decreased stepsize from 9.64e-04 to 8.60e-04 at theta = 0.00200
+Decreased stepsize from 8.60e-04 to 7.66e-04 at theta = 0.00183
+Decreased stepsize from 7.66e-04 to 6.53e-04 at theta = 0.00136
+Decreased stepsize from 6.53e-04 to 5.82e-04 at theta = 0.00109
+Increased stepsize from 5.82e-04 to 6.85e-04 at theta = 0.00109
+Decreased stepsize from 6.85e-04 to 5.84e-04 at theta = 0.00109
+Increased stepsize from 5.84e-04 to 6.87e-04 at theta = 0.00109
+Decreased stepsize from 6.87e-04 to 5.48e-04 at theta = 0.00095
+Decreased stepsize from 5.48e-04 to 4.88e-04 at theta = 0.00062
+Decreased stepsize from 4.88e-04 to 4.01e-04 at theta = 0.00052
+Decreased stepsize from 4.01e-04 to 3.58e-04 at theta = 0.00043
+Decreased stepsize from 3.58e-04 to 2.60e-04 at theta = 0.00022
+Decreased stepsize from 2.60e-04 to 2.22e-04 at theta = 0.00016
+Decreased stepsize from 2.22e-04 to 1.98e-04 at theta = 0.00012
+Decreased stepsize from 1.98e-04 to 1.47e-04 at theta = 0.00008
+Increased stepsize from 1.47e-04 to 1.73e-04 at theta = 0.00008
+Decreased stepsize from 1.73e-04 to 1.38e-04 at theta = 0.00008
+Increased stepsize from 1.38e-04 to 1.62e-04 at theta = 0.00008
+Decreased stepsize from 1.62e-04 to 9.72e-05 at theta = 0.00005
+Increased stepsize from 9.72e-05 to 1.14e-04 at theta = 0.00005
+Decreased stepsize from 1.14e-04 to 4.74e-05 at theta = 0.00002
+Increased stepsize from 4.74e-05 to 5.57e-05 at theta = 0.00002
+Decreased stepsize from 5.57e-05 to 3.30e-05 at theta = 0.00001
+Increased stepsize from 3.30e-05 to 3.88e-05 at theta = 0.00001
+Increased stepsize from 3.88e-05 to 4.56e-05 at theta = 0.00001
+Decreased stepsize from 4.56e-05 to 3.54e-05 at theta = 0.00000
+Decreased stepsize from 3.54e-05 to 2.91e-05 at theta = 0.00000
+Decreased stepsize from 2.91e-05 to 2.48e-05 at theta = 0.00000
+Decreased stepsize from 2.48e-05 to 2.12e-05 at theta = 0.00000
+Decreased stepsize from 2.12e-05 to 1.89e-05 at theta = 0.00000
+Theta is getting below zero, decreased stepsize to 9.43e-06 at theta: 1.25132e-06
+Theta is getting below zero, decreased stepsize to 4.72e-06 at theta: 1.25132e-06
+Theta is getting below zero, decreased stepsize to 2.36e-06 at theta: 2.92442e-07
+Theta is getting below zero, decreased stepsize to 1.18e-06 at theta: 2.92442e-07
+Theta is getting below zero, decreased stepsize to 5.90e-07 at theta: 5.27233e-08
+Theta is getting below zero, decreased stepsize to 2.95e-07 at theta: 5.27233e-08
+Theta is getting below zero, decreased stepsize to 1.47e-07 at theta: 5.27233e-08
+Theta is getting below zero, decreased stepsize to 7.37e-08 at theta: 2.27585e-08
+Theta is getting below zero, decreased stepsize to 3.68e-08 at theta: 7.77605e-09
+Theta is getting below zero, decreased stepsize to 1.84e-08 at theta: 2.84854e-10
+Theta is getting below zero, decreased stepsize to 9.21e-09 at theta: 2.84854e-10
+Theta is getting below zero, decreased stepsize to 4.61e-09 at theta: 2.84854e-10
+Theta is getting below zero, decreased stepsize to 2.30e-09 at theta: 2.84854e-10
+Theta is getting below zero, decreased stepsize to 1.15e-09 at theta: 2.84854e-10
+Theta is getting below zero, decreased stepsize to 5.76e-10 at theta: 5.07544e-11
+Theta is getting below zero, decreased stepsize to 2.88e-10 at theta: 5.07544e-11
+Theta is getting below zero, decreased stepsize to 1.44e-10 at theta: 5.07544e-11
+Theta is getting below zero, decreased stepsize to 7.20e-11 at theta: 2.14919e-11
+Theta is getting below zero, decreased stepsize to 3.60e-11 at theta: 6.86069e-12
+Theta is getting below zero, decreased stepsize to 1.80e-11 at theta: 6.86069e-12
+Theta is getting below zero, decreased stepsize to 9.00e-12 at theta: 3.20288e-12
+Theta is getting below zero, decreased stepsize to 4.50e-12 at theta: 1.37397e-12
+Theta is getting below zero, decreased stepsize to 2.25e-12 at theta: 4.59520e-13
+Theta is getting below zero, decreased stepsize to 1.12e-12 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 5.62e-13 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 2.81e-13 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 1.41e-13 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 7.03e-14 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 3.51e-14 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 1.76e-14 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 8.79e-15 at theta: 2.29331e-15
+Theta is getting below zero, decreased stepsize to 4.39e-15 at theta: 5.07270e-16
+Theta is getting below zero, decreased stepsize to 2.20e-15 at theta: 5.07270e-16
+Theta is getting below zero, decreased stepsize to 1.10e-15 at theta: 6.07600e-17
+Theta is getting below zero, decreased stepsize to 5.49e-16 at theta: 6.07600e-17
+Theta is getting below zero, decreased stepsize to 2.75e-16 at theta: 6.07600e-17
+Calculation completed with 853.0 iterations in 1073.0 steps for n= 1.50
+Increased stepsize from 1.00e-04 to 1.55e-04 at theta = 1.00000
+Increased stepsize from 1.55e-04 to 2.41e-04 at theta = 1.00000
+Increased stepsize from 2.41e-04 to 3.74e-04 at theta = 1.00000
+Increased stepsize from 3.74e-04 to 5.80e-04 at theta = 1.00000
+Increased stepsize from 5.80e-04 to 9.01e-04 at theta = 1.00000
+Increased stepsize from 9.01e-04 to 1.40e-03 at theta = 1.00000
+Increased stepsize from 1.40e-03 to 1.74e-03 at theta = 1.00000
+Increased stepsize from 1.74e-03 to 1.96e-03 at theta = 0.99997
+Increased stepsize from 1.96e-03 to 2.20e-03 at theta = 0.99992
+Increased stepsize from 2.20e-03 to 2.48e-03 at theta = 0.99957
+Increased stepsize from 2.48e-03 to 2.79e-03 at theta = 0.99848
+Increased stepsize from 2.79e-03 to 3.14e-03 at theta = 0.99605
+Increased stepsize from 3.14e-03 to 3.46e-03 at theta = 0.95745
+Increased stepsize from 3.46e-03 to 3.81e-03 at theta = 0.85737
+Increased stepsize from 3.81e-03 to 4.21e-03 at theta = 0.78701
+Increased stepsize from 4.21e-03 to 4.73e-03 at theta = 0.72065
+Increased stepsize from 4.73e-03 to 5.33e-03 at theta = 0.64899
+Increased stepsize from 5.33e-03 to 6.27e-03 at theta = 0.59404
+Decreased stepsize from 6.27e-03 to 5.59e-03 at theta = 0.59404
+Increased stepsize from 5.59e-03 to 6.57e-03 at theta = 0.58105
+Decreased stepsize from 6.57e-03 to 5.86e-03 at theta = 0.57888
+Increased stepsize from 5.86e-03 to 6.89e-03 at theta = 0.56144
+Increased stepsize from 6.89e-03 to 8.10e-03 at theta = 0.50741
+Increased stepsize from 8.10e-03 to 9.53e-03 at theta = 0.48919
+Increased stepsize from 9.53e-03 to 1.23e-02 at theta = 0.47403
+Decreased stepsize from 1.23e-02 to 1.10e-02 at theta = 0.45852
+Decreased stepsize from 1.10e-02 to 9.36e-03 at theta = 0.44824
+Decreased stepsize from 9.36e-03 to 8.34e-03 at theta = 0.42519
+Decreased stepsize from 8.34e-03 to 7.44e-03 at theta = 0.39261
+Increased stepsize from 7.44e-03 to 8.75e-03 at theta = 0.37733
+Decreased stepsize from 8.75e-03 to 7.62e-03 at theta = 0.37733
+Increased stepsize from 7.62e-03 to 8.96e-03 at theta = 0.37071
+Decreased stepsize from 8.96e-03 to 7.99e-03 at theta = 0.37071
+Decreased stepsize from 7.99e-03 to 7.12e-03 at theta = 0.29788
+Increased stepsize from 7.12e-03 to 8.38e-03 at theta = 0.28672
+Decreased stepsize from 8.38e-03 to 7.47e-03 at theta = 0.28672
+Increased stepsize from 7.47e-03 to 8.78e-03 at theta = 0.28672
+Decreased stepsize from 8.78e-03 to 7.49e-03 at theta = 0.28445
+Increased stepsize from 7.49e-03 to 8.81e-03 at theta = 0.27296
+Decreased stepsize from 8.81e-03 to 7.51e-03 at theta = 0.27296
+Increased stepsize from 7.51e-03 to 8.83e-03 at theta = 0.27296
+Decreased stepsize from 8.83e-03 to 7.53e-03 at theta = 0.27073
+Increased stepsize from 7.53e-03 to 8.86e-03 at theta = 0.26883
+Decreased stepsize from 8.86e-03 to 7.55e-03 at theta = 0.26883
+Increased stepsize from 7.55e-03 to 8.88e-03 at theta = 0.26883
+Decreased stepsize from 8.88e-03 to 7.57e-03 at theta = 0.26883
+Increased stepsize from 7.57e-03 to 8.91e-03 at theta = 0.26883
+Decreased stepsize from 8.91e-03 to 7.94e-03 at theta = 0.26659
+Increased stepsize from 7.94e-03 to 9.34e-03 at theta = 0.26262
+Decreased stepsize from 9.34e-03 to 7.96e-03 at theta = 0.26262
+Increased stepsize from 7.96e-03 to 9.37e-03 at theta = 0.26262
+Decreased stepsize from 9.37e-03 to 8.35e-03 at theta = 0.26262
+Increased stepsize from 8.35e-03 to 9.82e-03 at theta = 0.25230
+Decreased stepsize from 9.82e-03 to 8.37e-03 at theta = 0.25230
+Increased stepsize from 8.37e-03 to 9.85e-03 at theta = 0.25230
+Decreased stepsize from 9.85e-03 to 8.10e-03 at theta = 0.25230
+Increased stepsize from 8.10e-03 to 9.52e-03 at theta = 0.23858
+Decreased stepsize from 9.52e-03 to 8.12e-03 at theta = 0.23858
+Increased stepsize from 8.12e-03 to 9.55e-03 at theta = 0.22705
+Decreased stepsize from 9.55e-03 to 8.51e-03 at theta = 0.22259
+Increased stepsize from 8.51e-03 to 1.00e-02 at theta = 0.21865
+Decreased stepsize from 1.00e-02 to 8.54e-03 at theta = 0.21865
+Increased stepsize from 8.54e-03 to 1.00e-02 at theta = 0.20697
+Increased stepsize from 1.00e-02 to 1.18e-02 at theta = 0.20246
+Decreased stepsize from 1.18e-02 to 9.71e-03 at theta = 0.20246
+Increased stepsize from 9.71e-03 to 1.14e-02 at theta = 0.20030
+Decreased stepsize from 1.14e-02 to 1.02e-02 at theta = 0.20030
+Decreased stepsize from 1.02e-02 to 9.08e-03 at theta = 0.19804
+Increased stepsize from 9.08e-03 to 1.07e-02 at theta = 0.19804
+Decreased stepsize from 1.07e-02 to 9.52e-03 at theta = 0.19804
+Increased stepsize from 9.52e-03 to 1.12e-02 at theta = 0.19804
+Decreased stepsize from 1.12e-02 to 9.54e-03 at theta = 0.19804
+Increased stepsize from 9.54e-03 to 1.12e-02 at theta = 0.19174
+Decreased stepsize from 1.12e-02 to 9.57e-03 at theta = 0.19174
+Increased stepsize from 9.57e-03 to 1.13e-02 at theta = 0.19174
+Decreased stepsize from 1.13e-02 to 1.00e-02 at theta = 0.18928
+Increased stepsize from 1.00e-02 to 1.18e-02 at theta = 0.18063
+Decreased stepsize from 1.18e-02 to 1.01e-02 at theta = 0.18063
+Increased stepsize from 1.01e-02 to 1.18e-02 at theta = 0.18063
+Decreased stepsize from 1.18e-02 to 1.06e-02 at theta = 0.18063
+Increased stepsize from 1.06e-02 to 1.21e-02 at theta = 0.17838
+Decreased stepsize from 1.21e-02 to 1.08e-02 at theta = 0.17838
+Increased stepsize from 1.08e-02 to 1.24e-02 at theta = 0.16259
+Decreased stepsize from 1.24e-02 to 1.02e-02 at theta = 0.11451
+Increased stepsize from 1.02e-02 to 1.20e-02 at theta = 0.10351
+Decreased stepsize from 1.20e-02 to 1.07e-02 at theta = 0.10351
+Decreased stepsize from 1.07e-02 to 9.54e-03 at theta = 0.07970
+Decreased stepsize from 9.54e-03 to 8.50e-03 at theta = 0.07813
+Increased stepsize from 8.50e-03 to 1.00e-02 at theta = 0.07813
+Decreased stepsize from 1.00e-02 to 8.92e-03 at theta = 0.07322
+Increased stepsize from 8.92e-03 to 1.05e-02 at theta = 0.06607
+Increased stepsize from 1.05e-02 to 1.23e-02 at theta = 0.06111
+Decreased stepsize from 1.23e-02 to 1.05e-02 at theta = 0.06111
+Increased stepsize from 1.05e-02 to 1.24e-02 at theta = 0.05784
+Decreased stepsize from 1.24e-02 to 1.05e-02 at theta = 0.05784
+Increased stepsize from 1.05e-02 to 1.24e-02 at theta = 0.05784
+Decreased stepsize from 1.24e-02 to 9.89e-03 at theta = 0.05784
+Increased stepsize from 9.89e-03 to 1.16e-02 at theta = 0.04582
+Decreased stepsize from 1.16e-02 to 1.04e-02 at theta = 0.04238
+Increased stepsize from 1.04e-02 to 1.22e-02 at theta = 0.03187
+Decreased stepsize from 1.22e-02 to 1.09e-02 at theta = 0.03187
+Increased stepsize from 1.09e-02 to 1.28e-02 at theta = 0.03187
+Decreased stepsize from 1.28e-02 to 1.09e-02 at theta = 0.03006
+Increased stepsize from 1.09e-02 to 1.28e-02 at theta = 0.02852
+Decreased stepsize from 1.28e-02 to 1.14e-02 at theta = 0.02852
+Increased stepsize from 1.14e-02 to 1.34e-02 at theta = 0.02374
+Decreased stepsize from 1.34e-02 to 1.20e-02 at theta = 0.02374
+Increased stepsize from 1.20e-02 to 1.41e-02 at theta = 0.01718
+Decreased stepsize from 1.41e-02 to 1.26e-02 at theta = 0.01718
+Increased stepsize from 1.26e-02 to 1.48e-02 at theta = 0.01718
+Decreased stepsize from 1.48e-02 to 1.26e-02 at theta = 0.01718
+Decreased stepsize from 1.26e-02 to 1.12e-02 at theta = 0.01718
+Increased stepsize from 1.12e-02 to 1.32e-02 at theta = 0.01718
+Increased stepsize from 1.32e-02 to 1.55e-02 at theta = 0.01011
+Decreased stepsize from 1.55e-02 to 1.39e-02 at theta = 0.01011
+Increased stepsize from 1.39e-02 to 1.63e-02 at theta = 0.00289
+Increased stepsize from 1.63e-02 to 1.86e-02 at theta = 0.00289
+Decreased stepsize from 1.86e-02 to 1.66e-02 at theta = 0.00289
+Theta is getting below zero, decreased stepsize to 8.29e-03 at theta: 7.69447e-04
+Theta is getting below zero, decreased stepsize to 4.14e-03 at theta: 7.69447e-04
+Theta is getting below zero, decreased stepsize to 2.07e-03 at theta: 2.41237e-04
+Theta is getting below zero, decreased stepsize to 1.04e-03 at theta: 2.41237e-04
+Theta is getting below zero, decreased stepsize to 5.18e-04 at theta: 1.09342e-04
+Theta is getting below zero, decreased stepsize to 2.59e-04 at theta: 4.34178e-05
+Theta is getting below zero, decreased stepsize to 1.29e-04 at theta: 1.04616e-05
+Theta is getting below zero, decreased stepsize to 6.47e-05 at theta: 1.04616e-05
+Theta is getting below zero, decreased stepsize to 3.24e-05 at theta: 2.22314e-06
+Theta is getting below zero, decreased stepsize to 1.62e-05 at theta: 2.22314e-06
+Theta is getting below zero, decreased stepsize to 8.09e-06 at theta: 1.63574e-07
+Theta is getting below zero, decreased stepsize to 4.05e-06 at theta: 1.63574e-07
+Theta is getting below zero, decreased stepsize to 2.02e-06 at theta: 1.63574e-07
+Theta is getting below zero, decreased stepsize to 1.01e-06 at theta: 1.63574e-07
+Theta is getting below zero, decreased stepsize to 5.06e-07 at theta: 3.48516e-08
+Theta is getting below zero, decreased stepsize to 2.53e-07 at theta: 3.48516e-08
+Theta is getting below zero, decreased stepsize to 1.26e-07 at theta: 2.67091e-09
+Theta is getting below zero, decreased stepsize to 6.32e-08 at theta: 2.67091e-09
+Theta is getting below zero, decreased stepsize to 3.16e-08 at theta: 2.67091e-09
+Theta is getting below zero, decreased stepsize to 1.58e-08 at theta: 2.67091e-09
+Theta is getting below zero, decreased stepsize to 7.90e-09 at theta: 6.59618e-10
+Theta is getting below zero, decreased stepsize to 3.95e-09 at theta: 6.59618e-10
+Theta is getting below zero, decreased stepsize to 1.98e-09 at theta: 1.56795e-10
+Theta is getting below zero, decreased stepsize to 9.88e-10 at theta: 1.56795e-10
+Theta is getting below zero, decreased stepsize to 4.94e-10 at theta: 3.10895e-11
+Theta is getting below zero, decreased stepsize to 2.47e-10 at theta: 3.10895e-11
+Theta is getting below zero, decreased stepsize to 1.23e-10 at theta: 3.10895e-11
+Theta is getting below zero, decreased stepsize to 6.17e-11 at theta: 1.53763e-11
+Theta is getting below zero, decreased stepsize to 3.09e-11 at theta: 7.51968e-12
+Theta is getting below zero, decreased stepsize to 1.54e-11 at theta: 3.59137e-12
+Theta is getting below zero, decreased stepsize to 7.72e-12 at theta: 1.62722e-12
+Theta is getting below zero, decreased stepsize to 3.86e-12 at theta: 6.45148e-13
+Theta is getting below zero, decreased stepsize to 1.93e-12 at theta: 1.54110e-13
+Theta is getting below zero, decreased stepsize to 9.65e-13 at theta: 1.54110e-13
+Theta is getting below zero, decreased stepsize to 4.82e-13 at theta: 3.13507e-14
+Theta is getting below zero, decreased stepsize to 2.41e-13 at theta: 3.13507e-14
+Theta is getting below zero, decreased stepsize to 1.21e-13 at theta: 6.60863e-16
+Theta is getting below zero, decreased stepsize to 6.03e-14 at theta: 6.60863e-16
+Theta is getting below zero, decreased stepsize to 3.01e-14 at theta: 6.60863e-16
+Theta is getting below zero, decreased stepsize to 1.51e-14 at theta: 6.60863e-16
+Theta is getting below zero, decreased stepsize to 7.54e-15 at theta: 6.60863e-16
+Theta is getting below zero, decreased stepsize to 3.77e-15 at theta: 6.60863e-16
+Theta is getting below zero, decreased stepsize to 1.88e-15 at theta: 1.81334e-16
+Theta is getting below zero, decreased stepsize to 9.42e-16 at theta: 1.81334e-16
+Theta is getting below zero, decreased stepsize to 4.71e-16 at theta: 6.14515e-17
+Calculation completed with 804.0 iterations in 967.0 steps for n= 2.00
+Increased stepsize from 1.00e-04 to 1.55e-04 at theta = 1.00000
+Increased stepsize from 1.55e-04 to 2.41e-04 at theta = 1.00000
+Increased stepsize from 2.41e-04 to 3.74e-04 at theta = 1.00000
+Increased stepsize from 3.74e-04 to 5.05e-04 at theta = 1.00000
+Increased stepsize from 5.05e-04 to 7.84e-04 at theta = 1.00000
+Increased stepsize from 7.84e-04 to 1.22e-03 at theta = 1.00000
+Increased stepsize from 1.22e-03 to 1.43e-03 at theta = 1.00000
+Increased stepsize from 1.43e-03 to 1.61e-03 at theta = 0.99999
+Increased stepsize from 1.61e-03 to 1.89e-03 at theta = 0.99996
+Increased stepsize from 1.89e-03 to 2.13e-03 at theta = 0.99977
+Increased stepsize from 2.13e-03 to 2.40e-03 at theta = 0.99946
+Increased stepsize from 2.40e-03 to 2.70e-03 at theta = 0.99801
+Increased stepsize from 2.70e-03 to 3.03e-03 at theta = 0.99542
+Increased stepsize from 3.03e-03 to 3.36e-03 at theta = 0.94034
+Increased stepsize from 3.36e-03 to 3.71e-03 at theta = 0.88180
+Increased stepsize from 3.71e-03 to 4.10e-03 at theta = 0.83642
+Increased stepsize from 4.10e-03 to 4.61e-03 at theta = 0.78254
+Increased stepsize from 4.61e-03 to 5.18e-03 at theta = 0.74419
+Increased stepsize from 5.18e-03 to 5.83e-03 at theta = 0.70358
+Increased stepsize from 5.83e-03 to 6.56e-03 at theta = 0.67270
+Increased stepsize from 6.56e-03 to 7.38e-03 at theta = 0.63481
+Increased stepsize from 7.38e-03 to 8.68e-03 at theta = 0.62679
+Increased stepsize from 8.68e-03 to 9.77e-03 at theta = 0.61043
+Increased stepsize from 9.77e-03 to 1.10e-02 at theta = 0.59742
+Decreased stepsize from 1.10e-02 to 9.79e-03 at theta = 0.58584
+Decreased stepsize from 9.79e-03 to 8.73e-03 at theta = 0.57562
+Decreased stepsize from 8.73e-03 to 7.60e-03 at theta = 0.54439
+Increased stepsize from 7.60e-03 to 8.94e-03 at theta = 0.38340
+Decreased stepsize from 8.94e-03 to 7.97e-03 at theta = 0.37822
+Increased stepsize from 7.97e-03 to 9.38e-03 at theta = 0.36023
+Decreased stepsize from 9.38e-03 to 8.16e-03 at theta = 0.35507
+Increased stepsize from 8.16e-03 to 9.60e-03 at theta = 0.34477
+Decreased stepsize from 9.60e-03 to 8.36e-03 at theta = 0.34477
+Increased stepsize from 8.36e-03 to 9.83e-03 at theta = 0.34181
+Decreased stepsize from 9.83e-03 to 8.77e-03 at theta = 0.34181
+Increased stepsize from 8.77e-03 to 1.03e-02 at theta = 0.31337
+Decreased stepsize from 1.03e-02 to 9.19e-03 at theta = 0.31337
+Increased stepsize from 9.19e-03 to 1.08e-02 at theta = 0.28565
+Increased stepsize from 1.08e-02 to 1.27e-02 at theta = 0.22531
+Increased stepsize from 1.27e-02 to 1.40e-02 at theta = 0.19324
+Increased stepsize from 1.40e-02 to 1.55e-02 at theta = 0.15759
+Increased stepsize from 1.55e-02 to 1.73e-02 at theta = 0.11074
+Decreased stepsize from 1.73e-02 to 1.54e-02 at theta = 0.08974
+Increased stepsize from 1.54e-02 to 1.81e-02 at theta = 0.08974
+Decreased stepsize from 1.81e-02 to 1.61e-02 at theta = 0.08331
+Increased stepsize from 1.61e-02 to 1.87e-02 at theta = 0.08219
+Decreased stepsize from 1.87e-02 to 1.60e-02 at theta = 0.08219
+Increased stepsize from 1.60e-02 to 1.87e-02 at theta = 0.08219
+Decreased stepsize from 1.87e-02 to 1.67e-02 at theta = 0.07961
+Increased stepsize from 1.67e-02 to 1.91e-02 at theta = 0.07399
+Decreased stepsize from 1.91e-02 to 1.71e-02 at theta = 0.07272
+Increased stepsize from 1.71e-02 to 1.94e-02 at theta = 0.07048
+Decreased stepsize from 1.94e-02 to 1.73e-02 at theta = 0.06673
+Increased stepsize from 1.73e-02 to 1.97e-02 at theta = 0.06453
+Decreased stepsize from 1.97e-02 to 1.76e-02 at theta = 0.06453
+Increased stepsize from 1.76e-02 to 2.05e-02 at theta = 0.05480
+Decreased stepsize from 2.05e-02 to 1.82e-02 at theta = 0.05480
+Decreased stepsize from 1.82e-02 to 1.63e-02 at theta = 0.05480
+Increased stepsize from 1.63e-02 to 1.91e-02 at theta = 0.05480
+Decreased stepsize from 1.91e-02 to 1.70e-02 at theta = 0.05480
+Increased stepsize from 1.70e-02 to 2.01e-02 at theta = 0.05378
+Decreased stepsize from 2.01e-02 to 1.71e-02 at theta = 0.05378
+Increased stepsize from 1.71e-02 to 2.01e-02 at theta = 0.05378
+Decreased stepsize from 2.01e-02 to 1.79e-02 at theta = 0.05378
+Decreased stepsize from 1.79e-02 to 1.60e-02 at theta = 0.05272
+Increased stepsize from 1.60e-02 to 1.88e-02 at theta = 0.05272
+Decreased stepsize from 1.88e-02 to 1.68e-02 at theta = 0.04834
+Increased stepsize from 1.68e-02 to 1.97e-02 at theta = 0.04737
+Decreased stepsize from 1.97e-02 to 1.68e-02 at theta = 0.04737
+Increased stepsize from 1.68e-02 to 1.98e-02 at theta = 0.04737
+Decreased stepsize from 1.98e-02 to 1.76e-02 at theta = 0.04737
+Increased stepsize from 1.76e-02 to 2.07e-02 at theta = 0.04637
+Decreased stepsize from 2.07e-02 to 1.85e-02 at theta = 0.04637
+Decreased stepsize from 1.85e-02 to 1.65e-02 at theta = 0.04428
+Increased stepsize from 1.65e-02 to 1.94e-02 at theta = 0.04244
+Decreased stepsize from 1.94e-02 to 1.73e-02 at theta = 0.04136
+Increased stepsize from 1.73e-02 to 2.03e-02 at theta = 0.03946
+Decreased stepsize from 2.03e-02 to 1.81e-02 at theta = 0.03946
+Increased stepsize from 1.81e-02 to 2.13e-02 at theta = 0.03750
+Decreased stepsize from 2.13e-02 to 1.75e-02 at theta = 0.03750
+Increased stepsize from 1.75e-02 to 2.06e-02 at theta = 0.03656
+Decreased stepsize from 2.06e-02 to 1.84e-02 at theta = 0.03656
+Increased stepsize from 1.84e-02 to 2.16e-02 at theta = 0.03362
+Decreased stepsize from 2.16e-02 to 1.72e-02 at theta = 0.03362
+Increased stepsize from 1.72e-02 to 2.02e-02 at theta = 0.03272
+Decreased stepsize from 2.02e-02 to 1.73e-02 at theta = 0.03272
+Increased stepsize from 1.73e-02 to 2.03e-02 at theta = 0.03272
+Decreased stepsize from 2.03e-02 to 1.81e-02 at theta = 0.03166
+Increased stepsize from 1.81e-02 to 2.13e-02 at theta = 0.02978
+Decreased stepsize from 2.13e-02 to 1.90e-02 at theta = 0.02978
+Decreased stepsize from 1.90e-02 to 1.69e-02 at theta = 0.02881
+Increased stepsize from 1.69e-02 to 1.99e-02 at theta = 0.02794
+Decreased stepsize from 1.99e-02 to 1.77e-02 at theta = 0.02794
+Increased stepsize from 1.77e-02 to 2.09e-02 at theta = 0.02794
+Decreased stepsize from 2.09e-02 to 1.78e-02 at theta = 0.02794
+Increased stepsize from 1.78e-02 to 2.09e-02 at theta = 0.02348
+Decreased stepsize from 2.09e-02 to 1.87e-02 at theta = 0.02245
+Increased stepsize from 1.87e-02 to 2.19e-02 at theta = 0.02153
+Decreased stepsize from 2.19e-02 to 1.87e-02 at theta = 0.02153
+Increased stepsize from 1.87e-02 to 2.20e-02 at theta = 0.02062
+Decreased stepsize from 2.20e-02 to 1.88e-02 at theta = 0.02062
+Increased stepsize from 1.88e-02 to 2.21e-02 at theta = 0.01524
+Decreased stepsize from 2.21e-02 to 1.88e-02 at theta = 0.01524
+Increased stepsize from 1.88e-02 to 2.21e-02 at theta = 0.01348
+Decreased stepsize from 2.21e-02 to 1.97e-02 at theta = 0.01348
+Decreased stepsize from 1.97e-02 to 1.76e-02 at theta = 0.01348
+Increased stepsize from 1.76e-02 to 2.07e-02 at theta = 0.01105
+Decreased stepsize from 2.07e-02 to 1.84e-02 at theta = 0.01105
+Increased stepsize from 1.84e-02 to 2.17e-02 at theta = 0.01021
+Decreased stepsize from 2.17e-02 to 1.93e-02 at theta = 0.01021
+Decreased stepsize from 1.93e-02 to 1.72e-02 at theta = 0.01021
+Increased stepsize from 1.72e-02 to 2.03e-02 at theta = 0.01021
+Decreased stepsize from 2.03e-02 to 1.81e-02 at theta = 0.01021
+Increased stepsize from 1.81e-02 to 2.13e-02 at theta = 0.00777
+Decreased stepsize from 2.13e-02 to 1.90e-02 at theta = 0.00777
+Increased stepsize from 1.90e-02 to 2.23e-02 at theta = 0.00608
+Decreased stepsize from 2.23e-02 to 1.90e-02 at theta = 0.00608
+Increased stepsize from 1.90e-02 to 2.24e-02 at theta = 0.00608
+Decreased stepsize from 2.24e-02 to 1.84e-02 at theta = 0.00608
+Increased stepsize from 1.84e-02 to 2.16e-02 at theta = 0.00527
+Decreased stepsize from 2.16e-02 to 1.93e-02 at theta = 0.00527
+Decreased stepsize from 1.93e-02 to 1.72e-02 at theta = 0.00192
+Increased stepsize from 1.72e-02 to 2.02e-02 at theta = 0.00119
+Theta is getting below zero, decreased stepsize to 1.01e-02 at theta: 3.25465e-04
+Theta is getting below zero, decreased stepsize to 5.05e-03 at theta: 3.25465e-04
+Theta is getting below zero, decreased stepsize to 2.53e-03 at theta: 1.10841e-04
+Theta is getting below zero, decreased stepsize to 1.26e-03 at theta: 3.64732e-06
+Theta is getting below zero, decreased stepsize to 6.31e-04 at theta: 3.64732e-06
+Theta is getting below zero, decreased stepsize to 3.16e-04 at theta: 3.64732e-06
+Theta is getting below zero, decreased stepsize to 1.58e-04 at theta: 3.64732e-06
+Theta is getting below zero, decreased stepsize to 7.89e-05 at theta: 3.64732e-06
+Theta is getting below zero, decreased stepsize to 3.95e-05 at theta: 2.98779e-07
+Theta is getting below zero, decreased stepsize to 1.97e-05 at theta: 2.98779e-07
+Theta is getting below zero, decreased stepsize to 9.86e-06 at theta: 2.98779e-07
+Theta is getting below zero, decreased stepsize to 4.93e-06 at theta: 2.98779e-07
+Theta is getting below zero, decreased stepsize to 2.47e-06 at theta: 8.94977e-08
+Theta is getting below zero, decreased stepsize to 1.23e-06 at theta: 8.94977e-08
+Theta is getting below zero, decreased stepsize to 6.17e-07 at theta: 3.71774e-08
+Theta is getting below zero, decreased stepsize to 3.08e-07 at theta: 1.10172e-08
+Theta is getting below zero, decreased stepsize to 1.54e-07 at theta: 1.10172e-08
+Theta is getting below zero, decreased stepsize to 7.71e-08 at theta: 4.47721e-09
+Theta is getting below zero, decreased stepsize to 3.85e-08 at theta: 1.20720e-09
+Theta is getting below zero, decreased stepsize to 1.93e-08 at theta: 1.20720e-09
+Theta is getting below zero, decreased stepsize to 9.63e-09 at theta: 3.89692e-10
+Theta is getting below zero, decreased stepsize to 4.82e-09 at theta: 3.89692e-10
+Theta is getting below zero, decreased stepsize to 2.41e-09 at theta: 1.85316e-10
+Theta is getting below zero, decreased stepsize to 1.20e-09 at theta: 8.31276e-11
+Theta is getting below zero, decreased stepsize to 6.02e-10 at theta: 3.20336e-11
+Theta is getting below zero, decreased stepsize to 3.01e-10 at theta: 6.48663e-12
+Theta is getting below zero, decreased stepsize to 1.51e-10 at theta: 6.48663e-12
+Theta is getting below zero, decreased stepsize to 7.53e-11 at theta: 9.98828e-14
+Theta is getting below zero, decreased stepsize to 3.76e-11 at theta: 9.98828e-14
+Theta is getting below zero, decreased stepsize to 1.88e-11 at theta: 9.98828e-14
+Theta is getting below zero, decreased stepsize to 9.41e-12 at theta: 9.98828e-14
+Theta is getting below zero, decreased stepsize to 4.70e-12 at theta: 9.98828e-14
+Theta is getting below zero, decreased stepsize to 2.35e-12 at theta: 9.98828e-14
+Theta is getting below zero, decreased stepsize to 1.18e-12 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 5.88e-13 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 2.94e-13 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 1.47e-13 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 7.35e-14 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 3.67e-14 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 1.84e-14 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 9.19e-15 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 4.59e-15 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 2.30e-15 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 1.15e-15 at theta: 8.98085e-17
+Theta is getting below zero, decreased stepsize to 5.74e-16 at theta: 4.10814e-17
+Theta is getting below zero, decreased stepsize to 2.87e-16 at theta: 1.67179e-17
+Calculation completed with 944.0 iterations in 1113.0 steps for n= 3.00
+Increased stepsize from 1.00e-04 to 1.55e-04 at theta = 1.00000
+Increased stepsize from 1.55e-04 to 2.41e-04 at theta = 1.00000
+Increased stepsize from 2.41e-04 to 3.74e-04 at theta = 1.00000
+Increased stepsize from 3.74e-04 to 5.80e-04 at theta = 1.00000
+Increased stepsize from 5.80e-04 to 9.01e-04 at theta = 1.00000
+Increased stepsize from 9.01e-04 to 1.22e-03 at theta = 1.00000
+Increased stepsize from 1.22e-03 to 1.37e-03 at theta = 1.00000
+Increased stepsize from 1.37e-03 to 1.54e-03 at theta = 0.99999
+Increased stepsize from 1.54e-03 to 1.73e-03 at theta = 0.99996
+Increased stepsize from 1.73e-03 to 1.95e-03 at theta = 0.99990
+Increased stepsize from 1.95e-03 to 2.19e-03 at theta = 0.99948
+Increased stepsize from 2.19e-03 to 2.47e-03 at theta = 0.99856
+Increased stepsize from 2.47e-03 to 2.77e-03 at theta = 0.99538
+Increased stepsize from 2.77e-03 to 3.06e-03 at theta = 0.97239
+Increased stepsize from 3.06e-03 to 3.37e-03 at theta = 0.93006
+Increased stepsize from 3.37e-03 to 3.76e-03 at theta = 0.89055
+Increased stepsize from 3.76e-03 to 4.15e-03 at theta = 0.85105
+Increased stepsize from 4.15e-03 to 4.58e-03 at theta = 0.81919
+Increased stepsize from 4.58e-03 to 5.05e-03 at theta = 0.78556
+Increased stepsize from 5.05e-03 to 5.68e-03 at theta = 0.76071
+Increased stepsize from 5.68e-03 to 6.39e-03 at theta = 0.73846
+Increased stepsize from 6.39e-03 to 7.19e-03 at theta = 0.72293
+Increased stepsize from 7.19e-03 to 8.46e-03 at theta = 0.70051
+Increased stepsize from 8.46e-03 to 9.51e-03 at theta = 0.67858
+Decreased stepsize from 9.51e-03 to 8.48e-03 at theta = 0.65881
+Decreased stepsize from 8.48e-03 to 7.56e-03 at theta = 0.62097
+Increased stepsize from 7.56e-03 to 8.89e-03 at theta = 0.51038
+Decreased stepsize from 8.89e-03 to 7.74e-03 at theta = 0.50723
+Increased stepsize from 7.74e-03 to 9.11e-03 at theta = 0.49912
+Decreased stepsize from 9.11e-03 to 7.93e-03 at theta = 0.49912
+Increased stepsize from 7.93e-03 to 9.33e-03 at theta = 0.48961
+Decreased stepsize from 9.33e-03 to 8.12e-03 at theta = 0.48961
+Increased stepsize from 8.12e-03 to 9.55e-03 at theta = 0.48824
+Decreased stepsize from 9.55e-03 to 8.14e-03 at theta = 0.48824
+Increased stepsize from 8.14e-03 to 9.58e-03 at theta = 0.45025
+Decreased stepsize from 9.58e-03 to 8.54e-03 at theta = 0.44878
+Increased stepsize from 8.54e-03 to 1.00e-02 at theta = 0.43598
+Decreased stepsize from 1.00e-02 to 8.95e-03 at theta = 0.43304
+Increased stepsize from 8.95e-03 to 1.05e-02 at theta = 0.41273
+Decreased stepsize from 1.05e-02 to 9.39e-03 at theta = 0.41273
+Increased stepsize from 9.39e-03 to 1.10e-02 at theta = 0.41015
+Decreased stepsize from 1.10e-02 to 9.62e-03 at theta = 0.41015
+Increased stepsize from 9.62e-03 to 1.13e-02 at theta = 0.38735
+Decreased stepsize from 1.13e-02 to 1.01e-02 at theta = 0.38735
+Increased stepsize from 1.01e-02 to 1.36e-02 at theta = 0.36277
+Decreased stepsize from 1.36e-02 to 1.06e-02 at theta = 0.36277
+Increased stepsize from 1.06e-02 to 1.24e-02 at theta = 0.34597
+Decreased stepsize from 1.24e-02 to 1.11e-02 at theta = 0.34055
+Increased stepsize from 1.11e-02 to 1.30e-02 at theta = 0.33581
+Decreased stepsize from 1.30e-02 to 1.14e-02 at theta = 0.33581
+Increased stepsize from 1.14e-02 to 1.34e-02 at theta = 0.33104
+Decreased stepsize from 1.34e-02 to 1.16e-02 at theta = 0.33104
+Increased stepsize from 1.16e-02 to 1.45e-02 at theta = 0.31126
+Decreased stepsize from 1.45e-02 to 1.26e-02 at theta = 0.31126
+Increased stepsize from 1.26e-02 to 1.48e-02 at theta = 0.29485
+Increased stepsize from 1.48e-02 to 1.75e-02 at theta = 0.25808
+Decreased stepsize from 1.75e-02 to 1.52e-02 at theta = 0.25808
+Increased stepsize from 1.52e-02 to 1.71e-02 at theta = 0.25465
+Increased stepsize from 1.71e-02 to 1.92e-02 at theta = 0.22509
+Increased stepsize from 1.92e-02 to 2.12e-02 at theta = 0.19562
+Increased stepsize from 2.12e-02 to 2.36e-02 at theta = 0.17312
+Increased stepsize from 2.36e-02 to 2.61e-02 at theta = 0.14859
+Increased stepsize from 2.61e-02 to 2.88e-02 at theta = 0.12665
+Increased stepsize from 2.88e-02 to 3.22e-02 at theta = 0.10701
+Increased stepsize from 3.22e-02 to 3.59e-02 at theta = 0.08761
+Increased stepsize from 3.59e-02 to 4.22e-02 at theta = 0.05871
+Increased stepsize from 4.22e-02 to 4.97e-02 at theta = 0.03871
+Decreased stepsize from 4.97e-02 to 4.33e-02 at theta = 0.03871
+Increased stepsize from 4.33e-02 to 5.17e-02 at theta = 0.03573
+Decreased stepsize from 5.17e-02 to 4.61e-02 at theta = 0.03299
+Increased stepsize from 4.61e-02 to 5.69e-02 at theta = 0.02447
+Decreased stepsize from 5.69e-02 to 4.95e-02 at theta = 0.02447
+Increased stepsize from 4.95e-02 to 5.82e-02 at theta = 0.01894
+Increased stepsize from 5.82e-02 to 6.77e-02 at theta = 0.00538
+Theta is getting below zero, decreased stepsize to 3.39e-02 at theta: 2.62604e-04
+Theta is getting below zero, decreased stepsize to 1.69e-02 at theta: 2.62604e-04
+Theta is getting below zero, decreased stepsize to 8.47e-03 at theta: 1.26377e-04
+Theta is getting below zero, decreased stepsize to 4.23e-03 at theta: 5.83794e-05
+Theta is getting below zero, decreased stepsize to 2.12e-03 at theta: 2.44093e-05
+Theta is getting below zero, decreased stepsize to 1.06e-03 at theta: 7.43145e-06
+Theta is getting below zero, decreased stepsize to 5.29e-04 at theta: 7.43145e-06
+Theta is getting below zero, decreased stepsize to 2.65e-04 at theta: 3.18774e-06
+Theta is getting below zero, decreased stepsize to 1.32e-04 at theta: 1.06600e-06
+Theta is getting below zero, decreased stepsize to 6.62e-05 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 3.31e-05 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 1.65e-05 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 8.27e-06 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 4.13e-06 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 2.07e-06 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 1.03e-06 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 5.17e-07 at theta: 5.15996e-09
+Theta is getting below zero, decreased stepsize to 2.58e-07 at theta: 1.01608e-09
+Theta is getting below zero, decreased stepsize to 1.29e-07 at theta: 1.01608e-09
+Theta is getting below zero, decreased stepsize to 6.46e-08 at theta: 1.01608e-09
+Theta is getting below zero, decreased stepsize to 3.23e-08 at theta: 4.98092e-10
+Theta is getting below zero, decreased stepsize to 1.62e-08 at theta: 2.39099e-10
+Theta is getting below zero, decreased stepsize to 8.08e-09 at theta: 1.09603e-10
+Theta is getting below zero, decreased stepsize to 4.04e-09 at theta: 4.48551e-11
+Theta is getting below zero, decreased stepsize to 2.02e-09 at theta: 1.24810e-11
+Theta is getting below zero, decreased stepsize to 1.01e-09 at theta: 1.24810e-11
+Theta is getting below zero, decreased stepsize to 5.05e-10 at theta: 4.38749e-12
+Theta is getting below zero, decreased stepsize to 2.52e-10 at theta: 3.40733e-13
+Theta is getting below zero, decreased stepsize to 1.26e-10 at theta: 3.40733e-13
+Theta is getting below zero, decreased stepsize to 6.31e-11 at theta: 3.40733e-13
+Theta is getting below zero, decreased stepsize to 3.15e-11 at theta: 3.40733e-13
+Theta is getting below zero, decreased stepsize to 1.58e-11 at theta: 8.78109e-14
+Theta is getting below zero, decreased stepsize to 7.89e-12 at theta: 8.78109e-14
+Theta is getting below zero, decreased stepsize to 3.94e-12 at theta: 2.45803e-14
+Theta is getting below zero, decreased stepsize to 1.97e-12 at theta: 2.45803e-14
+Theta is getting below zero, decreased stepsize to 9.86e-13 at theta: 8.77270e-15
+Theta is getting below zero, decreased stepsize to 4.93e-13 at theta: 8.68879e-16
+Theta is getting below zero, decreased stepsize to 2.46e-13 at theta: 8.68879e-16
+Theta is getting below zero, decreased stepsize to 1.23e-13 at theta: 8.68879e-16
+Theta is getting below zero, decreased stepsize to 6.16e-14 at theta: 8.68879e-16
+Theta is getting below zero, decreased stepsize to 3.08e-14 at theta: 3.74890e-16
+Theta is getting below zero, decreased stepsize to 1.54e-14 at theta: 1.27895e-16
+Calculation completed with 1122.0 iterations in 1238.0 steps for n= 4.00
+Increased stepsize from 1.00e-04 to 1.55e-04 at theta = 1.00000
+Increased stepsize from 1.55e-04 to 2.41e-04 at theta = 1.00000
+Increased stepsize from 2.41e-04 to 3.74e-04 at theta = 1.00000
+Increased stepsize from 3.74e-04 to 5.80e-04 at theta = 1.00000
+Increased stepsize from 5.80e-04 to 9.01e-04 at theta = 1.00000
+Increased stepsize from 9.01e-04 to 1.01e-03 at theta = 1.00000
+Increased stepsize from 1.01e-03 to 1.19e-03 at theta = 1.00000
+Increased stepsize from 1.19e-03 to 1.34e-03 at theta = 1.00000
+Increased stepsize from 1.34e-03 to 1.51e-03 at theta = 0.99998
+Increased stepsize from 1.51e-03 to 1.70e-03 at theta = 0.99995
+Increased stepsize from 1.70e-03 to 1.91e-03 at theta = 0.99981
+Increased stepsize from 1.91e-03 to 2.15e-03 at theta = 0.99939
+Increased stepsize from 2.15e-03 to 2.42e-03 at theta = 0.99776
+Increased stepsize from 2.42e-03 to 2.72e-03 at theta = 0.99427
+Increased stepsize from 2.72e-03 to 2.99e-03 at theta = 0.97044
+Increased stepsize from 2.99e-03 to 3.30e-03 at theta = 0.93692
+Increased stepsize from 3.30e-03 to 3.64e-03 at theta = 0.90558
+Increased stepsize from 3.64e-03 to 4.02e-03 at theta = 0.87449
+Increased stepsize from 4.02e-03 to 4.44e-03 at theta = 0.85179
+Increased stepsize from 4.44e-03 to 4.90e-03 at theta = 0.82628
+Increased stepsize from 4.90e-03 to 5.41e-03 at theta = 0.80342
+Increased stepsize from 5.41e-03 to 6.08e-03 at theta = 0.78428
+Increased stepsize from 6.08e-03 to 6.84e-03 at theta = 0.76695
+Increased stepsize from 6.84e-03 to 7.70e-03 at theta = 0.75212
+Increased stepsize from 7.70e-03 to 8.66e-03 at theta = 0.73569
+Decreased stepsize from 8.66e-03 to 7.72e-03 at theta = 0.70335
+Increased stepsize from 7.72e-03 to 9.08e-03 at theta = 0.55105
+Increased stepsize from 9.08e-03 to 1.07e-02 at theta = 0.49609
+Decreased stepsize from 1.07e-02 to 9.30e-03 at theta = 0.49609
+Increased stepsize from 9.30e-03 to 1.09e-02 at theta = 0.48594
+Decreased stepsize from 1.09e-02 to 9.52e-03 at theta = 0.48464
+Increased stepsize from 9.52e-03 to 1.12e-02 at theta = 0.45979
+Decreased stepsize from 1.12e-02 to 9.99e-03 at theta = 0.45979
+Increased stepsize from 9.99e-03 to 1.17e-02 at theta = 0.45764
+Decreased stepsize from 1.17e-02 to 1.05e-02 at theta = 0.45764
+Increased stepsize from 1.05e-02 to 1.23e-02 at theta = 0.43812
+Decreased stepsize from 1.23e-02 to 1.07e-02 at theta = 0.43812
+Increased stepsize from 1.07e-02 to 1.26e-02 at theta = 0.42869
+Decreased stepsize from 1.26e-02 to 1.12e-02 at theta = 0.42869
+Increased stepsize from 1.12e-02 to 1.32e-02 at theta = 0.41204
+Decreased stepsize from 1.32e-02 to 1.18e-02 at theta = 0.41204
+Increased stepsize from 1.18e-02 to 1.39e-02 at theta = 0.39481
+Decreased stepsize from 1.39e-02 to 1.24e-02 at theta = 0.39481
+Increased stepsize from 1.24e-02 to 1.45e-02 at theta = 0.37810
+Decreased stepsize from 1.45e-02 to 1.30e-02 at theta = 0.37370
+Increased stepsize from 1.30e-02 to 1.53e-02 at theta = 0.37370
+Decreased stepsize from 1.53e-02 to 1.36e-02 at theta = 0.37370
+Increased stepsize from 1.36e-02 to 1.60e-02 at theta = 0.36282
+Decreased stepsize from 1.60e-02 to 1.43e-02 at theta = 0.36282
+Increased stepsize from 1.43e-02 to 1.68e-02 at theta = 0.34361
+Decreased stepsize from 1.68e-02 to 1.49e-02 at theta = 0.34042
+Increased stepsize from 1.49e-02 to 1.76e-02 at theta = 0.33305
+Decreased stepsize from 1.76e-02 to 1.53e-02 at theta = 0.33094
+Increased stepsize from 1.53e-02 to 1.80e-02 at theta = 0.33003
+Decreased stepsize from 1.80e-02 to 1.61e-02 at theta = 0.33003
+Increased stepsize from 1.61e-02 to 1.89e-02 at theta = 0.31195
+Decreased stepsize from 1.89e-02 to 1.64e-02 at theta = 0.31095
+Increased stepsize from 1.64e-02 to 1.93e-02 at theta = 0.31095
+Decreased stepsize from 1.93e-02 to 1.68e-02 at theta = 0.31095
+Increased stepsize from 1.68e-02 to 1.98e-02 at theta = 0.31095
+Decreased stepsize from 1.98e-02 to 1.72e-02 at theta = 0.31095
+Increased stepsize from 1.72e-02 to 2.03e-02 at theta = 0.29862
+Decreased stepsize from 2.03e-02 to 1.81e-02 at theta = 0.29566
+Increased stepsize from 1.81e-02 to 2.18e-02 at theta = 0.29392
+Decreased stepsize from 2.18e-02 to 1.83e-02 at theta = 0.29392
+Increased stepsize from 1.83e-02 to 2.15e-02 at theta = 0.29133
+Decreased stepsize from 2.15e-02 to 1.87e-02 at theta = 0.29033
+Increased stepsize from 1.87e-02 to 2.20e-02 at theta = 0.28859
+Decreased stepsize from 2.20e-02 to 1.92e-02 at theta = 0.28859
+Increased stepsize from 1.92e-02 to 2.25e-02 at theta = 0.27754
+Decreased stepsize from 2.25e-02 to 2.01e-02 at theta = 0.27754
+Increased stepsize from 2.01e-02 to 2.36e-02 at theta = 0.26133
+Increased stepsize from 2.36e-02 to 2.78e-02 at theta = 0.24056
+Decreased stepsize from 2.78e-02 to 2.48e-02 at theta = 0.24056
+Increased stepsize from 2.48e-02 to 2.92e-02 at theta = 0.23429
+Decreased stepsize from 2.92e-02 to 2.60e-02 at theta = 0.23429
+Increased stepsize from 2.60e-02 to 3.06e-02 at theta = 0.22654
+Decreased stepsize from 3.06e-02 to 2.66e-02 at theta = 0.22654
+Increased stepsize from 2.66e-02 to 3.32e-02 at theta = 0.21487
+Decreased stepsize from 3.32e-02 to 2.89e-02 at theta = 0.21487
+Increased stepsize from 2.89e-02 to 3.25e-02 at theta = 0.21487
+Decreased stepsize from 3.25e-02 to 2.90e-02 at theta = 0.21402
+Increased stepsize from 2.90e-02 to 3.41e-02 at theta = 0.20679
+Decreased stepsize from 3.41e-02 to 3.04e-02 at theta = 0.20597
+Increased stepsize from 3.04e-02 to 3.53e-02 at theta = 0.20169
+Decreased stepsize from 3.53e-02 to 3.15e-02 at theta = 0.19928
+Increased stepsize from 3.15e-02 to 3.70e-02 at theta = 0.19649
+Decreased stepsize from 3.70e-02 to 3.22e-02 at theta = 0.19649
+Increased stepsize from 3.22e-02 to 3.79e-02 at theta = 0.19035
+Decreased stepsize from 3.79e-02 to 3.38e-02 at theta = 0.18957
+Increased stepsize from 3.38e-02 to 3.93e-02 at theta = 0.18553
+Decreased stepsize from 3.93e-02 to 3.50e-02 at theta = 0.18401
+Increased stepsize from 3.50e-02 to 4.07e-02 at theta = 0.18006
+Increased stepsize from 4.07e-02 to 4.67e-02 at theta = 0.16308
+Increased stepsize from 4.67e-02 to 5.50e-02 at theta = 0.14371
+Increased stepsize from 5.50e-02 to 6.12e-02 at theta = 0.13018
+Increased stepsize from 6.12e-02 to 6.96e-02 at theta = 0.11781
+Increased stepsize from 6.96e-02 to 7.79e-02 at theta = 0.10768
+Increased stepsize from 7.79e-02 to 8.90e-02 at theta = 0.09652
+Increased stepsize from 8.90e-02 to 9.92e-02 at theta = 0.08784
+Calculation completed with 1162.0 iterations in 1262.0 steps for n= 5.00
+
+n      xi            phi
+0.0    2.44948974    -4.89897949
+1.0    3.14159265    -3.14159265
+1.5    3.65375374    -2.71405512
+2.0    4.35287460    -2.41104601
+3.0    6.89684862    -2.01823595
+4.0    14.97154635   -1.79722991
+
+rho_ns: 2.186398e+15
+rho_ns/rho_nuc: 5.465996
+
+M_WD/M_sun: 1.4355
