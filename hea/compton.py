@@ -5,14 +5,14 @@ from matplotlib import pyplot as plt
 import scipy.stats as stats
 from scipy.integrate import quad
 from time import time
-import argparse
+#import argparse
 
 # arguments that can be given to the program
-argparser=argparse.ArgumentParser(description='Calculates an inverse Compton spectrum')
-argparser.add_argument('-s','--save', dest='save',action='store_true', help='Save figures instead of displaying them')
-argparser.add_argument('-v','--verbose', dest='v',action='store_true', help='Switch on verbosity')
-argparser.add_argument('N',type=int ,help='Number of iterations (Log)')
-args=argparser.parse_args()
+#argparser=argparse.ArgumentParser(description='Calculates an inverse Compton spectrum')
+#argparser.add_argument('-s','--save', dest='save',action='store_true', help='Save figures instead of displaying them')
+#argparser.add_argument('-v','--verbose', dest='v',action='store_true', help='Switch on verbosity')
+#argparser.add_argument('N',type=int ,help='Number of iterations (Log)')
+#args=argparser.parse_args()
 
 
 
@@ -78,15 +78,15 @@ def gen_photon(beta,gamma):
         #print 'approved'
         return e_1
         
-def MJ(e,gamma,beta):
-    #returns the probability of finding energy e in a MJ distribution
-    theta=.41 # =kt/mc^2
-    const = .0542868 # = theta * K_2(1/theta)
-    return const*beta*gamma**2*math.exp(-gamma/theta)
+def MJ(gamma):
+    #returns the probability of finding energy gamma in a MJ distribution
+    theta=.168637 # =kt/mc^2
+    const = 3238.1 # = 1/(theta * K_2(1/theta))
+    return const*math.sqrt(1-gamma**-2)*gamma**2*math.exp(-gamma/theta)
 
-def MJCDF(e,gamma,beta):
+def MJCDF(gamma):
     # returns CDF of the MJ PDF
-    return quad(MJ(x,gamma,beta),1,e,args=(x))[0]
+    return quad(MJ,1,gamma)[0]
     
         
 def get_electron():
@@ -99,28 +99,37 @@ def get_electron():
     # T = 10^9 K
     # k = 1.38 E-16 erg/K
     # a = sqrt(kt/m) = 1.23E10 cm/s
+    #maxwell = stats.maxwell(scale=1.23E10)
+    #v = maxwell.rvs(size=1)
+    
     c = 3E10
-    maxwell = stats.maxwell(scale=1.23E10)
-    v = maxwell.rvs(size=1)
-    if v<=c:
-        gamma=1/math.sqrt(1-(v/c)**2)
-        beta = math.sqrt(1-gamma**-2)
+    gamma=1/math.sqrt(1-(v/c)**2)
+    beta = math.sqrt(1-gamma**-2)
     return gamma, beta
     
 
 def main():
+    l=[ i/10. for i in range(10,50)]
+    for i in l:
+        print MJCDF(i)
+    
+    
+    exit(1)
     #constants (CGS)
     m=1E-27
     c=3E10
-    #E=1.6E-6
-    #gamma=E/(m*c**2)
-    #beta=math.sqrt(1-gamma**-2)
+    
+    gamma=2
+    beta=math.sqrt(1-gamma**-2)
+    
+    n=int(raw_input('Number of iterations (Log): '))
+    niter=10**n
 
     print 'gamma, beta, emax/e: ',gamma,beta,(gamma*(1+beta))**2
-    niter=int(10**args.N)
-    print 'Producing 1E'+str(args.N)+' photons'
 
-    gammalist,betalist = get_electron(100000)
+    print 'Producing 1E'+str(n)+' photons'
+
+
     
         
     #initialize stuff
