@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 import scipy.stats as stats
 from scipy.integrate import quad
 from time import time
+from bisect import bisect_left
 #import argparse
 
 # arguments that can be given to the program
@@ -109,11 +110,14 @@ def get_electron():
     
 
 def main():
-    l=[ i/10. for i in range(10,50)]
+    l=[ i/100. for i in range(100,500)]
+    l2=[]
     for i in l:
-        print MJCDF(i)
+        l2.append(MJCDF(i))
+        
     
-    
+    print bisect_left(l2,.5)
+        
     exit(1)
     #constants (CGS)
     m=1E-27
