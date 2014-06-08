@@ -81,6 +81,7 @@ def gen_photon(beta,gamma):
         
 def MJ(gamma):
     #returns the probability of finding energy gamma in a MJ distribution
+    #T = 10^9 K
     theta=.168637 # =kt/mc^2
     const = 3238.1 # = 1/(theta * K_2(1/theta))
     return const*math.sqrt(1-gamma**-2)*gamma**2*math.exp(-gamma/theta)
@@ -90,33 +91,30 @@ def MJCDF(gamma):
     return quad(MJ,1,gamma)[0]
     
         
-def get_electron():
-    #return list of gamma,beta for n electrons
-    #thermal distribution with 3kT n/2 = B^2 /8pi -> kT = B^2 / 12 pi n
-    # a := exp(-v^2/2a^2) = exp(-m v^2 / 2 kT) -> a = sqrt(kt/m) = sqrt(B^2/12 pi m n)
-    # magnetic field in corona: http://mnras.oxfordjournals.org/content/early/2013/01/17/mnras.sts574.abstract
-    # B ~ 10^5 G
-    # electron density
-    # T = 10^9 K
-    # k = 1.38 E-16 erg/K
-    # a = sqrt(kt/m) = 1.23E10 cm/s
-    #maxwell = stats.maxwell(scale=1.23E10)
-    #v = maxwell.rvs(size=1)
-    
-    c = 3E10
-    gamma=1/math.sqrt(1-(v/c)**2)
+def get_electron(electronbins,mjdist):
+    #select random energy from MJ CDF
+    #b is element of mjdist
+    b = bisect_left(mjdist,uniform(0,1))
+    gamma = electronbins[b]
     beta = math.sqrt(1-gamma**-2)
-    return gamma, beta
+    return beta,gamma
+
+def create_MJ():
+    #create binned MJ CDF
+    #electronbins = binned gamma
+    electronbins= list(frange(1,5,1E-3))
+    mjdist=[]
+    for i in electronbins:
+        mjdist.append(MJCDF(i))
+        
+    return electronbins,mjdist
     
 
 def main():
-    l=[ i/100. for i in range(100,500)]
-    l2=[]
-    for i in l:
-        l2.append(MJCDF(i))
-        
-    
-    print bisect_left(l2,.5)
+
+    electronbins,mjdist = create_MJ()     
+ 
+   
         
     exit(1)
     #constants (CGS)
@@ -161,6 +159,8 @@ def main():
    
     #add items to bins
     #slow but works
+    #should use bisect_left
+    #finallist=np.zeros(len(ebins))
     finallist=[]
     for i in range(len(ebins)):
         finallist.append([])
