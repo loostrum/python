@@ -95,7 +95,7 @@ def get_electron(electronbins,mjdist):
     #steps to select gamma_electron:
     #select random number between 0 and 1
     #find in which bin this belongs using mjdist (e.g. index 8)
-    #take that element from electronbins (e.g. electronbins[[8]).
+    #take that element from electronbins (e.g. electronbins[8]).
     #the result is the gammafactor of the elecron.
     b = bisect_left(mjdist,uniform(0,1))
     if b == len(mjdist):
@@ -107,7 +107,7 @@ def get_electron(electronbins,mjdist):
 def create_MJ():
     #create binned MJ CDF
     #electronbins = binned gamma
-    electronbins= list(frange(1,5,1E-3))
+    electronbins= list(frange(1,25,1E-3))
     mjdist=[]
     for i in electronbins:
         mjdist.append(MJCDF(i))
@@ -125,7 +125,8 @@ def planck(nu):
     #Zeta(3)
     z3=1.20206
     #ntot is integral over modified B_nu
-    ntot=16*math.pi*z3*(k*T/(h*c))**3
+    #ntot=16*math.pi*z3*(k*T/(h*c))**3
+    ntot=2.0284E28
     return 8*math.pi*nu**2/(ntot*c**3*math.expm1(h*nu/(k*T)))
     #uses expm1 == exp(x)-1, which avoids loss of precision
     
@@ -135,23 +136,29 @@ def planckCDF(nu):
     
     
 def create_planck():
-    photonbins= [10**i for i in frange(1,20,.1)]
+    photonbins= [10**i for i in frange(1,21,.1)]
     planckdist=[]
     for i in photonbins:
         planckdist.append(planckCDF(i))
         
     return photonbins,planckdist
     
-def get_seed_photon():
+def get_seed_photon(photonbins,planckdist):
+    h=6.626E-27
     #generate thermal photon from planck's law
-    pass
+    b = bisect_left(planckdist,uniform(0,1))
+    if b == len(planckdist):
+        b-=1
+    nu = photonbins[b]
+    #return photon energy
+    return nu#*h
 
 
 def main():
-
+    
     electronbins,mjdist = create_MJ()     
     photonbins,planckdist = create_planck()
- 
+    
     
     n=int(raw_input('Number of iterations (Log): '))
     niter=10**n
@@ -161,9 +168,8 @@ def main():
 
             
     #initialize stuff
-    disc=0
-    e1_list=[]
-    ebins=np.asarray(list(frange(0,10,.1)))
+    disc=0 #=amount of discarded photons
+    ebins=np.asarray(list(frange(0,25,.1)))
     finallist=np.zeros(len(ebins))
 
     
@@ -177,17 +183,22 @@ def main():
         tmp=gen_photon(beta,gamma)
         #gen_photon returns 0 if the angle/energy combination was not allowed
         if tmp == 0:
+            print 'not allowed: ',tmp
             disc+=1
         else:
-            #e1_list.append(tmp)
             b = bisect_left(ebins,tmp)
-            #fix if it belongs in the last bin (gives max index + 1)
+            #fix if energy is higher than allowed in bins
             if b == len(ebins):
-                b-=1
-            finallist[b]+=1
+                print 'e/e0 larger than maximum bin: ',tmp
+                disc+=1
+            else:
+                finallist[b]+=1
         if 100*float(i+1)/niter%5==0:
             print 100*(i+1)/niter, '%'
     
+    #normalise results
+    nphotons=float(niter-disc)
+    finallist = [item/nphotons for item in finallist]
     tend=time()
     
     print 'Time used for generating photons: ', round(tend-tstart,1), 's'
