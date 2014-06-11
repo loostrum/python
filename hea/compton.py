@@ -62,22 +62,23 @@ def e1_la(mu1_e,e_e,beta,gamma):
     return e_e*gamma*(1+beta*mu1_e)
     
 
-def gen_photon(beta,gamma):
-    #generate random photon direction
-    mu_l=rand_mu()
-    #calc incident energy in e frame
-    e_e=e_el(mu_l,beta,gamma)
-    #calc scattered energy in lab frame, assuming no recoil (e_e=e_1 in electron frame)
-    mu1_e=rand_mu()
-    mu1_l=mu_la(mu1_e,beta)
-    e_1=e1_la(mu1_e,e_e,beta,gamma)
-    #discard if impossible 
-    if e_1 < 1/(gamma**2*(1+beta)*(1-beta*mu1_l)) or e_1 > 1/(gamma*(1-beta)*(1-beta*mu1_l)):
-        #print 'discarded:',e_1
-        return 0
-    else:
-        #print 'approved'
-        return e_1
+def scatter(beta,gamma):
+    while True:
+        #generate random photon direction
+        mu_l=rand_mu()
+        #calc incident energy in e frame
+        e_e=e_el(mu_l,beta,gamma)
+        #calc scattered energy in lab frame, assuming no recoil (e_e=e_1 in electron frame)
+        mu1_e=rand_mu()
+        mu1_l=mu_la(mu1_e,beta)
+        e_1=e1_la(mu1_e,e_e,beta,gamma)
+        #discard if impossible 
+        if e_1 < 1/(gamma**2*(1+beta)*(1-beta*mu1_l)) or e_1 > 1/(gamma*(1-beta)*(1-beta*mu1_l)):
+            #print 'discarded:',e_1
+            continue
+        else:
+            #print 'approved'
+            return e_1
         
 def MJ(gamma):
     #returns the probability of finding energy gamma in a MJ distribution
@@ -107,7 +108,7 @@ def get_electron(electronbins,mjdist):
 def create_MJ():
     #create binned MJ CDF
     #electronbins = binned gamma
-    electronbins= list(frange(1,25,1E-3))
+    electronbins= np.linspace(1,10,1E3)
     mjdist=[]
     for i in electronbins:
         mjdist.append(MJCDF(i))
@@ -144,75 +145,100 @@ def create_planck():
     return photonbins,planckdist
     
 def get_seed_photon(photonbins,planckdist):
-    h=6.626E-27
+    #h=6.626E-27 #to convert to energy
     #generate thermal photon from planck's law
-    b = bisect_left(planckdist,uniform(0,1))
-    if b == len(planckdist):
-        b-=1
-    nu = photonbins[b]
-    #return photon energy
-    return nu#*h
-
-
-def main():
+    while True:
+        b = bisect_left(planckdist,uniform(0,1))
+        if b == len(planckdist):
+            #photon falls outside bin range
+            continue
+        else:
+            nu = photonbins[b]
+            #return photon freq
+            return nu
     
+def escape():
+    rand=uniform(0,1)
+    tau=.3
+    escape_chance=math.exp(-tau)
+    if rand <= escape_chance:
+        return True
+    else:
+        return False
+        
+def main():
+
+    #create binned distributions
     electronbins,mjdist = create_MJ()     
     photonbins,planckdist = create_planck()
     
     
     n=int(raw_input('Number of iterations (Log): '))
     niter=10**n
-
+    
+    #init list for final photon frequencies
+    fbins=np.logspace(15,25,100)
 
     print 'Producing 1E'+str(n)+' photons'
+    tstart=time()
 
-            
+
+
     #initialize stuff
     disc=0 #=amount of discarded photons
-    ebins=np.asarray(list(frange(0,25,.1)))
-    finallist=np.zeros(len(ebins))
-
+    finallist=np.zeros(len(fbins)) #list that will contain escaped photon frequencies.
     
-    tstart=time()
-    
-    #generate photons, only e/e0 for a given gamma,beta
+    #generate niter photons and scatter them 
     for i in range(niter):
-        #choose a random electron
-        beta,gamma=get_electron(electronbins,mjdist)
-        #tmp is e/e0 for the photon. Need to multiply by random energy from synchrotron/thermal distribution to get e_final.
-        tmp=gen_photon(beta,gamma)
-        #gen_photon returns 0 if the angle/energy combination was not allowed
-        if tmp == 0:
-            print 'not allowed: ',tmp
+        #get photon
+        photon_freq=get_seed_photon(photonbins,planckdist)
+        #check if it escapes
+        while not escape():
+            #choose a random electron
+            beta,gamma=get_electron(electronbins,mjdist)
+            #tmp is e/e0=f/f0 for the photon. Need to multiply by random energy from synchrotron/thermal distribution to get e_final.
+            # for now only thermal photon.
+            #multiply photon freq with scattering
+            photon_freq *= scatter(beta,gamma)
+            #now repeat until the photon escapes
+            
+            
+        #the photon has escaped, so it needs to be binned        
+        #find bin to put photon in.
+        b = bisect_left(fbins,photon_freq)
+        #fix if freq is higher than allowed in bins
+        if b == len(fbins):
+            print 'f larger than maximum bin: ',photon_freq
             disc+=1
         else:
-            b = bisect_left(ebins,tmp)
-            #fix if energy is higher than allowed in bins
-            if b == len(ebins):
-                print 'e/e0 larger than maximum bin: ',tmp
-                disc+=1
-            else:
-                finallist[b]+=1
+            #add photon to correct bin
+            finallist[b]+=1
+            
         if 100*float(i+1)/niter%5==0:
             print 100*(i+1)/niter, '%'
+            
+    print 'discarded: ', 100*float(disc)/niter, '%'
     
+
     #normalise results
     nphotons=float(niter-disc)
     finallist = [item/nphotons for item in finallist]
     tend=time()
-    
     print 'Time used for generating photons: ', round(tend-tstart,1), 's'
     
- 
-    print 'discarded: ', 100*float(disc)/niter, '%'
     
-
+    
     
    
     plt.clf()
-    plt.plot(ebins,finallist)
-    plt.xlabel('e1/e0')
-    plt.ylabel('dn/de')
+    plt.plot(fbins,finallist)
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel('f (Hz)')
+    plt.ylabel('dn/df')
+    #plt.xlim(1E18,1E22)
+    #plt.ylim(1E-4,1E0)
+    
     plt.show()
     
 if __name__=="__main__":
