@@ -17,29 +17,6 @@ from bisect import bisect_left
 
 
 
-def frange(limit1, limit2 = None, increment = 1.):
-  """
-  Range function that accepts floats (and integers).
-
-  Usage:
-  frange(-2, 2, 0.1)
-  frange(10)
-  frange(10, increment = 0.5)
-
-  The returned value is an iterator.  Use list(frange) for a list.
-  """
-
-
-  if limit2 is None:
-    limit2, limit1 = limit1, 0.
-  else:
-    limit1 = float(limit1)
-
-  count = int(math.ceil(limit2 - limit1)/increment)
-  return (limit1 + n*increment for n in range(count))
-
-
-
 #generate random angle in lab frame
 #needs to be random mu, but why?
 def rand_mu():
@@ -137,7 +114,7 @@ def planckCDF(nu):
     
     
 def create_planck():
-    photonbins= [10**i for i in frange(1,21,.1)]
+    photonbins= np.logspace(0,21,1000)
     planckdist=[]
     for i in photonbins:
         planckdist.append(planckCDF(i))
