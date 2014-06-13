@@ -4,29 +4,21 @@ from random import uniform
 from matplotlib import pyplot as plt
 import scipy.stats as stats
 from scipy.integrate import quad
-from time import time
 from bisect import bisect_left
-#import argparse
-
-# arguments that can be given to the program
-#argparser=argparse.ArgumentParser(description='Calculates an inverse Compton spectrum')
-#argparser.add_argument('-s','--save', dest='save',action='store_true', help='Save figures instead of displaying them')
-#argparser.add_argument('-v','--verbose', dest='v',action='store_true', help='Switch on verbosity')
-#argparser.add_argument('N',type=int ,help='Number of iterations (Log)')
-#args=argparser.parse_args()
 
 
-
+#in definitions:
+#_l,_e = lab,electron frame (variables)
+#_la,_el = lab,electron frame (functions)
 #generate random angle in lab frame
-#needs to be random mu, but why?
 def rand_mu():
     return uniform(-1,1)
 
-#angle aberration for cos(theta) (to electron frame)
+#angle aberration for mu (to electron frame)
 def mu_el(mu_l,beta):
     return (mu_l-beta)/(1-beta*mu_l)
 
-#angle aberration for cos(theta) (to lab frame)
+#angle aberration for mu (to lab frame)
 def mu_la(mu_e,beta):
     return (mu_e+beta)/(1+beta*mu_e)
     
@@ -34,10 +26,9 @@ def mu_la(mu_e,beta):
 def e_el(mu_l,beta,gamma):
     return gamma*(1-beta*mu_l)
 
-#generate scattered photon energy in lab frame for given theta1_e (=scatter angle in e frame), relative to e_l
+#generate scattered photon energy in lab frame for given mu1_e (=scatter angle in e frame), relative to e_l
 def e1_la(mu1_e,e_e,beta,gamma):
     return e_e*gamma*(1+beta*mu1_e)
-    
 
 def scatter(beta,gamma):
     while True:
@@ -50,6 +41,7 @@ def scatter(beta,gamma):
         mu1_l=mu_la(mu1_e,beta)
         e_1=e1_la(mu1_e,e_e,beta,gamma)
         #discard if impossible 
+        #this will restart the loop
         if e_1 < 1/(gamma**2*(1+beta)*(1-beta*mu1_l)) or e_1 > 1/(gamma*(1-beta)*(1-beta*mu1_l)):
             #print 'discarded:',e_1
             continue
@@ -69,6 +61,16 @@ def MJCDF(gamma):
     return quad(MJ,1,gamma)[0]
     
         
+def create_MJ():
+    #create binned MJ CDF
+    #electronbins = binned gamma
+    electronbins= np.linspace(1,10,1E3)
+    mjdist=[]
+    for i in electronbins:
+        mjdist.append(MJCDF(i))
+        
+    return electronbins,mjdist
+
 def get_electron(electronbins,mjdist):
     #steps to select gamma_electron:
     #select random number between 0 and 1
@@ -82,140 +84,165 @@ def get_electron(electronbins,mjdist):
     beta = math.sqrt(1-gamma**-2)
     return beta,gamma
 
-def create_MJ():
-    #create binned MJ CDF
-    #electronbins = binned gamma
-    electronbins= np.linspace(1,10,1E3)
-    mjdist=[]
-    for i in electronbins:
-        mjdist.append(MJCDF(i))
-        
-    return electronbins,mjdist
-    
+ 
 def planck(nu):
-    #T = 10^9 K, kT = 1.3806E-7 erg
-    #create planck spectrum, converted to a PDF
-    #which is B_nu(T)*4pi(isotropic)/c(to energy density)/h nu (to number density) / n_tot (to PDF) 
-    k=1.3806E-16
-    T=1E9
-    h=6.626E-27 # erg*s
-    c=2.998E10 #cm/s
-    #Zeta(3)
-    z3=1.20206
-    #ntot is integral over modified B_nu
-    #ntot=16*math.pi*z3*(k*T/(h*c))**3
-    ntot=2.0284E28
-    return 8*math.pi*nu**2/(ntot*c**3*math.expm1(h*nu/(k*T)))
-    #uses expm1 == exp(x)-1, which avoids loss of precision
+    #T=10^9
+    #h=6.626E-27
+    #k=1.3806E-16
+    #hkt = h / k T
+    hkt=4.79924E-20
+    #normalise to [0,1]
+    #norm = integral over nu^2/(exp(hv/kt)-1)
+    #norm=2*z3*(hkt)**-3
+    lognorm=58.3374
     
-def planckCDF(nu):
-    return quad(planck,0,nu)[0]
-    #max 1E22 Hz, to avoid overflow error
+    #calc the log10, to avoid overflows
+    # -log(norm) + 2 log(nu) - log(expm1(h nu / k T))
     
+    #when above nu ~1E22, expm1 overflows (exponent ~1000)
+    #these values are not realistic anyway (P<<<1). 
+    #
+    if nu > 1E22:
+        raise ValueError('nu is larger than 1E22')
+    else:
+        return -lognorm + 2*math.log10(nu) - math.log10(math.expm1(hkt*nu))
+          
+
     
-def create_planck():
-    photonbins= np.logspace(0,21,1000)
-    planckdist=[]
-    for i in photonbins:
-        planckdist.append(planckCDF(i))
-        
-    return photonbins,planckdist
-    
-def get_seed_photon(photonbins,planckdist):
+def get_seed_photon():
     #h=6.626E-27 #to convert to energy
     #generate thermal photon from planck's law
-    while True:
-        b = bisect_left(planckdist,uniform(0,1))
-        if b == len(planckdist):
-            #photon falls outside bin range
-            continue
-        else:
-            nu = photonbins[b]
-            #return photon freq
-            return nu
+    lognu_min=15 #chance of E<1E15: 4.8E-10
+    lognu_max=21 #chance of E>1E21: 0.
+    nu=10**uniform(lognu_min,lognu_max)
+    #weight is value of distribution at chosen nu
+    #still need to divide by nu?
+    w=10**planck(nu)
     
-def escape():
+    return nu,w
+    
+def absorbed(nu):
+    h= 4.135668E-15 #ev/Hertz
+    e=h*nu #photon energy in eV
+    #absorption chance depends on E and has two cases
+    if e > 1:
+        p_abs = .5*e**-3
+        
+    else:
+        p_abs = .5
+    
     rand=uniform(0,1)
-    tau=.3
-    escape_chance=math.exp(-tau)
-    if rand <= escape_chance:
+    #if rand < p_abs, the photon will be absorbed
+    if rand < p_abs:
         return True
     else:
         return False
+
         
 def main():
 
-    #create binned distributions
-    electronbins,mjdist = create_MJ()     
-    photonbins,planckdist = create_planck()
+    tau=.3
+    exptau=math.exp(-tau)
+    n=3
+    niter=int(10**n)
     
-    
-    n=int(raw_input('Number of iterations (Log): '))
-    niter=10**n
-    
-    #init list for final photon frequencies
-    fbins=np.logspace(15,25,100)
-
-    print 'Producing 1E'+str(n)+' photons'
-    tstart=time()
-
-
-
-    #initialize stuff
-    disc=0 #=amount of discarded photons
-    finallist=np.zeros(len(fbins)) #list that will contain escaped photon frequencies.
-    
-    #generate niter photons and scatter them 
+    photons=[]
+    nu_bins=np.logspace(10,55,100)
+    weights=np.zeros(len(nu_bins))
+    electronbins,mjdist=create_MJ()
+    n_absorbed=0
+    n_scattered=0
+    n_photons=0
     for i in range(niter):
-        #get photon
-        photon_freq=get_seed_photon(photonbins,planckdist)
-        #check if it escapes
-        while not escape():
-            #choose a random electron
-            beta,gamma=get_electron(electronbins,mjdist)
-            #tmp is e/e0=f/f0 for the photon. Need to multiply by random energy from synchrotron/thermal distribution to get e_final.
-            # for now only thermal photon.
-            #multiply photon freq with scattering
-            photon_freq *= scatter(beta,gamma)
-            #now repeat until the photon escapes
+        #get seed photon
+        nu,w=get_seed_photon()
+        
+        #keep scattering until the photon is absorbed or w < 1E-35
+        while w > 1E-35:
+            print w*exptau
+            #escape chance is w*exp(-tau)
+            w_esc=w*exptau
+            #add weight of escaped photon fraction to correct freq bin
+            b=bisect_left(nu_bins,nu)
             
+         
+            if b == len(nu_bins):
+                #photon falls outside bin range
+                print 'Photon energy falls outside bin range: ',nu
+            else:
+                #bin the photon
+                weights[b]+=w_esc
+                n_photons += 1
             
-        #the photon has escaped, so it needs to be binned        
-        #find bin to put photon in.
-        b = bisect_left(fbins,photon_freq)
-        #fix if freq is higher than allowed in bins
-        if b == len(fbins):
-            print 'f larger than maximum bin: ',photon_freq
-            disc+=1
-        else:
-            #add photon to correct bin
-            finallist[b]+=1
-            
+                
+            #check if the photon is absorbed
+            if absorbed(nu):
+                #the photon is absorbed, so start over with a new photon
+                n_absorbed += 1
+                break
+            else:
+                #the photon will be scattered
+                #the weight of the remainig photon is w(1-exptau)
+                w *= (1-exptau)
+                #get an electron scattering partner
+                beta,gamma=get_electron(electronbins,mjdist)
+                #scatter the photon (needs to be refined with 1+mu**2 and separate e and photon direction)
+                nu *= scatter(beta,gamma)       
+                #change the weight
+                w *= exptau 
+                n_scattered += 1
+                #now restart from adding the escaped fraction to the spectrum
+        
+        #progress tracker        
         if 100*float(i+1)/niter%5==0:
             print 100*(i+1)/niter, '%'
             
-    print 'discarded: ', 100*float(disc)/niter, '%'
-    
+  
+    #normalise the weights
+    total_weights=sum(weights)
+    weights = [ item/total_weights for item in weights ]
 
-    #normalise results
-    nphotons=float(niter-disc)
-    finallist = [item/nphotons for item in finallist]
-    tend=time()
-    print 'Time used for generating photons: ', round(tend-tstart,1), 's'
+    #every bin with a weight < 1E-6 has negligible influence on the spectrum
+    #to improve the plots, these bins are set to zero
+    for i in range(len(weights)):
+        if weights[i] < 1E-6:
+            weights[i]=0
+    
+    
+    print 'absorbed photons: ',n_absorbed
+    print 'scatterings: ',n_scattered
+    print 'total number of photons in spectrum: ',n_photons
     
     
     
     
-   
-    plt.clf()
-    plt.plot(fbins,finallist)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlabel('f (Hz)')
-    plt.ylabel('dn/df')
-    #plt.xlim(1E18,1E22)
-    #plt.ylim(1E-4,1E0)
+    #create input planck spectrum
+    planck_bins = np.logspace(10,21,100)
+    planck_values = []
+    for nu in planck_bins:
+        planck_values.append(10**planck(nu))
+        
+    #normalise
+    nplanck = float(sum(planck_values))
+    planck_values = [item/nplanck for item in planck_values]
     
+    #remove items with value < 1E-6
+    for i in range(len(planck_values)):
+        if planck_values[i] < 1E-6:
+            planck_values[i]=0
+    
+    
+    
+    
+    
+    #plot the planck input spectrum  
+    plt.loglog(planck_bins,planck_values,color='red')
+        
+    plt.loglog(nu_bins,weights,color='blue')
+    plt.xlim(1E14,1E25)
+    plt.ylim(1E-4,1)
+    plt.xlabel('nu (Hz)')
+    plt.ylabel('dn/dnu')
     plt.show()
     
 if __name__=="__main__":
