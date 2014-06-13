@@ -86,26 +86,25 @@ def get_electron(electronbins,mjdist):
 
  
 def planck(nu):
-    #T=10^9
+    #bnu = 2 h nu^3 / c^2    1/expm1(hnu/kT) (erg / sr / s / cm^2 / hz)
+    #need to convert to # / cm^2 / s / hz
+    #bnu * 4pi (isotropic) / hnu (energy -> number)
+    #modified b:
+    #b = 8 pi nu^2 / c^2 1/expm1(hnu/kt) 
+    #T=2.936E7
     #h=6.626E-27
     #k=1.3806E-16
     #hkt = h / k T
-    hkt=4.79924E-20
-    #normalise to [0,1]
-    #norm = integral over nu^2/(exp(hv/kt)-1)
-    #norm=2*z3*(hkt)**-3
-    lognorm=58.3374
-    
-    #calc the log10, to avoid overflows
-    # -log(norm) + 2 log(nu) - log(expm1(h nu / k T))
-    
-    #when above nu ~1E22, expm1 overflows (exponent ~1000)
+    hkt=1.63462E-18
+    #const = 8 pi / c^2
+    const= 2.79639E-20
+    #expm1 = exp(x)-1, without losing precision
+    #when above nu ~ 1E20 , expm1 overflows (exponent ~700)
     #these values are not realistic anyway (P<<<1). 
-    #
-    if nu > 1E22:
-        raise ValueError('nu is larger than 1E22')
+    if nu > 1E20:
+        raise ValueError('nu is larger than 1E20')
     else:
-        return -lognorm + 2*math.log10(nu) - math.log10(math.expm1(hkt*nu))
+        return const*nu**2/(math.expm1(nu*hkt))
           
 
     
@@ -113,12 +112,11 @@ def get_seed_photon():
     #h=6.626E-27 #to convert to energy
     #generate thermal photon from planck's law
     lognu_min=15 #chance of E<1E15: 4.8E-10
-    lognu_max=21 #chance of E>1E21: 0.
+    lognu_max=20 #chance of E>1E20: 0.
     nu=10**uniform(lognu_min,lognu_max)
     #weight is value of distribution at chosen nu
-    #still need to divide by nu?
-    w=10**planck(nu)
-    
+    #still need to divide by nu (=large particles approach)
+    w=planck(nu)/nu
     return nu,w
     
 def absorbed(nu):
@@ -143,7 +141,7 @@ def main():
 
     tau=.3
     exptau=math.exp(-tau)
-    n=3
+    n=4
     niter=int(10**n)
     
     photons=[]
@@ -153,19 +151,20 @@ def main():
     n_absorbed=0
     n_scattered=0
     n_photons=0
+    
+    print '0 %'
     for i in range(niter):
         #get seed photon
         nu,w=get_seed_photon()
-        
-        #keep scattering until the photon is absorbed or w < 1E-35
-        while w > 1E-35:
-            print w*exptau
+        w0=w
+        #keep scattering until the photon is absorbed or w < 1E-6
+        while w/w0 > 1E-6:
+    
             #escape chance is w*exp(-tau)
             w_esc=w*exptau
             #add weight of escaped photon fraction to correct freq bin
             b=bisect_left(nu_bins,nu)
-            
-         
+                     
             if b == len(nu_bins):
                 #photon falls outside bin range
                 print 'Photon energy falls outside bin range: ',nu
@@ -182,14 +181,12 @@ def main():
                 break
             else:
                 #the photon will be scattered
-                #the weight of the remainig photon is w(1-exptau)
+                #the weight needs to be changed, as only 1-exptau part of the photon still exists
                 w *= (1-exptau)
                 #get an electron scattering partner
                 beta,gamma=get_electron(electronbins,mjdist)
                 #scatter the photon (needs to be refined with 1+mu**2 and separate e and photon direction)
                 nu *= scatter(beta,gamma)       
-                #change the weight
-                w *= exptau 
                 n_scattered += 1
                 #now restart from adding the escaped fraction to the spectrum
         
@@ -198,6 +195,10 @@ def main():
             print 100*(i+1)/niter, '%'
             
   
+    #transform to nu F_nu (multiply by nu)
+    for i in range(len(weights)):
+        weights[i] *= nu_bins[i]
+        
     #normalise the weights
     total_weights=sum(weights)
     weights = [ item/total_weights for item in weights ]
@@ -217,10 +218,10 @@ def main():
     
     
     #create input planck spectrum
-    planck_bins = np.logspace(10,21,100)
+    planck_bins = np.logspace(10,20,100)
     planck_values = []
     for nu in planck_bins:
-        planck_values.append(10**planck(nu))
+        planck_values.append(planck(nu))
         
     #normalise
     nplanck = float(sum(planck_values))
@@ -232,17 +233,21 @@ def main():
             planck_values[i]=0
     
     
-    
-    
+    #convert frequencies to energies
+    h= 4.135668E-18 #keV / Hz
+    for i in range(len(planck_bins)):
+        planck_bins[i] *= h
+    for i in range(len(nu_bins)):
+        nu_bins[i] *= h
     
     #plot the planck input spectrum  
     plt.loglog(planck_bins,planck_values,color='red')
         
     plt.loglog(nu_bins,weights,color='blue')
-    plt.xlim(1E14,1E25)
+    plt.xlim(h*1E14,h*1E25)
     plt.ylim(1E-4,1)
-    plt.xlabel('nu (Hz)')
-    plt.ylabel('dn/dnu')
+    plt.xlabel('E (keV)')
+    plt.ylabel('E dn/dE')
     plt.show()
     
 if __name__=="__main__":
