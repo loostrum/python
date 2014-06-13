@@ -14,21 +14,26 @@ from bisect import bisect_left
 def rand_mu():
     return uniform(-1,1)
 
+
 #angle aberration for mu (to electron frame)
 def mu_el(mu_l,beta):
     return (mu_l-beta)/(1-beta*mu_l)
+
 
 #angle aberration for mu (to lab frame)
 def mu_la(mu_e,beta):
     return (mu_e+beta)/(1+beta*mu_e)
     
+    
 #lorentz transformation for energy (relative to e_l)
 def e_el(mu_l,beta,gamma):
     return gamma*(1-beta*mu_l)
 
+
 #generate scattered photon energy in lab frame for given mu1_e (=scatter angle in e frame), relative to e_l
 def e1_la(mu1_e,e_e,beta,gamma):
     return e_e*gamma*(1+beta*mu1_e)
+
 
 def scatter(beta,gamma):
     while True:
@@ -49,12 +54,14 @@ def scatter(beta,gamma):
             #print 'approved'
             return e_1
         
+        
 def MJ(gamma):
     #returns the probability of finding energy gamma in a MJ distribution
     #T = 10^9 K
     theta=.168637 # =kt/mc^2
     const = 3238.1 # = 1/(theta * K_2(1/theta))
     return const*math.sqrt(1-gamma**-2)*gamma**2*math.exp(-gamma/theta)
+
 
 def MJCDF(gamma):
     # returns CDF of the MJ PDF
@@ -71,6 +78,7 @@ def create_MJ():
         
     return electronbins,mjdist
 
+
 def get_electron(electronbins,mjdist):
     #steps to select gamma_electron:
     #select random number between 0 and 1
@@ -84,13 +92,15 @@ def get_electron(electronbins,mjdist):
     beta = math.sqrt(1-gamma**-2)
     return beta,gamma
 
- 
+
 def planck(nu):
     #bnu = 2 h nu^3 / c^2    1/expm1(hnu/kT) (erg / sr / s / cm^2 / hz)
     #need to convert to # / cm^2 / s / hz
     #bnu * 4pi (isotropic) / hnu (energy -> number)
     #modified b:
     #b = 8 pi nu^2 / c^2 1/expm1(hnu/kt) 
+    #this modification wouldn't be needed as we're normalising, but
+    #a synchrotron spectrum is also used, which needs to have correct relative weight
     #T=2.936E7
     #h=6.626E-27
     #k=1.3806E-16
@@ -105,8 +115,7 @@ def planck(nu):
         raise ValueError('nu is larger than 1E20')
     else:
         return const*nu**2/(math.expm1(nu*hkt))
-          
-
+    
     
 def get_seed_photon():
     #h=6.626E-27 #to convert to energy
@@ -118,6 +127,7 @@ def get_seed_photon():
     #still need to divide by nu (=large particles approach)
     w=planck(nu)/nu
     return nu,w
+    
     
 def absorbed(nu):
     h= 4.135668E-15 #ev/Hertz
@@ -136,7 +146,19 @@ def absorbed(nu):
     else:
         return False
 
+#synchrotron power
+def sync_power(nu):
+    #from Malzac et al., 2006 
+    g_min=1.3
+    g_max=8.6
+    p=2
+    #inc angle = 45 deg, so sin(a)=.5 sqrt(2)
+    #B follows from Ub = Ue and T=10^9K (n_e?)
+    #see R&L 6.36
+    #nu = omega/2pi
+    #P_tot(omega) = sqrt(3) e^3 C B sin(a) / 2pi m c^2 (p+1)    gamma(p/4 + 19/12) gamma(p/4 -1/12) (mc omega / 3 e b sin(a))^-(p-1)/2
         
+
 def main():
 
     tau=.3
@@ -157,7 +179,7 @@ def main():
         #get seed photon
         nu,w=get_seed_photon()
         w0=w
-        #keep scattering until the photon is absorbed or w < 1E-6
+        #keep scattering until the photon is absorbed or w/w0 < 1E-6
         while w/w0 > 1E-6:
     
             #escape chance is w*exp(-tau)
@@ -188,7 +210,7 @@ def main():
                 #scatter the photon (needs to be refined with 1+mu**2 and separate e and photon direction)
                 nu *= scatter(beta,gamma)       
                 n_scattered += 1
-                #now restart from adding the escaped fraction to the spectrum
+                #now goto adding the escaped fraction to the spectrum
         
         #progress tracker        
         if 100*float(i+1)/niter%5==0:
