@@ -96,18 +96,17 @@ def get_electron(electronbins,mjdist):
 def planck(nu):
     #bnu = 2 h nu^3 / c^2    1/expm1(hnu/kT) (erg / sr / s / cm^2 / hz)
     #need to convert to # / cm^2 / s / hz
-    #bnu * 4pi (isotropic) / hnu (energy -> number)
-    #modified b:
     #b = 8 pi nu^2 / c^2 1/expm1(hnu/kt) 
-    #this modification wouldn't be needed as we're normalising, but
-    #a synchrotron spectrum is also used, which needs to have correct relative weight
+    #normalize to [0,1]
     #T=2.936E7
     #h=6.626E-27
     #k=1.3806E-16
     #hkt = h / k T
     hkt=1.63462E-18
-    #const = 8 pi / c^2
-    const= 2.79639E-20
+    #norm = 1/int(nu**2/expm1(hnu/kt)) = 1/(2 zeta[3] (kt/h)^3)
+    z3=1.20206
+    norm=hkt**3/(2*z3)
+    
     #expm1 = exp(x)-1, without losing precision
     #when above nu ~ 1E20 , expm1 overflows (exponent ~700)
     #could get around this using logs, but
@@ -115,12 +114,12 @@ def planck(nu):
     if nu > 1E20:
         raise ValueError('nu is larger than 1E20')
     else:
-        return const*nu**2/(math.expm1(nu*hkt))
+        return norm*nu**2/(math.expm1(nu*hkt))
     
     
 def get_seed_photon_planck():
     #generate thermal photon from planck's law
-    lognu_min=15 #chance of E<1E15: 4.8E-10
+    lognu_min=12 #chance of E<1E15: 4.8E-10
     lognu_max=20 #chance of E>1E20: 0.
     nu=10**uniform(lognu_min,lognu_max)
     #weight is value of distribution at chosen nu
@@ -159,25 +158,28 @@ def sync_power(nu):
     #P_tot(omega) = sqrt(3) e^3 C B sin(a) / 2pi m c^2 (p+1)    gamma(p/4 + 19/12) gamma(p/4 -1/12) (mc omega / 3 e b sin(a))^-(p-1)/2
     # = const*nu^(-(p-1)/2)
     # divide by h*nu to get units of # /s / cm^3 / Hz
-    h=6.626E-27
-    B=1E6
-    C=1.53151
-    sina=.5*math.sqrt(2)
-    e=5E-10
-    p=2.
-    c=3E10
-    m=1E-27
+    #h=6.626E-27
+    #B=1E6
+    #C=1.53151
+    #sina=.5*math.sqrt(2)
+    #e=5E-10
+    #p=2.
+    #c=3E10
+    #m=1E-27
+    #const=math.sqrt(3)*e**3*C*B*sina*math.gamma(p/4+19./12)*math.gamma(p/4-1./12)*(2*math.pi*m*c/(3*e*B*sina))**(-.5)/(2*math.pi*m*c**2*3)/h
     
-    const=math.sqrt(3)*e**3*C*B*sina*math.gamma(p/4+19./12)*math.gamma(p/4-1./12)*(2*math.pi*m*c/(3*e*B*sina))**(-.5)/(2*math.pi*m*c**2*3)/h
-    
-    return const*nu**-1.5
+    #p ~ nu^-((p-1)/2) = nu^-.5
+    #need to divide by hnu, to get # / s /cm^3 /Hz
+    #normalize to [0,1]
+    norm=5E5
+    return norm*nu**-1.5
         
 
 def get_seed_photon_sync():
     # nu_ssa=5.6E11
     # stay above this as SSA is not modelled
     lognu_min = 12
-    lognu_max = 30
+    lognu_max = 20
     nu=10**uniform(lognu_min,lognu_max)
     #weight is value of distribution at chosen nu
     #still need to divide by nu (=large particles approach)
@@ -230,8 +232,8 @@ def main():
     step=100
     mi=10
     ma=35
-    width=float(ma-mi)/(step-1)
-    nu_bins=np.logspace(mi,ma,step) #step in log is (max-min)/(step-1)
+    width=float(ma-mi)/(step-1) #width of a bin
+    nu_bins=np.logspace(mi,ma,step)
     weights=np.zeros(len(nu_bins))
     electronbins,mjdist=create_MJ()
     n_absorbed=0
@@ -247,12 +249,13 @@ def main():
         #50/50 synch or planck
         #if uniform(0,1) < .5:
         #get planck photon
-        nu,w=get_seed_photon_sync()
+        nu,w=get_seed_photon_planck()
         w0=w
         #add photon to planck spectrum
         b=bisect_left(pbins,nu)
         if b==len(pbins):
-            print 'Photon falls outside bin range: ',nu
+            print nu
+            raise ValueError('Photon falls outside bin range: ')
         else:
             planckphotons[b]+=w
         #else:
@@ -269,8 +272,9 @@ def main():
                      
             if b == len(nu_bins):
                 #photon falls outside bin range
-                print 'Photon energy falls outside bin range: ',nu
-                continue
+                print nu
+                raise ValueError('Photon energy falls outside bin range: ')
+                
             else:
                 #bin the photon
                 weights[b]+=w_esc
@@ -315,9 +319,9 @@ def main():
        
     #plt.loglog(nu_bins,weights,color='blue')
     plt.loglog(pbins,planckphotons,color='red')
-    #plt.loglog(e_bins,weights)
-    #plt.xlim(1E-5,1E5)
-    #plt.ylim(1E-3,1)
+    plt.loglog(e_bins,weights)
+    #plt.xlim(1E14,1E22)
+    #plt.ylim(1E14,1E18)
     plt.xlabel('E (keV)')
     plt.ylabel('E dn/dE')
     plt.show()
