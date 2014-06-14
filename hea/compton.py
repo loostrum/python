@@ -71,7 +71,7 @@ def MJCDF(gamma):
 def create_MJ():
     #create binned MJ CDF
     #electronbins = binned gamma
-    electronbins= np.linspace(1,10,1E3)
+    electronbins= np.linspace(1,15,1E3)
     mjdist=[]
     for i in electronbins:
         mjdist.append(MJCDF(i))
@@ -110,6 +110,7 @@ def planck(nu):
     const= 2.79639E-20
     #expm1 = exp(x)-1, without losing precision
     #when above nu ~ 1E20 , expm1 overflows (exponent ~700)
+    #could get around this using logs, but
     #these values are not realistic anyway (P<<<1). 
     if nu > 1E20:
         raise ValueError('nu is larger than 1E20')
@@ -117,8 +118,7 @@ def planck(nu):
         return const*nu**2/(math.expm1(nu*hkt))
     
     
-def get_seed_photon():
-    #h=6.626E-27 #to convert to energy
+def get_seed_photon_planck():
     #generate thermal photon from planck's law
     lognu_min=15 #chance of E<1E15: 4.8E-10
     lognu_max=20 #chance of E>1E20: 0.
@@ -139,9 +139,8 @@ def absorbed(nu):
     else:
         p_abs = .5
     
-    rand=uniform(0,1)
     #if rand < p_abs, the photon will be absorbed
-    if rand < p_abs:
+    if uniform(0,1) < p_abs:
         return True
     else:
         return False
@@ -149,39 +148,120 @@ def absorbed(nu):
 #synchrotron power
 def sync_power(nu):
     #from Malzac et al., 2006 
-    g_min=1.3
-    g_max=8.6
-    p=2
-    #inc angle = 45 deg, so sin(a)=.5 sqrt(2)
-    #B follows from Ub = Ue and T=10^9K (n_e?)
+    #g_min=1.3
+    #g_max=8.6
+    #p=2
+    #C=1/int(gamma**-p,{gamma,g_min,g_max})
+    #inc angle = 45 deg
+    #B = 10^6 G (del Santo et al., 2012)
     #see R&L 6.36
     #nu = omega/2pi
     #P_tot(omega) = sqrt(3) e^3 C B sin(a) / 2pi m c^2 (p+1)    gamma(p/4 + 19/12) gamma(p/4 -1/12) (mc omega / 3 e b sin(a))^-(p-1)/2
+    # = const*nu^(-(p-1)/2)
+    # divide by h*nu to get units of # /s / cm^3 / Hz
+    h=6.626E-27
+    B=1E6
+    C=1.53151
+    sina=.5*math.sqrt(2)
+    e=5E-10
+    p=2.
+    c=3E10
+    m=1E-27
+    
+    const=math.sqrt(3)*e**3*C*B*sina*math.gamma(p/4+19./12)*math.gamma(p/4-1./12)*(2*math.pi*m*c/(3*e*B*sina))**(-.5)/(2*math.pi*m*c**2*3)/h
+    
+    return const*nu**-1.5
         
 
-def main():
+def get_seed_photon_sync():
+    # nu_ssa=5.6E11
+    # stay above this as SSA is not modelled
+    lognu_min = 12
+    lognu_max = 30
+    nu=10**uniform(lognu_min,lognu_max)
+    #weight is value of distribution at chosen nu
+    #still need to divide by nu (=large particles approach)
+    w=sync_power(nu)/nu
+    return nu,w
+        
+def fix(x_list,y_list,width):
+    h= 1#4.135668E-18 #keV / Hz
+    #normalise the binned values
+    total_values=sum(y_list)
+    values = [ item/total_values for item in y_list ]
+    
+    
+    #every bin with a value < 1E-6 has negligible influence on the spectrum
+    #to improve the plots, these bins are set to zero
+    #in the E F(E) plot, there now is a sudden break
+    #when plotting everything, the uncertainty in dn/de can be seen (large wiggles)
+    for i in range(len(values)):
+        if values[i] < 1E-6:
+            values[i]=0
+    
+    
+    #divide the values by the nu_bin width (log) to get dn/de
+    for i in range(len(values)):
+        values[i] /= width
+        
+    #convert xlist to energy instead of freq:
+    x_list = [ h*i for i in x_list ]
 
+    #multiply each weight by h*nu to get E F(E)
+    #needs to be done after normalising!
+    for i in range(len(values)):
+        values[i] *= x_list[i]
+        
+    return x_list,values
+    
+
+def main():
+    
+    print 'Initializing'
+    
+    h= 4.135668E-18 #keV / Hz
     tau=.3
     exptau=math.exp(-tau)
-    n=4
+    n=5
     niter=int(10**n)
     
     photons=[]
-    nu_bins=np.logspace(10,55,100)
+    
+    step=100
+    mi=10
+    ma=35
+    width=float(ma-mi)/(step-1)
+    nu_bins=np.logspace(mi,ma,step) #step in log is (max-min)/(step-1)
     weights=np.zeros(len(nu_bins))
     electronbins,mjdist=create_MJ()
     n_absorbed=0
     n_scattered=0
     n_photons=0
     
-    print '0 %'
-    for i in range(niter):
+    pbins=nu_bins
+    planckphotons=np.zeros(len(pbins))
+    
+    print 'Generating photons'
+    while n_photons < niter:
         #get seed photon
-        nu,w=get_seed_photon()
+        #50/50 synch or planck
+        #if uniform(0,1) < .5:
+        #get planck photon
+        nu,w=get_seed_photon_sync()
         w0=w
+        #add photon to planck spectrum
+        b=bisect_left(pbins,nu)
+        if b==len(pbins):
+            print 'Photon falls outside bin range: ',nu
+        else:
+            planckphotons[b]+=w
+        #else:
+            #get sync photon
+            
+            
         #keep scattering until the photon is absorbed or w/w0 < 1E-6
         while w/w0 > 1E-6:
-    
+            
             #escape chance is w*exp(-tau)
             w_esc=w*exptau
             #add weight of escaped photon fraction to correct freq bin
@@ -190,10 +270,15 @@ def main():
             if b == len(nu_bins):
                 #photon falls outside bin range
                 print 'Photon energy falls outside bin range: ',nu
+                continue
             else:
                 #bin the photon
                 weights[b]+=w_esc
                 n_photons += 1
+                
+                #progress tracker        
+                if 100*float(n_photons+1)/niter%5==0:
+                    print 100*(n_photons+1)/niter, '%'
             
                 
             #check if the photon is absorbed
@@ -211,63 +296,28 @@ def main():
                 nu *= scatter(beta,gamma)       
                 n_scattered += 1
                 #now goto adding the escaped fraction to the spectrum
-        
-        #progress tracker        
-        if 100*float(i+1)/niter%5==0:
-            print 100*(i+1)/niter, '%'
-            
-  
-    #transform to nu F_nu (multiply by nu)
-    for i in range(len(weights)):
-        weights[i] *= nu_bins[i]
-        
-    #normalise the weights
-    total_weights=sum(weights)
-    weights = [ item/total_weights for item in weights ]
 
-    #every bin with a weight < 1E-6 has negligible influence on the spectrum
-    #to improve the plots, these bins are set to zero
-    for i in range(len(weights)):
-        if weights[i] < 1E-6:
-            weights[i]=0
+    
+    
+        
     
     
     print 'absorbed photons: ',n_absorbed
     print 'scatterings: ',n_scattered
     print 'total number of photons in spectrum: ',n_photons
     
+    print 'Manipulating data'
+    
+    e_bins,weights = fix(nu_bins,weights,width)
+    pbins,planckphotons = fix(pbins,planckphotons,width)
     
     
-    
-    #create input planck spectrum
-    planck_bins = np.logspace(10,20,100)
-    planck_values = []
-    for nu in planck_bins:
-        planck_values.append(planck(nu))
-        
-    #normalise
-    nplanck = float(sum(planck_values))
-    planck_values = [item/nplanck for item in planck_values]
-    
-    #remove items with value < 1E-6
-    for i in range(len(planck_values)):
-        if planck_values[i] < 1E-6:
-            planck_values[i]=0
-    
-    
-    #convert frequencies to energies
-    h= 4.135668E-18 #keV / Hz
-    for i in range(len(planck_bins)):
-        planck_bins[i] *= h
-    for i in range(len(nu_bins)):
-        nu_bins[i] *= h
-    
-    #plot the planck input spectrum  
-    plt.loglog(planck_bins,planck_values,color='red')
-        
-    plt.loglog(nu_bins,weights,color='blue')
-    plt.xlim(h*1E14,h*1E25)
-    plt.ylim(1E-4,1)
+       
+    #plt.loglog(nu_bins,weights,color='blue')
+    plt.loglog(pbins,planckphotons,color='red')
+    #plt.loglog(e_bins,weights)
+    #plt.xlim(1E-5,1E5)
+    #plt.ylim(1E-3,1)
     plt.xlabel('E (keV)')
     plt.ylabel('E dn/dE')
     plt.show()
