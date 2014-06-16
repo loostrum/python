@@ -5,12 +5,14 @@ from random import uniform
 from scipy.special import kv
 from scipy.integrate import quad
 from bisect import bisect_left
+import mpmath
 
 def pow_spec_rand():
     #input electron power spectrum
+    #returns gamma factor of random electron
     g_min=1.3
     g_max=8.6
-    g_bins=np.linspace(1.2,8.7,100)
+    g_bins=np.logspace(1,3,100)
     p=2
     norm=(1-p)/(g_max**(1-p)-g_min**(1-p))
     #make binned CDF (CDF = integral(gmin,g) of g*(-p)
@@ -24,24 +26,35 @@ def pow_spec_rand():
 def sync_power(nu,gamma):
     #power spectrum from single electron
     #relativistic case (eq 6.18)
+    h=6.626E-27
     B = 1E6
     e = 5E-10
     m = 1E-27
     c = 3E10
     sina = .5*math.sqrt(2)
+    #acc disk radius  = 500 r_g = 1.5E6 cm
+    R=1.5E6
     nu_c= 3*gamma**2*e*B*sina/(4*math.pi*m*c)
     x = nu/nu_c
+    #F is defined as integral of the bessel function:
     F = x*quad(lambda x: kv(5./3,x),x,np.inf)[0]
     #plotting F returns fig on p. 179, despite the convergence warning
     power = math.sqrt(3)*e**3*B*sina/(m*c**2)*F
+    #this power has units of erg/s/cm^3/Hz
+    #assuming photons are created in the entire (half-sphere) corona, multiply by its volume
+    #divide by h*nu to get # instead of energy
+    #final units: #/s/Hz
+    power *= 2./3*math.pi*R**3/(h*nu)
     return power
     
+    
 def get_sync_photon():
+    h=6.626E-27
     #generate a random photon
     nu=10**uniform(10,20)
     #get random gamma 
     gamma=pow_spec_rand()
-    #get power(=weight) for given nu and gamma
+    #get power for given nu and gamma
     w = sync_power(nu,gamma)
     return nu,w
     
@@ -68,12 +81,7 @@ def main():
     #normalise weights
     weights = [w/niter for w in weights]
     
-    #ignore bins <1E-6*max contribution (negligible contribution to spectrum)
-    wmax=max(weights)
-    for i in range(len(weights)):
-        if weights[i] < wmax*1E-6:
-            weights[i] = 0.
-    
+          
     data=[nu_bins,weights]
     
     #np.savetxt('sync.txt',data)
