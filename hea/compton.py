@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from random import uniform
+from random import uniform,randint
 from matplotlib import pyplot as plt
 import scipy.stats as stats
 from scipy.integrate import quad
@@ -78,6 +78,47 @@ def create_MJ():
         
     return electronbins,mjdist
 
+def get_sync_photon():
+    #minimum freq: 1.3E13, maximum freq: 8E19
+    #use 1E13 and 1E20
+    lognu_min = 13
+    lognu_max = 20
+    #The multi-wavelength polarization of Cygnus X-1
+    #Russel & Shahbaz, 2013
+    #norm follows from fig 2.
+    # log nu F_nu = -9 @ log nu = 20
+    # log F_nu = -29 = lognorm - p*lognu
+    #lognorm = log F_nu + p*lognu = -29 + .69*20 = -15.2 = 6.3E-16 
+    #wrong, 2 OOM
+    norm = 5E-19
+    p = .69
+    nu = 10**uniform(lognu_min,lognu_max)
+    #-p-1 to get # photons instead of ergs
+    # final units: #/cm^2/s/Hz (?)
+    w = norm*nu**(-p-1)
+    
+    return nu,w
+
+def planck(nu):
+    T=2.936E7
+    h=6.626E-27
+    k=1.381E-16
+    norm=1E-82
+    #units: erg/s/cm^2/sr/Hz
+    #divide by h*nu to get # photons instead of their energy
+    #final units: #/cm^2/s/Hz (sr are fixed in norm)
+    power = nu**2/math.expm1(h*nu/(k*T))
+    #planck peak is about 2 oom higher than sync peak
+    power *= norm
+    return power
+    
+def get_planck_photon():
+    #generate a random photon in sensibile range
+    nu=10**uniform(10,20)
+    #get power for given nu
+    w = planck(nu)
+    return nu,w
+
 
 def get_electron(electronbins,mjdist):
     #steps to select gamma_electron:
@@ -92,41 +133,8 @@ def get_electron(electronbins,mjdist):
     beta = math.sqrt(1-gamma**-2)
     return beta,gamma
 
-
-def planck(nu):
-    #bnu = 2 h nu^3 / c^2    1/expm1(hnu/kT) (erg / sr / s / cm^2 / hz)
-    #need to convert to # / cm^2 / s / hz
-    #b = 8 pi nu^2 / c^2 1/expm1(hnu/kt) 
-    #normalize to [0,1]
-    #T=2.936E7
-    #h=6.626E-27
-    #k=1.3806E-16
-    #hkt = h / k T
-    hkt=1.63462E-18
-    #norm = 1/int(nu**2/expm1(hnu/kt)) = 1/(2 zeta[3] (kt/h)^3)
-    z3=1.20206
-    norm=hkt**3/(2*z3)
     
-    #expm1 = exp(x)-1, without losing precision
-    #when above nu ~ 1E20 , expm1 overflows (exponent ~700)
-    #could get around this using logs, but
-    #these values are not realistic anyway (P<<<1). 
-    if nu > 1E20:
-        raise ValueError('nu is larger than 1E20')
-    else:
-        return norm*nu**2/(math.expm1(nu*hkt))
-    
-    
-def get_seed_photon_planck():
-    #generate thermal photon from planck's law
-    lognu_min=12 #chance of E<1E15: 4.8E-10
-    lognu_max=20 #chance of E>1E20: 0.
-    nu=10**uniform(lognu_min,lognu_max)
-    #weight is value of distribution at chosen nu
-    #still need to divide by nu (=large particles approach)
-    w=planck(nu)/nu
-    return nu,w
-    
+   
     
 def absorbed(nu):
     h= 4.135668E-15 #ev/Hertz
@@ -144,48 +152,7 @@ def absorbed(nu):
     else:
         return False
 
-#synchrotron power
-def sync_power(nu):
-    #from Malzac et al., 2006 
-    #g_min=1.3
-    #g_max=8.6
-    #p=2
-    #C=1/int(gamma**-p,{gamma,g_min,g_max})
-    #inc angle = 45 deg
-    #B = 10^6 G (del Santo et al., 2012)
-    #see R&L 6.36
-    #nu = omega/2pi
-    #P_tot(omega) = sqrt(3) e^3 C B sin(a) / 2pi m c^2 (p+1)    gamma(p/4 + 19/12) gamma(p/4 -1/12) (mc omega / 3 e b sin(a))^-(p-1)/2
-    # = const*nu^(-(p-1)/2)
-    # divide by h*nu to get units of # /s / cm^3 / Hz
-    #h=6.626E-27
-    #B=1E6
-    #C=1.53151
-    #sina=.5*math.sqrt(2)
-    #e=5E-10
-    #p=2.
-    #c=3E10
-    #m=1E-27
-    #const=math.sqrt(3)*e**3*C*B*sina*math.gamma(p/4+19./12)*math.gamma(p/4-1./12)*(2*math.pi*m*c/(3*e*B*sina))**(-.5)/(2*math.pi*m*c**2*3)/h
-    
-    #p ~ nu^-((p-1)/2) = nu^-.5
-    #need to divide by hnu, to get # / s /cm^3 /Hz
-    #normalize to [0,1]
-    norm=5E5
-    return norm*nu**-1.5
-        
-
-def get_seed_photon_sync():
-    # nu_ssa=5.6E11
-    # stay above this as SSA is not modelled
-    lognu_min = 12
-    lognu_max = 20
-    nu=10**uniform(lognu_min,lognu_max)
-    #weight is value of distribution at chosen nu
-    #still need to divide by nu (=large particles approach)
-    w=sync_power(nu)/nu
-    return nu,w
-        
+       
 def fix(x_list,y_list,width):
     h= 1#4.135668E-18 #keV / Hz
     #normalise the binned values
@@ -220,6 +187,38 @@ def fix(x_list,y_list,width):
 def main():
     
     print 'Initializing'
+    
+    
+    x = np.logspace(13,20,100)
+    yp = np.zeros(len(x))
+    ys = np.zeros(len(x))
+    
+    niter = int(1E5)
+    
+    for i in range(niter):
+        nu,w = get_planck_photon()
+        b = bisect_left(x,nu)
+        yp[b] += w*nu#convert to nu*f_nu
+                
+        nu,w = get_sync_photon()
+        b = bisect_left(x,nu)
+        ys[b] += w*nu #convert to nu*f_nu
+    
+    h= 4.135668E-18
+    for i in range(len(x)):
+        x[i] *= h
+        
+    plt.loglog(x,yp,color='red',label='planck')
+    plt.loglog(x,ys,color='blue',label='sync')
+    plt.ylim(1E-32,1E-23)
+    plt.legend(loc=3)
+    plt.show()
+    
+    
+    print 'Done!'
+    exit(0)
+    
+    
     
     h= 4.135668E-18 #keV / Hz
     tau=.3
