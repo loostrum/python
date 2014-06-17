@@ -136,6 +136,7 @@ def main():
     h= 4.135668E-18 #keV / Hz
     tau=.3
     exptau=math.exp(-tau)
+    #txt files made with = 8, takes .5 hrs
     n=6
     niter=int(10**n)
     
@@ -143,7 +144,6 @@ def main():
     electronbins,mjdist=create_MJ()
     
     n_absorbed=0
-    n_scattered=0
     n_photons=0
     
     nu_bins=np.logspace(10,30,200)
@@ -180,16 +180,9 @@ def main():
         w_esc=w*exptau
         #add weight of escaped photon fraction to correct freq bin
         b=bisect_left(nu_bins,nu)
-                     
-        if b == len(nu_bins):
-            #photon falls outside bin range
-            print nu
-            raise ValueError('Photon energy falls outside bin range: ')
-                
-        else:
-            #bin the photon to the non-scattered list
-            n_non[b] += w_esc
-            n_photons += 1
+        #bin the photon to the non-scattered list
+        n_non[b] += w*exptau
+        n_photons += 1
                                 
                 
         #progress tracker        
@@ -213,25 +206,18 @@ def main():
                 w *= (1-exptau)
                 #get an electron scattering partner
                 beta,gamma=get_electron(electronbins,mjdist)
-                #scatter the photon (needs to be refined with 1+mu**2 and separate e and photon direction)
+                #scatter the photon
                 nu *= scatter(beta,gamma)       
-                n_scattered += 1
                 
                 #add the escaped fraction to the compt list
                 #escape chance is w*exp(-tau)
                 w_esc=w*exptau
                 #add weight of escaped photon fraction to correct freq bin
                 b=bisect_left(nu_bins,nu)
-                     
-                if b == len(nu_bins):
-                    #photon falls outside bin range
-                    print nu
-                    raise ValueError('Photon energy falls outside bin range: ')
                 
-                else:
-                    #bin the photon to the scattered list
-                    n_comp[b] += w_esc
-                    n_photons += 1
+                #bin the photon to the scattered list
+                n_comp[b] += w_esc
+                n_photons += 1
                     
                     
             #progress tracker        
@@ -245,7 +231,6 @@ def main():
     
     
     print 'absorbed photons: ',n_absorbed
-    print 'scatterings: ',n_scattered
     print 'total number of photons in spectrum: ',n_photons
     
     print 'Manipulating data'
