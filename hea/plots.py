@@ -2,12 +2,12 @@ from matplotlib import pyplot as plt
 from matplotlib import rc
 import numpy as np
 
-
-e_bins = np.loadtxt('bins.txt')
-n_sync = np.loadtxt('sync-input.txt')
-n_planck = np.loadtxt('planck-input.txt')
-n_non = np.loadtxt('non-scattered.txt')
-n_comp = np.loadtxt('scattered.txt')
+d='data'
+e_bins = np.loadtxt(d+'/bins.txt')
+n_sync = np.loadtxt(d+'/sync-input.txt')
+n_planck = np.loadtxt(d+'/planck-input.txt')
+n_non = np.loadtxt(d+'/non-scattered.txt')
+n_comp = np.loadtxt(d+'/scattered.txt')
 
 full_input = np.add(n_planck,n_sync)
 full_output = np.add(n_non,n_comp)
