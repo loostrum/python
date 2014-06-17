@@ -5,68 +5,45 @@ from matplotlib import pyplot as plt
 import scipy.stats as stats
 from scipy.integrate import quad
 from bisect import bisect_left
-
-
-#in definitions:
-#_l,_e = lab,electron frame (variables)
-#_la,_el = lab,electron frame (functions)
-#generate random angle in lab frame
-def rand_mu():
-    return uniform(-1,1)
-
-
-#angle aberration for mu (to electron frame)
-def mu_el(mu_l,beta):
-    return (mu_l-beta)/(1-beta*mu_l)
-
-
-#angle aberration for mu (to lab frame)
-def mu_la(mu_e,beta):
-    return (mu_e+beta)/(1+beta*mu_e)
-    
-    
-#lorentz transformation for energy (relative to e_l)
-def e_el(mu_l,beta,gamma):
-    return gamma*(1-beta*mu_l)
-
-
-#generate scattered photon energy in lab frame for given mu1_e (=scatter angle in e frame), relative to e_l
-def e1_la(mu1_e,e_e,beta,gamma):
-    return e_e*gamma*(1+beta*mu1_e)
+from time import time
 
 
 def scatter(beta,gamma):
     while True:
-        #generate random photon direction
-        mu_l=rand_mu()
-        #calc incident energy in e frame
-        e_e=e_el(mu_l,beta,gamma)
-        #calc scattered energy in lab frame, assuming no recoil (e_e=e_1 in electron frame)
-        mu1_e=rand_mu()
-        mu1_l=mu_la(mu1_e,beta)
-        e_1=e1_la(mu1_e,e_e,beta,gamma)
-        #discard if impossible 
-        #this will restart the loop
-        if e_1 < 1/(gamma**2*(1+beta)*(1-beta*mu1_l)) or e_1 > 1/(gamma*(1-beta)*(1-beta*mu1_l)):
-            #print 'discarded:',e_1
-            continue
-        else:
-            #print 'approved'
-            return e_1
+        rho_min = (1.0-beta)**2/(2*beta)
+        rho_max = (1.0+beta)**2/(2*beta)
+        rho = uniform(rho_min,rho_max)
+        muth = (1-math.sqrt(2*beta*rho))/beta
+        muth_p = (muth-beta)/(1-beta*muth)    
+        
+        #photon energy in electron frame
+        e1_p = gamma*(1.0-beta*muth)
+        
+        a = uniform(-1,1)
+        b = uniform(0,2)
+        while b >= 1.0+a**2:
+            a = uniform(-1,1) #a is distributed like a cosine
+            b = uniform(0,2)
+        mua_p = a
+        
+        muphi_p = math.cos(uniform(0,1)*2.0*math.pi)		# Uniform distribution for muphi_p
+        sin_theta_p = math.sqrt(1.0-muth_p**2)		# outgoing theta prime
+        sin_alpha_p = math.sqrt(1.0-mua_p**2)		# outgoing alpha prime
+        muth1_p = muth_p*mua_p-sin_alpha_p*sin_theta_p*muphi_p		# scattering angle in electron rest frame: muth1_p = cos_theta1_p
+    
+        e1 = e1_p*gamma*(1.0+beta*muth1_p)		# Final photon energy in lab frame
+    
+        return e1
+
         
         
-def MJ(gamma):
-    #returns the probability of finding energy gamma in a MJ distribution
+def MJCDF(gamma):
+    #returns the cumulative probability of finding energy gamma in a MJ distribution
     #T = 10^9 K
     theta=.168637 # =kt/mc^2
     const = 3238.1 # = 1/(theta * K_2(1/theta))
-    return const*math.sqrt(1-gamma**-2)*gamma**2*math.exp(-gamma/theta)
+    return quad(lambda gamma: const*math.sqrt(1-gamma**-2)*gamma**2*math.exp(-gamma/theta),1,gamma)[0]
 
-
-def MJCDF(gamma):
-    # returns CDF of the MJ PDF
-    return quad(MJ,1,gamma)[0]
-    
         
 def create_MJ():
     #create binned MJ CDF
@@ -86,15 +63,11 @@ def get_sync_photon():
     #The multi-wavelength polarization of Cygnus X-1
     #Russel & Shahbaz, 2013
     #norm follows from fig 2.
-    # log nu F_nu = -9 @ log nu = 20
-    # log F_nu = -29 = lognorm - p*lognu
-    #lognorm = log F_nu + p*lognu = -29 + .69*20 = -15.2 = 6.3E-16 
-    #wrong, 2 OOM
     norm = 5E-19
     p = .69
     nu = 10**uniform(lognu_min,lognu_max)
     #-p-1 to get # photons instead of ergs
-    # final units: #/cm^2/s/Hz (?)
+    # final units: #/cm^2/s/Hz
     w = norm*nu**(-p-1)
     
     return nu,w
@@ -155,13 +128,15 @@ def absorbed(nu):
  
 def main():
     
+    tstart=time()
+    
     print 'Initializing'
     
            
     h= 4.135668E-18 #keV / Hz
     tau=.3
     exptau=math.exp(-tau)
-    n=7
+    n=6
     niter=int(10**n)
     
     
@@ -289,19 +264,20 @@ def main():
     n_output = np.add(n_non,n_comp)
     
     #save data
-    np.savetxt('bins.txt',e_bins)
-    np.savetxt('sync-input.txt',n_sync)
-    np.savetxt('planck-input.txt',n_planck)
-    np.savetxt('non-scattered.txt',n_non)
-    np.savetxt('scattered.txt',n_comp)
+    #np.savetxt('bins.txt',e_bins)
+    #np.savetxt('sync-input.txt',n_sync)
+    #np.savetxt('planck-input.txt',n_planck)
+    #np.savetxt('non-scattered.txt',n_non)
+    #np.savetxt('scattered.txt',n_comp)
     
-    
+    tend=time()
     print 'Done!'
+    print 'Total time used: ',tend-tstart
         
     #plot spectra (input, comp, full input, full)
-    #plt.loglog(nu_bins,n_input,color='green',label='sync + planck input')
-    plt.loglog(nu_bins,n_non,color='red',ls='--',label='non-scattered output')
-    plt.loglog(nu_bins,n_comp,color='blue',ls='--',label='comptonized output')
+    plt.loglog(nu_bins,n_input,color='green',label='Sync + planck input')
+    plt.loglog(nu_bins,n_non,color='red',ls='--',label='Non-scattered output')
+    plt.loglog(nu_bins,n_comp,color='blue',ls='--',label='Comptonized output')
     plt.loglog(nu_bins,n_output,color='black',label='Full output')
     plt.xlim(1E-2,1E4)
     plt.ylim(1E-35,1E-30)
