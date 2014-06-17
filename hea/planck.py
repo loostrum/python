@@ -1,8 +1,11 @@
 import math
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib import rc
 from random import uniform
 from bisect import bisect_left
+
+rc('text', usetex=True) # use latex for greek letters with a nicer font
 
 def planck(nu):
     T=2.936E7
