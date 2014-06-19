@@ -262,13 +262,15 @@ def main():
     n_output = np.add(n_non,n_comp)
     
     #save data
-    d='data'
-    np.savetxt(d+'/bins.txt',e_bins)
-    np.savetxt(d+'/sync-input.txt',n_sync)
-    np.savetxt(d+'/planck-input.txt',n_planck)
-    np.savetxt(d+'/non-scattered.txt',n_non)
-    np.savetxt(d+'/sync-output.txt',n_comp_sy)
-    np.savetxt(d+'/planck-output.txt',n_comp_pl)
+    save = False
+    if save:
+        d='data'
+        np.savetxt(d+'/bins.txt',e_bins)
+        np.savetxt(d+'/sync-input.txt',n_sync)
+        np.savetxt(d+'/planck-input.txt',n_planck)
+        np.savetxt(d+'/non-scattered.txt',n_non)
+        np.savetxt(d+'/sync-output.txt',n_comp_sy)
+        np.savetxt(d+'/planck-output.txt',n_comp_pl)
     
     tend=time()
     print 'Done!'
