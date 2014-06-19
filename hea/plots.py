@@ -24,7 +24,7 @@ def plot_finish():
     plt.xlim(1E-2,1E4)
     plt.ylim(1E-35,1E-30)
     plt.xlabel(r'E (keV)')
-    plt.ylabel(r'$\nu \, F_\nu$' )
+    plt.ylabel(r'$F_\nu$' )
 
 #plot inputs
 
