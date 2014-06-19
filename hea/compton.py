@@ -150,7 +150,8 @@ def main():
     n_planck=np.zeros(len(nu_bins))
     n_sync=np.zeros(len(nu_bins))
     n_non=np.zeros(len(nu_bins))
-    n_comp=np.zeros(len(nu_bins))
+    n_comp_pl=np.zeros(len(nu_bins))
+    n_comp_sy=np.zeros(len(nu_bins))
     
     
     
@@ -162,6 +163,7 @@ def main():
             #get planck photon
             nu,w = get_planck_photon()
             w0 = w
+            photon_type = 'planck'
             #bin the planck photon for reference
             b = bisect_left(nu_bins,nu)
             n_planck[b] += w
@@ -170,6 +172,7 @@ def main():
             #get sync photon
             nu,w = get_sync_photon()
             w0 = w
+            photon_type = 'sync'
             #bin the sync photon for reference
             b = bisect_left(nu_bins,nu)
             n_sync[b] += w
@@ -216,8 +219,16 @@ def main():
                 b=bisect_left(nu_bins,nu)
                 
                 #bin the photon to the scattered list
-                n_comp[b] += w_esc
-                n_photons += 1
+                #split into synchrotron and planck origin
+                if photon_type == 'planck':
+      		    n_comp_pl[b] += w_esc
+                    n_photons += 1
+                elif photon_type == 'sync':
+                    n_comp_sy[b] += w_esc
+                    n_photons += 1
+		else:
+		    raise ValueError('Photon type unknown')
+
                     
                     
             #progress tracker        
@@ -242,19 +253,22 @@ def main():
         n_planck[i] *= nu_bins[i]/niter
         n_sync[i] *= nu_bins[i]/niter
         n_non[i] *= nu_bins[i]/niter
-        n_comp[i] *= nu_bins[i]/niter
+        n_comp_pl[i] *= nu_bins[i]/niter
+        n_comp_sy[i] *= nu_bins[i]/niter
         e_bins[i] *= h
     
     n_input = np.add(n_planck,n_sync)
+    n_comp = np.add(n_comp_pl,n_comp_sy)
     n_output = np.add(n_non,n_comp)
     
     #save data
-    #d='data'
-    #np.savetxt(d+'/bins.txt',e_bins)
-    #np.savetxt(d+'/sync-input.txt',n_sync)
-    #np.savetxt(d+'/planck-input.txt',n_planck)
-    #np.savetxt(d+'/non-scattered.txt',n_non)
-    #np.savetxt(d+'/scattered.txt',n_comp)
+    d='data'
+    np.savetxt(d+'/bins.txt',e_bins)
+    np.savetxt(d+'/sync-input.txt',n_sync)
+    np.savetxt(d+'/planck-input.txt',n_planck)
+    np.savetxt(d+'/non-scattered.txt',n_non)
+    np.savetxt(d+'/sync-output.txt',n_comp_sy)
+    np.savetxt(d+'/planck-output.txt',n_comp_pl)
     
     tend=time()
     print 'Done!'
