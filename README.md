@@ -11,4 +11,4 @@ Compton upscattering of an input Synchrotron and Planck spectrum.
 Lane-Emden differential equation solver. Includes application to white dwarf mass and density profiles.
 
 ## Python Workshop
-Introduction to Python
+Introduction to Python.
